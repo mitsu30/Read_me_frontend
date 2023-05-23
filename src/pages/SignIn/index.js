@@ -56,9 +56,9 @@ export default function SignInSide() {
                     margin="normal"
                     required
                     fullWidth
-                    id="nickname"
+                    id="answer1"
                     label="ニックネームは？"
-                    name="nickname"
+                    name="answer1"
                     autoFocus
                   />
                   <TextField
@@ -66,18 +66,18 @@ export default function SignInSide() {
                     margin="normal"
                     required
                     fullWidth
-                    name="hobby"
+                    name="answer2"
                     label="しゅみは？"
-                    id="hobby"
+                    id="answer2"
                   />
                   <TextField
                     color="secondary"
                     margin="normal"
                     required
                     fullWidth
-                    name="favoriteCT"
+                    name="answer3"
                     label="推しCTは？"
-                    id="favoriteCT"
+                    id="answer3"
                   />
                   <Container
                     maxWidth="sm"
