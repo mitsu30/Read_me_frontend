@@ -28,7 +28,7 @@ export default function App () {
   const [answer1, setAnswer1] = useState("");
   const [answer2, setAnswer2] = useState("");
   const [answer3, setAnswer3] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("/template1.png");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -139,7 +139,6 @@ export default function App () {
                   }}
                 >
             {imageUrl && <Image src={imageUrl} alt="Generated" height='630px' width='1200px' />}
-            <Image src="/template1.png" height='630px' width='1200px'/>
           </Grid>
         </Grid>
       </ThemeProvider>
