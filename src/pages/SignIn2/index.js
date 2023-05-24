@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image from "next/image";
 import { TwitterShareButton, TwitterIcon} from "react-share";
+import imageText from '../../url';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -23,7 +24,22 @@ const theme = createTheme({
   }
 })
 
-export default function SignInSide() {
+export default function App () {
+  const [answer1, setAnswer1] = useState("");
+  const [answer2, setAnswer2] = useState("");
+  const [answer3, setAnswer3] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/v1/image_texts', { answer1, answer2, answer3 });
+      setImageUrl(response.data.url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -43,7 +59,7 @@ export default function SignInSide() {
                 <Typography component="h1" variant="h5">
                   入力してね♪
                 </Typography>
-                <Box component="form" noValidate sx={{ mt: 1 }}>
+                <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
                   <TextField
                     color="secondary"
                     margin="normal"
@@ -53,6 +69,8 @@ export default function SignInSide() {
                     label="ニックネームは？"
                     name="answer1"
                     autoFocus
+                    value={answer1}
+                    onChange={(e) => setAnswer1(e.target.value)}
                   />
                   <TextField
                     color="secondary"
@@ -62,6 +80,8 @@ export default function SignInSide() {
                     name="answer2"
                     label="しゅみは？"
                     id="answer2"
+                    value={answer2}
+                    onChange={(e) => setAnswer2(e.target.value)}
                   />
                   <TextField
                     color="secondary"
@@ -71,6 +91,8 @@ export default function SignInSide() {
                     name="answer3"
                     label="推しCTは？"
                     id="answer3"
+                    value={answer3}
+                    onChange={(e) => setAnswer3(e.target.value)}
                   />
                   <Container
                     maxWidth="sm"
@@ -95,15 +117,6 @@ export default function SignInSide() {
                 </Box>
               </Box>
             </Grid>
-          <Grid
-            item
-            xs={false}
-            sm={4}
-            md={6}
-            sx={{
-              my:20
-            }}
-          >
             <Container
                 maxWidth="sm"
                 sx={{
@@ -115,17 +128,21 @@ export default function SignInSide() {
                   プロフィール帳のデザインはこれだよ！
                 </Typography>
               </Container>
-          <Image src="/template1.png" height='630px' width='1200px'/>
+                <Grid
+                  item
+                  xs={false}
+                  sm={4}
+                  md={6}
+      
+                  sx={{
+                    my:20
+                  }}
+                >
+            {/* {imageUrl && <Image src={imageUrl} alt="Generated" height='630px' width='1200px' />} */}
+            <Image src="/template1.png" height='630px' width='1200px'/>
           </Grid>
         </Grid>
       </ThemeProvider>
-
-      <TwitterShareButton 
-        url="https://prism-cube.com" 
-        title="りーどみー"
-        >
-        <TwitterIcon size={30} round={true} />
-      </TwitterShareButton>
-  </>
+    </>
   );
-}
+};
