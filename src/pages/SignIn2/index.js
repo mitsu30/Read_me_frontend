@@ -10,12 +10,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Image from "next/image";
 import { TwitterShareButton, TwitterIcon} from "react-share";
-
-
-
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 const theme = createTheme({
@@ -29,6 +24,17 @@ export default function App () {
   const [answer2, setAnswer2] = useState("");
   const [answer3, setAnswer3] = useState("");
   const [imageUrl, setImageUrl] = useState("/template1.png");
+
+  const handlePreview = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/v1/image_texts/preview', { answer1, answer2, answer3 });
+      setImageUrl(response.data.url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +65,7 @@ export default function App () {
                 <Typography component="h1" variant="h5">
                   入力してね♪
                 </Typography>
-                <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
+                <Box component="form" noValidate sx={{ mt: 1 }}>
                   <TextField
                     color="secondary"
                     margin="normal"
@@ -98,7 +104,7 @@ export default function App () {
                     maxWidth="sm"
                     sx={{
                       display: 'flex',
-                      justifyContent: 'center',
+                      justifyContent: 'space-between', // 変更
                     }}
                   >
                     <Button 
@@ -107,39 +113,55 @@ export default function App () {
                       sx={{ 
                         mt: 3, 
                         mb: 2, 
-                        width: '50%',
+                        width: '40%', // 変更
                         backgroundColor: '#FF82B2',
-                        color: '#000000'  }}
+                        color: '#000000'  
+                      }}
+                      onClick={handlePreview} // 追加
                     >
-                      これでつくる!
+                      プレビュー
+                    </Button>
+                    <Button 
+                      type="submit"
+                      variant="contained"
+                      sx={{ 
+                        mt: 3, 
+                        mb: 2, 
+                        width: '40%', // 変更
+                        backgroundColor: '#FF82B2',
+                        color: '#000000'  
+                      }}
+                      onClick={handleSubmit} // 変更
+                    >
+                      作成
                     </Button>
                   </Container>
                 </Box>
               </Box>
             </Grid>
-            <Container
-                maxWidth="sm"
+            <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
+              <Box
                 sx={{
+                  my: 20,
+                  mx: 4,
                   display: 'flex',
-                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  alignItems: 'center',
                 }}
               >
                 <Typography component="h1" variant="h5">
                   プロフィール帳のデザインはこれだよ！
                 </Typography>
-              </Container>
-                <Grid
-                  item
-                  xs={false}
-                  sm={4}
-                  md={6}
-      
-                  sx={{
-                    my:20
-                  }}
-                >
-            {imageUrl && <Image src={imageUrl} alt="Generated" height='630px' width='1200px' />}
-          </Grid>
+                <Box component="form" noValidate sx={{ mt: 1 }}>
+                  {
+                    imageUrl.startsWith('data:image/jpeg;base64,') ?
+                    <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                  :
+                    <img src={imageUrl} alt="Template" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                  }
+                </Box>
+              </Box>
+            </Grid>
         </Grid>
       </ThemeProvider>
     </>
