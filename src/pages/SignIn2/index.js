@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image from "next/image";
 import { TwitterShareButton, TwitterIcon} from "react-share";
-import imageText from '../../url';
+
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -138,7 +138,7 @@ export default function App () {
                     my:20
                   }}
                 >
-            {/* {imageUrl && <Image src={imageUrl} alt="Generated" height='630px' width='1200px' />} */}
+            {imageUrl && <Image src={imageUrl} alt="Generated" height='630px' width='1200px' />}
             <Image src="/template1.png" height='630px' width='1200px'/>
           </Grid>
         </Grid>
