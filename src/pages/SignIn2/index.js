@@ -10,7 +10,8 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { TwitterShareButton, TwitterIcon} from "react-share";
+import { useRouter } from 'next/router';
+
 
 const defaultTheme = createTheme();
 const theme = createTheme({
@@ -25,11 +26,13 @@ export default function App () {
   const [answer3, setAnswer3] = useState("");
   const [imageUrl, setImageUrl] = useState("/template1.png");
 
+  const router = useRouter();
+
   const handlePreview = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/image_texts/preview', { answer1, answer2, answer3 });
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/preview`, { answer1, answer2, answer3 });
       setImageUrl(response.data.url);
     } catch (error) {
       console.error(error);
@@ -40,8 +43,12 @@ export default function App () {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/image_texts', { answer1, answer2, answer3 });
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { answer1, answer2, answer3 });
       setImageUrl(response.data.url);
+      router.push({
+        pathname: '/result',
+        query: { imageUrl: response.data.url },
+      });
     } catch (error) {
       console.error(error);
     }
