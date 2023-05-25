@@ -11,6 +11,9 @@ export default function ResultPage() {
     setCurrentURL(window.location.href);
   }, []);
 
+  // router.isReady が true になるまで待つ
+  if (!router.isReady) return null;
+
   return (
     <div>
       <img src={imageUrl} alt="Generated" />
