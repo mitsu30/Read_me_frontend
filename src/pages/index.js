@@ -56,6 +56,7 @@ const handleSubmit = async (e) => {
 
     // Create a promise to wait for the image to load
     const img = new Image();
+    console.log(response);
     await new Promise((resolve, reject) => {
       img.onload = () => resolve();
       img.onerror = () => reject(new Error('Image load failed'));
@@ -64,6 +65,9 @@ const handleSubmit = async (e) => {
 
     setImageUrl(response.data.url);
     setOgImageUrl(response.data.ogImageUrl);
+    console.log(response)
+    console.log(response.data.id)
+
     router.push({
       pathname: '/result/[id]', // Adjust to be dynamic route
       query: { id: response.data.id  }, // Use unique id from the response
