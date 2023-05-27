@@ -1,7 +1,7 @@
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 
-export default function ResultPage({imageText}) {
+export default function ResultPage({ imageText }) {
   const router = useRouter();
  
   return (
