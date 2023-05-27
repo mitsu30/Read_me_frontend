@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 
 
 
+
 const defaultTheme = createTheme();
 const theme = createTheme({
   typography: {
@@ -27,33 +28,55 @@ export default function App () {
   const [answer3, setAnswer3] = useState("");
   const [imageUrl, setImageUrl] = useState("/template1.png");
 
+  const [ogImageUrl, setOgImageUrl] = useState("");
+
   const router = useRouter();
 
   const handlePreview = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/preview`, { answer1, answer2, answer3 });
-      setImageUrl(response.data.url);
+  try {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/preview`, { image_text: { answer1, answer2, answer3 } });
+    setImageUrl(response.data.url);
     } catch (error) {
-      console.error(error);
+    console.error(error);
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { answer1, answer2, answer3 });
-      setImageUrl(response.data.url);
-      router.push({
-        pathname: '/result',
-        query: { imageUrl: response.data.url },
-      });
-    } catch (error) {
-      console.error(error);
+  try {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
+    
+    // If status is not 200, throw an error
+    if (response.status !== 200) {
+      throw new Error('Request failed with status: ' + response.status);
     }
-  };
+
+    // Create a promise to wait for the image to load
+    const img = new Image();
+    console.log(response);
+    await new Promise((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error('Image load failed'));
+      img.src = response.data.url;
+    });
+
+    setImageUrl(response.data.url);
+    setOgImageUrl(response.data.ogImageUrl);
+    console.log(response)
+    console.log(response.data.id)
+
+    router.push({
+      pathname: '/result/[id]', // Adjust to be dynamic route
+      query: { id: response.data.id  }, // Use unique id from the response
+    });
+
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <>
