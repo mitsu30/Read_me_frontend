@@ -43,20 +43,24 @@ export default function App () {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
   try {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
     
-    while (response.status !== 200) {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second before checking again
-      const img = new Image();
-      img.src = response.data.url;
-      if (img.complete) {
-        break; // The image is ready, break the loop
-      }
+    // If status is not 200, throw an error
+    if (response.status !== 200) {
+      throw new Error('Request failed with status: ' + response.status);
     }
+
+    // Create a promise to wait for the image to load
+    const img = new Image();
+    await new Promise((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error('Image load failed'));
+      img.src = response.data.url;
+    });
 
     setImageUrl(response.data.url);
     setOgImageUrl(response.data.ogImageUrl);
