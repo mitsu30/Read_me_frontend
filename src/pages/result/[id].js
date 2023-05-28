@@ -3,22 +3,24 @@ import { useRouter } from 'next/router';
 
 export default function ResultPage({ imageText }) {
   const router = useRouter();
- 
+  const { id } = router.query; 
+  const shareUrl = `https://readmeee.vercel.app/result/${id}`;
+
   return (
     <>
       <NextSeo
         twitter={{
-          cardType: "summary_large_image", // Twitter card type
+          cardType: "summary_large_image"
         }}
         title={'りーどみー'}
         description={'大人のプロフィール帳'}
         openGraph={{
-          url: `https://readmeee.vercel.app/result/${imageText.id}`,
+          url: shareUrl,
           title: 'site title',
           description: 'site description',
           images: [
             {
-              url: imageText.image_url, // Use url from the props
+              url: imageText.image_url, 
               width: 800,
               height: 600,
               alt: 'Result Image',
@@ -31,7 +33,7 @@ export default function ResultPage({ imageText }) {
       <h3>サンプル</h3>
       <img src={imageText.image_url} alt="Generated Image" />
       <button onClick={() => window.open(
-        `https://twitter.com/share?url=${encodeURIComponent(`https://readmeee.vercel.app/result/${imageText.id}`)}&text=Check out this cool image I created!`, '_blank')}>
+        `https://twitter.com/share?url=${encodeURIComponent(shareUrl)}&text=Check out this cool image I created!`, '_blank')}>
         Share on Twitter
       </button>
     </>
