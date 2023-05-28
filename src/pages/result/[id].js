@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export default function ResultPage({ imageText }) {
   const router = useRouter();
   const { id } = router.query; 
-  const shareUrl = `https://readmeee.vercel.app/result/${id}`;
+  const shareUrl = `https://read-me-frontend-git-09twitter-mitsu30.vercel.app/result/${id}?shared=true`;
 
   return (
     <>
@@ -32,10 +32,13 @@ export default function ResultPage({ imageText }) {
 
       <h3>サンプル</h3>
       <img src={imageText.image_url} alt="Generated Image" />
-      <button onClick={() => window.open(
+      {!shared && (
+        <button 
+        onClick={() => window.open(
         `https://twitter.com/share?url=${encodeURIComponent(shareUrl)}&text=Check out this cool image I created!`, '_blank')}>
-        Share on Twitter
-      </button>
+          Share on Twitter
+       </button>
+)}
     </>
   );
 }
