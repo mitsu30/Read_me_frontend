@@ -7,10 +7,13 @@ export default function ResultPage({ imageText }) {
   return (
     <>
       <NextSeo
+        twitter={{
+          cardType: "summary_large_image", // Twitter card type
+        }}
         title={'りーどみー'}
         description={'大人のプロフィール帳'}
         openGraph={{
-          url: `https://readmeee.vercel.app`,
+          url: `https://readmeee.vercel.app/result/${imageText.id}`,
           title: 'site title',
           description: 'site description',
           images: [
