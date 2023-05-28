@@ -13,7 +13,7 @@ export default function ResultPage({ imageText }) {
         title={'りーどみー'}
         description={'大人のプロフィール帳'}
         openGraph={{
-          url: `https://readmeee.vercel.app/result/${imageText.id}`,
+          url: `https//read-me-frontend-git-08twitter2-mitsu30.vercel.app/result/${imageText.id}`,
           title: 'site title',
           description: 'site description',
           images: [
