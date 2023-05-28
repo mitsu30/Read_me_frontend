@@ -13,8 +13,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 
 
-
-
 const defaultTheme = createTheme();
 const theme = createTheme({
   typography: {
