@@ -13,7 +13,7 @@ export default function ResultPage({ imageText }) {
         title={'りーどみー'}
         description={'大人のプロフィール帳'}
         openGraph={{
-          url: `https//read-me-frontend-git-08twitter2-mitsu30.vercel.app/result/${imageText.id}`,
+          url: `https//https://read-me-frontend-git-08twitter2-mitsu30.vercel.app//result/${imageText.id}`,
           title: 'site title',
           description: 'site description',
           images: [
@@ -31,7 +31,7 @@ export default function ResultPage({ imageText }) {
       <h3>サンプル</h3>
       <img src={imageText.image_url} alt="Generated Image" />
       <button onClick={() => window.open(
-        `https://twitter.com/share?url=${encodeURIComponent(`https//read-me-frontend-git-08twitter2-mitsu30.vercel.app/result/${imageText.id}`)}&text=Check out this cool image I created!`, '_blank')}>
+        `https://twitter.com/share?url=${encodeURIComponent(`https://read-me-frontend-git-08twitter2-mitsu30.vercel.app//result/${imageText.id}`)}&text=Check out this cool image I created!`, '_blank')}>
         Share on Twitter
       </button>
     </>
