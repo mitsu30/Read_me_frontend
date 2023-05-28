@@ -7,10 +7,10 @@ export default function ResultPage({ imageText }) {
   return (
     <>
       <NextSeo
-        title={'site title'}
-        description={'site description'}
+        title={'りーどみー'}
+        description={'大人のプロフィール帳'}
         openGraph={{
-          url: `${process.env.NEXT_PUBLIC_APP_URL}/result/${imageText.id}`,
+          url: `https://readmeee.vercel.app`,
           title: 'site title',
           description: 'site description',
           images: [
@@ -28,7 +28,7 @@ export default function ResultPage({ imageText }) {
       <h3>サンプル</h3>
       <img src={imageText.image_url} alt="Generated Image" />
       <button onClick={() => window.open(
-        `https://twitter.com/share?url=${encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL}/result/${imageText.id}`)}&text=Check out this cool image I created!`, '_blank')}>
+        `https://twitter.com/share?url=${encodeURIComponent(`https://readmeee.vercel.app/result/${imageText.id}`)}&text=Check out this cool image I created!`, '_blank')}>
         Share on Twitter
       </button>
     </>
@@ -49,3 +49,4 @@ export async function getServerSideProps(context) {
     },
   }
 }
+
