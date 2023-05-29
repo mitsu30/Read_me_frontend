@@ -41,7 +41,14 @@ export default function HomePage() {
         {/* Rest of your content goes here */}
         <Button 
           variant="contained"
-          style={{ backgroundColor: '#FF82B2', color: '#000000', position: 'absolute', bottom: '10%' }}
+          style={{ 
+            backgroundColor: '#FF82B2', 
+            color: '#000000', 
+            position: 'absolute', 
+            bottom: '10%', 
+            fontSize: '1.5em', // Adjust font size as needed
+            padding: '50px 80px', // Adjust padding as needed
+          }}
           onClick={handleClick}
         >
           はじめる
