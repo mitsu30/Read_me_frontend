@@ -15,7 +15,7 @@ export default function ResultPage({ imageText }) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    window.open(`https://twitter.com/share?url=${encodeURIComponent(shareUrl)}&text=Check out this cool image I created!`, '_blank');
+    window.open(`https://twitter.com/share?url=${encodeURIComponent(shareUrl)}&text=わたしのプロフィール！よろしくね♪`, '_blank');
     setOpen(true);
   };
 
