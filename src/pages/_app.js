@@ -15,22 +15,21 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        <div style={{ position: 'relative', height: '100vh', width: '100vw', zIndex: -1 }}>
-          <Image
-            src="/background.png"
-            alt="Background image"
-            layout="fill"
-            objectFit="cover"
-            quality={100}
-          />
-          <div style={{position: 'relative', zIndex: 0}}>
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
-          </div>
+      <div style={{ position: 'relative', height: '100vh', overflowX: 'hidden' }}>
+        <Image
+          src="/background.png"
+          alt="Background image"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+        />
+        <div style={{position: 'relative', zIndex: 1}}>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
         </div>
-    </ThemeProvider> 
+      </div>
+    </ThemeProvider>
   );
 }
-
 export default MyApp;

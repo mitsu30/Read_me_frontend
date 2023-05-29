@@ -50,6 +50,7 @@ export default function Header() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
+
           }}>
             <h2 id="modal-title">{modalContent}</h2>
             <p id="modal-description">準備中です！</p>
