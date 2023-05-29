@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -78,121 +77,118 @@ const handleSubmit = async (e) => {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
-          <CssBaseline />
-            <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
-              <Box
-                sx={{
-                  my: 20,
-                  mx: 4,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography component="h1" variant="h5">
-                  入力してね♪
-                </Typography>
-                <Box component="form" noValidate sx={{ mt: 1 }}>
-                  <TextField
-                    color="secondary"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="answer1"
-                    label="ニックネームは？"
-                    name="answer1"
-                    autoFocus
-                    value={answer1}
-                    onChange={(e) => setAnswer1(e.target.value)}
-                  />
-                  <TextField
-                    color="secondary"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="answer2"
-                    label="しゅみは？"
-                    id="answer2"
-                    value={answer2}
-                    onChange={(e) => setAnswer2(e.target.value)}
-                  />
-                  <TextField
-                    color="secondary"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="answer3"
-                    label="推しCTは？"
-                    id="answer3"
-                    value={answer3}
-                    onChange={(e) => setAnswer3(e.target.value)}
-                  />
-                  <Container
-                    maxWidth="sm"
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between', // 変更
+      <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
+        <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
+          <Box
+            sx={{
+              my: 20,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+              <Typography component="h1" variant="h5">
+                入力してね♪
+              </Typography>
+              <Box component="form" noValidate sx={{ mt: 1 }}>
+                <TextField
+                  color="secondary"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="answer1"
+                  label="ニックネームは？"
+                  name="answer1"
+                  autoFocus
+                  value={answer1}
+                  onChange={(e) => setAnswer1(e.target.value)}
+                />
+                <TextField
+                  color="secondary"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="answer2"
+                  label="しゅみは？"
+                  id="answer2"
+                  value={answer2}
+                  onChange={(e) => setAnswer2(e.target.value)}
+                />
+                <TextField
+                  color="secondary"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="answer3"
+                  label="推しCTは？"
+                  id="answer3"
+                  value={answer3}
+                  onChange={(e) => setAnswer3(e.target.value)}
+                />
+                <Container
+                  maxWidth="sm"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between', // 変更
+                  }}
+                >
+                  <Button 
+                    type="submit"
+                    variant="contained"
+                    sx={{ 
+                      mt: 3, 
+                      mb: 2, 
+                      width: '40%', // 変更
+                      backgroundColor: '#FF82B2',
+                      color: '#000000'  
                     }}
+                    onClick={handlePreview} // 追加
                   >
-                    <Button 
-                      type="submit"
-                      variant="contained"
-                      sx={{ 
-                        mt: 3, 
-                        mb: 2, 
-                        width: '40%', // 変更
-                        backgroundColor: '#FF82B2',
-                        color: '#000000'  
-                      }}
-                      onClick={handlePreview} // 追加
-                    >
-                      プレビュー
-                    </Button>
-                    <Button 
-                      type="submit"
-                      variant="contained"
-                      sx={{ 
-                        mt: 3, 
-                        mb: 2, 
-                        width: '40%', // 変更
-                        backgroundColor: '#FF82B2',
-                        color: '#000000'  
-                      }}
-                      onClick={handleSubmit} // 変更
-                    >
-                      作成
-                    </Button>
-                  </Container>
-                </Box>
+                    プレビュー
+                  </Button>
+                  <Button 
+                    type="submit"
+                    variant="contained"
+                    sx={{ 
+                      mt: 3, 
+                      mb: 2, 
+                      width: '40%', // 変更
+                      backgroundColor: '#FF82B2',
+                      color: '#000000'  
+                    }}
+                    onClick={handleSubmit} // 変更
+                  >
+                    作成
+                  </Button>
+                </Container>
               </Box>
-            </Grid>
-            <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
-              <Box
-                sx={{
-                  my: 20,
-                  mx: 4,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography component="h1" variant="h5">
-                  プロフィール帳のデザインはこれだよ！
-                </Typography>
-                <Box component="form" noValidate sx={{ mt: 1 }}>
-                  {
-                    imageUrl.startsWith('data:image/jpeg;base64,') ?
-                    <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
-                  :
-                    <img src={imageUrl} alt="Template" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
-                  }
-                </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
+            <Box
+              sx={{
+                my: 20,
+                mx: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Typography component="h1" variant="h5">
+                プロフィール帳のデザインはこれだよ！
+              </Typography>
+              <Box component="form" noValidate sx={{ mt: 1 }}>
+                {
+                  imageUrl.startsWith('data:image/jpeg;base64,') ?
+                  <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                :
+                  <img src={imageUrl} alt="Template" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                }
               </Box>
-            </Grid>
-        </Grid>
-      </ThemeProvider>
+            </Box>
+          </Grid>
+      </Grid>
     </>
   );
 };
