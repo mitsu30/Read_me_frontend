@@ -1,6 +1,8 @@
-import '../../styles/globals.css'
-import {ThemeProvider} from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from "@mui/material";
+import Image from 'next/image';
+import Header from '../components/header';
+import Footer from '../components/footer';
 
 const theme = createTheme({
   typography: {
@@ -10,10 +12,24 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }) {
   return (
-  <ThemeProvider theme={theme}>
-    <Component {...pageProps} />
-  </ThemeProvider>
-  )
+    <ThemeProvider theme={theme}>
+      <div style={{ position: 'relative', height: '100vh', width: '100vw' }}>
+        <Image
+          src="/background.png"
+          alt="Background image"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+          zIndex={-1}
+        />
+        <div style={{position: 'relative', zIndex: 0}}>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+        </div>
+      </div>
+    </ThemeProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;
