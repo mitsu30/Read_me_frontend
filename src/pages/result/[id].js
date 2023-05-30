@@ -11,11 +11,18 @@ import Link from '@mui/material/Link';
 export default function ResultPage({ imageText }) {
   const router = useRouter();
   const { id, shared } = router.query; 
-  const shareUrl = `https://read-me-frontend-git-09twitter-mitsu30.vercel.app/result/${id}?shared=true`;
+  const shareUrl = `https://readmeee.vercel.app//result/${id}?shared=true`;
+
+  useEffect(() => {
+    if (shared === 'true') {
+      router.push('/');
+    }
+  }, [shared, router]);
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    window.open(`https://twitter.com/share?url=${encodeURIComponent(shareUrl)}&text=わたしのプロフィール！よろしくね♪`, '_blank');
+    window.open(`https://twitter.com/share?url=${encodeURIComponent(shareUrl)}&text=わたしのプロフィール！よろしくね♪ #りーどみー #大人のプロフィール帳`, '_blank');
     setOpen(true);
   };
 
@@ -28,11 +35,11 @@ export default function ResultPage({ imageText }) {
           cardType: "summary_large_image"
         }}
         title={'りーどみー'}
-        description={'大人のプロフィール帳'}
+        description={'あなたのプロフィール帳シェアしませんか'}
         openGraph={{
           url: shareUrl,
-          title: 'site title',
-          description: 'site description',
+          title: 'りーどみー',
+          description: 'あなたのプロフィール帳シェアしませんか',
           images: [
             {
               url: imageText.image_url, 
@@ -41,7 +48,7 @@ export default function ResultPage({ imageText }) {
               alt: 'Result Image',
             }
           ],
-          site_name: 'site name',
+          site_name: 'りーどみー',
         }}
       />
       
