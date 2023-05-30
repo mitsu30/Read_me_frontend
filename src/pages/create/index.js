@@ -157,7 +157,7 @@ const handleSubmit = async (e) => {
                   onChange={(e) => {
                     const lines = e.target.value.split('\n');
                     if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_ANSWER3)) {
-                      setAnswer3Error('1行はは32文字以内、改行は2回までとしてください。');
+                      setAnswer3Error('1行は32文字以内、改行は2回までとしてください。');
                     } else {
                       setAnswer3Error('');
                       setAnswer3(e.target.value);
