@@ -1,9 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from "@mui/material";
-import Image from 'next/image';
-import Header from '../components/header';
-import Footer from '../components/footer';
+import Header from '../components/header'; // 新しいヘッダーをインポートします。
 
 const theme = createTheme({
   typography: {
@@ -16,18 +14,8 @@ function MyApp({ Component, pageProps }) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={{ position: 'relative', height: '100vh', overflowX: 'hidden' }}>
-        <Image
-          src="/background.png"
-          alt="Background image"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
-        />
-        <div style={{position: 'relative', zIndex: 1}}>
-          <Header />
-          <Component {...pageProps} />
-          <Footer />
-        </div>
+        <Header /> {/* 新しいヘッダーを使用します。 */}
+        <Component {...pageProps} />
       </div>
     </ThemeProvider>
   );

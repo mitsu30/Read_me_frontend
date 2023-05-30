@@ -11,7 +11,13 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body>
+      <body style={{
+          backgroundImage: "url(/background.png)",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+          backgroundSize: "cover",
+          backgroundColor: "#ffffff", // fallback color
+        }}>
         <Main />
         <NextScript />
       </body>
