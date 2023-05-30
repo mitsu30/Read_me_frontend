@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/system';
+import { useEffect } from 'react';
 
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 16;
@@ -56,6 +57,14 @@ export default function App () {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    // Dummy request to wake up the server as soon as possible
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/wakeup`)
+    .then(data => {
+      console.log("Server wakeup response: ", data);
+    })
+  }, []);
 
   const handlePreview = async (e) => {
     e.preventDefault();
@@ -221,7 +230,7 @@ const handleSubmit = async (e) => {
                     }}
                     onClick={handleSubmit} // 変更
                   >
-                    作成
+                    これでつくる！
                   </Button>
                 </Container>
               </Box>
