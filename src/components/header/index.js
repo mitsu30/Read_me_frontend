@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';  // 追加
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -40,8 +41,13 @@ export default function Header() {
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
             <MenuIcon />
           </IconButton>
+          <Box sx={{ flexGrow: 1 }} />  {/* 追加 */}
+          <Link href="/" >
+              <img src="/logo.png" alt="ロゴ" style={{ width: '100px', height: 'auto' }} />
+          </Link>
         </Toolbar>
       </AppBar>
+
 
       <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerClose}>
         <List>
