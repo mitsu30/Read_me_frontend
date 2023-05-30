@@ -17,11 +17,11 @@ export default function HomePage() {
   return (
     <>
       <NextSeo
-          title={りーどみー}
-          description={あなたのプロフィール帳シェアしませんか}
+          title={'りーどみー'}
+          description={'あなたのプロフィール帳シェアしませんか'}
           openGraph={{
-            title: りーどみー,
-            description: あなたのプロフィール帳シェアしませんか,
+            title: 'りーどみー',
+            description: 'あなたのプロフィール帳シェアしませんか',
             images: [
               {
                 url: 'https://https://readmeee.vercel.app//top_ogp.png', // あなたのドメインに置き換えてください
