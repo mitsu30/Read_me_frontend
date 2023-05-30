@@ -12,7 +12,7 @@ import Link from '@mui/material/Link';
 export default function ResultPage({ imageText }) {
   const router = useRouter();
   const { id, shared } = router.query; 
-  const shareUrl = `https://readmeee.vercel.app//result/${id}?shared=true`;
+  const shareUrl = `https://readmeee.vercel.app/result/${id}?shared=true`;
 
   useEffect(() => {
     if (shared === 'true') {
