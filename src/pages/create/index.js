@@ -77,43 +77,47 @@ export default function App () {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsLoading(true); 
-
-  try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
-    
-    // If status is not 200, throw an error
-    if (response.status !== 200) {
-      throw new Error('Request failed with status: ' + response.status);
-    }
-
-    // Create a promise to wait for the image to load
-    const img = new Image();
-    console.log(response);
-    await new Promise((resolve, reject) => {
-      img.onload = () => resolve();
-      img.onerror = () => reject(new Error('Image load failed'));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+  
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
+      
+      // If status is not 200, throw an error
+      if (response.status !== 200) {
+        throw new Error('Request failed with status: ' + response.status);
+      }
+  
+      // Create a promise to wait for the image to load
+      const img = new Image();
+  
+      img.onload = () => {
+        // Set image URL and OG image URL state
+        setImageUrl(response.data.url);
+        setOgImageUrl(response.data.ogImageUrl);
+  
+        // Push new path to router
+        router.push({
+          pathname: '/result/[id]', // Adjust to be dynamic route
+          query: { id: response.data.id }, // Use unique id from the response
+        });
+  
+        // Set loading state to false
+        setIsLoading(false);
+      };
+  
+      img.onerror = () => {
+        throw new Error('Image load failed');
+      };
+  
       img.src = response.data.url;
-    });
-
-    setImageUrl(response.data.url);
-    setOgImageUrl(response.data.ogImageUrl);
-    console.log(response)
-    console.log(response.data.id)
-
-    router.push({
-      pathname: '/result/[id]', // Adjust to be dynamic route
-      query: { id: response.data.id  }, // Use unique id from the response
-    });
-
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setIsLoading(false); // リクエスト終了後にローディングフラグを下ろす
-  }
-};
+  
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false); // In case of an error, also set loading state to false
+    }
+  };
 
   return (
     <>

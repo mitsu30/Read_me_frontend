@@ -24,7 +24,7 @@ export default function HomePage() {
             description: 'あなたのプロフィール帳シェアしませんか',
             images: [
               {
-                url: 'https://https://readmeee.vercel.app//top_ogp.png', // あなたのドメインに置き換えてください
+                url: 'https://readmeee.vercel.app/top_ogp.png', // あなたのドメインに置き換えてください
                 width: 800,
                 height: 600,
                 alt: 'Top OGP Image',
