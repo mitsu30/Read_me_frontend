@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
