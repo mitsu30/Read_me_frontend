@@ -11,6 +11,10 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 
+const MAX_LINE_LENGTH_OF_ANSWER1 = 16;
+const MAX_LINE_LENGTH_OF_ANSWER2 = 16;
+const MAX_LINE_LENGTH_OF_ANSWER3 = 32;
+const MAX_LINE_COUNT = 3;
 
 const defaultTheme = createTheme();
 const theme = createTheme({
@@ -24,6 +28,10 @@ export default function App () {
   const [answer2, setAnswer2] = useState("");
   const [answer3, setAnswer3] = useState("");
   const [imageUrl, setImageUrl] = useState("/template1.png");
+
+  const [answer1Error, setAnswer1Error] = useState("");
+  const [answer2Error, setAnswer2Error] = useState("");
+  const [answer3Error, setAnswer3Error] = useState("");
 
   const [ogImageUrl, setOgImageUrl] = useState("");
 
@@ -102,7 +110,16 @@ const handleSubmit = async (e) => {
                   name="answer1"
                   autoFocus
                   value={answer1}
-                  onChange={(e) => setAnswer1(e.target.value)}
+                  error={answer1Error !== ''}
+                  helperText={answer1Error}
+                  onChange={(e) => {
+                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
+                      setAnswer1Error('16文字以内で入力してください。');
+                    } else {
+                      setAnswer1Error('');
+                      setAnswer1(e.target.value);
+                    }
+                  }}
                 />
                 <TextField
                   color="secondary"
@@ -113,7 +130,16 @@ const handleSubmit = async (e) => {
                   label="しゅみは？"
                   id="answer2"
                   value={answer2}
-                  onChange={(e) => setAnswer2(e.target.value)}
+                  error={answer2Error !== ''}
+                  helperText={answer2Error}
+                  onChange={(e) => {
+                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER2) {
+                      setAnswer2Error('16文字以内で入力してください。');
+                    } else {
+                      setAnswer2Error('');
+                      setAnswer2(e.target.value);
+                    }
+                  }}
                 />
                 <TextField
                   color="secondary"
@@ -121,10 +147,22 @@ const handleSubmit = async (e) => {
                   required
                   fullWidth
                   name="answer3"
-                  label="推しCTは？"
+                  label="みんなにひと言！"
                   id="answer3"
                   value={answer3}
-                  onChange={(e) => setAnswer3(e.target.value)}
+                  multiline
+                  rows={MAX_LINE_COUNT}
+                  error={answer3Error !== ''}
+                  helperText={answer3Error}
+                  onChange={(e) => {
+                    const lines = e.target.value.split('\n');
+                    if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_ANSWER3)) {
+                      setAnswer3Error('1行はは32文字以内、改行は2回までとしてください。');
+                    } else {
+                      setAnswer3Error('');
+                      setAnswer3(e.target.value);
+                    }
+                  }}
                 />
                 <Container
                   maxWidth="sm"
