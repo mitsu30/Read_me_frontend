@@ -7,7 +7,7 @@ export default function HomePage() {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push('/create'); // Assuming your create page route is '/create'
+    router.push('/create'); 
   };
 
   return (
