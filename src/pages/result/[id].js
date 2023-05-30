@@ -50,7 +50,7 @@ export default function ResultPage({ imageText }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
+          // justifyContent: 'center',
           height: '100vh'
         }}
       >
@@ -59,7 +59,7 @@ export default function ResultPage({ imageText }) {
         </Typography>
 
         <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img src={imageText.image_url} alt="Generated Image" style={{ width: '50%', height: 'auto' }}/>
+          <img src={imageText.image_url} alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
         </Box>
 
         {shared !== 'true' && (
