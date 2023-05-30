@@ -10,6 +10,8 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
+import { styled } from '@mui/system';
+
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 16;
 const MAX_LINE_LENGTH_OF_ANSWER2 = 16;
@@ -23,6 +25,22 @@ const theme = createTheme({
   }
 })
 
+const Loading = styled('div')({
+  position: 'fixed',
+  left: '50%',
+  top: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: 9999,
+  color: '#000',
+  fontSize: '2em',
+  animation: 'blinkingText 1.2s infinite',
+  '@keyframes blinkingText': {
+    '0%': { opacity: 1 },
+    '50%': { opacity: 0 },
+    '100%': { opacity: 1 },
+  },
+});
+
 export default function App () {
   const [answer1, setAnswer1] = useState("");
   const [answer2, setAnswer2] = useState("");
@@ -34,6 +52,8 @@ export default function App () {
   const [answer3Error, setAnswer3Error] = useState("");
 
   const [ogImageUrl, setOgImageUrl] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -50,6 +70,7 @@ export default function App () {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  setIsLoading(true); 
 
   try {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
@@ -80,11 +101,14 @@ const handleSubmit = async (e) => {
 
   } catch (error) {
     console.error(error);
+  } finally {
+    setIsLoading(false); // リクエスト終了後にローディングフラグを下ろす
   }
 };
 
   return (
     <>
+      {!isLoading &&
       <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
         <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
           <Box
@@ -227,6 +251,8 @@ const handleSubmit = async (e) => {
             </Box>
           </Grid>
       </Grid>
+      }
+      {isLoading && <Loading>作成中...</Loading>}
     </>
   );
 };
