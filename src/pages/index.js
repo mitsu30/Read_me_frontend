@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
+import Box from '@mui/material/Box';
 
 export default function HomePage() {
   const router = useRouter();
@@ -16,20 +17,17 @@ export default function HomePage() {
       justifyContent: 'center',
       height: 'calc(100% - 64px)', // Adjust this based on your AppBar height
     }}>
-      <div style={{
+      <Box display="flex" alignItems="center" justifyContent="center" style={{ 
         width: '100%',  // Set the container to occupy the full width
         height: 'calc(100% - 64px)',  // Set a fixed height minus the AppBar height
-        overflow: 'hidden'  // This will ensure the video is cut off and doesn't overflow the container
+        overflow: 'hidden',  // This will ensure the video is cut off and doesn't overflow the container
       }}>
-        <video autoPlay loop muted style={{
-          width: '100%',  
-          height: '100%', 
-          objectFit: 'cover'
-        }}>
-          <source src="/video/top.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
+        <img src="/logo.png" alt="Logo" style={{
+          maxHeight: '100%',  
+          maxWidth: '100%', 
+          objectFit: 'contain'
+        }}/>
+      </Box>
       <Button 
         variant="contained"
         style={{ 

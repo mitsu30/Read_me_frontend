@@ -81,7 +81,7 @@ const handleSubmit = async (e) => {
         <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
           <Box
             sx={{
-              my: 10,
+              my: 5,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -168,7 +168,7 @@ const handleSubmit = async (e) => {
           <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
             <Box
               sx={{
-                my: 10,
+                my: 5,
                 mx: 4,
                 display: 'flex',
                 flexDirection: 'column',
