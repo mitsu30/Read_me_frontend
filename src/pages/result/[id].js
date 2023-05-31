@@ -120,8 +120,9 @@ export default function ResultPage({ imageText }) {
 
 export async function getServerSideProps(context) {
   const { id, shared } = context.query;
+  const userAgent = context.req.headers['user-agent'];
 
-  if (shared === 'true') {
+  if (shared === 'true' && !userAgent.includes('Twitterbot')) {
     return {
       redirect: {
         destination: '/',
