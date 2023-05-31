@@ -9,35 +9,34 @@ const theme = createTheme({
     fontFamily: ["Yomogi"].join(","),
     fontWeightBold: 700,
     h1: {
-      color: '#A16EFF',
+      color: '#FF773E',
       fontWeight: 'bold',
     },
     h2: {
-      color: '#A16EFF',
+      color: '#FF773E',
       fontWeight: 'bold',
     },
     h3: {
-      color: '#A16EFF',
+      color: '#FF773E',
       fontWeight: 'bold',
     },
     h4: {
-      color: '#A16EFF',
+      color: '#FF773E',
       fontWeight: 'bold',
     },
     h5: {
-      color: '#A16EFF',
+      color: '#FF773E',
       fontWeight: 'bold',
     },
     h6: {
-      color: '#A16EFF',
+      color: '#FF773E',
       fontWeight: 'bold',
     },
     body1: {
-      color: '#A16EFF',
-      fontWeight: 'bold',
+      color: '#FF773E',
     },
     body2: {
-      color: '#A16EFF',
+      color: '#FF773E',
       fontWeight: 'bold',
     },
   },

@@ -142,7 +142,6 @@ export default function App () {
                 <TextField
                   color="secondary"
                   margin="normal"
-                  required
                   fullWidth
                   id="answer1"
                   label="ニックネームは？"
@@ -163,7 +162,6 @@ export default function App () {
                 <TextField
                   color="secondary"
                   margin="normal"
-                  required
                   fullWidth
                   name="answer2"
                   label="しゅみは？"
@@ -183,7 +181,6 @@ export default function App () {
                 <TextField
                   color="secondary"
                   margin="normal"
-                  required
                   fullWidth
                   name="answer3"
                   label="みんなにひと言！"
