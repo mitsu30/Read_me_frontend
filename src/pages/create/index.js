@@ -19,6 +19,8 @@ const MAX_LINE_LENGTH_OF_ANSWER2 = 13;
 const MAX_LINE_LENGTH_OF_ANSWER3 = 26;
 const MAX_LINE_COUNT = 3;
 
+
+
 const defaultTheme = createTheme();
 const theme = createTheme({
   typography: {
@@ -32,8 +34,9 @@ const Loading = styled('div')({
   top: '50%',
   transform: 'translate(-50%, -50%)',
   zIndex: 9999,
-  color: '#000',
-  fontSize: '2em',
+  color: '#FF773E',
+  fontSize: '1.5em',
+  fontWeight: 'bold',
   animation: 'blinkingText 1.2s infinite',
   '@keyframes blinkingText': {
     '0%': { opacity: 1 },
@@ -128,7 +131,7 @@ export default function App () {
         <Grid item xs={12} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
           <Box
             sx={{
-              my: 3,
+              my: 2,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -244,7 +247,7 @@ export default function App () {
           <Grid item xs={12}  md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
             <Box
               sx={{
-                my: 3,
+                my: 2,
                 mx: 4,
                 display: 'flex',
                 flexDirection: 'column',
@@ -274,7 +277,7 @@ export default function App () {
           alignItems: 'center',
         }}
         >
-        <Loading>まってね</Loading>
+        <Loading>ちょっとまってね</Loading>
       </Box> 
     } 
     {isNavigating && 
