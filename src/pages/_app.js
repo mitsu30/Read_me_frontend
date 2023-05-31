@@ -41,21 +41,23 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ThemeProvider theme={theme} style={{
-          backgroundImage: "url(/background.png)",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-          backgroundSize: "100% 100%", // Changed to scale with width and height
-          backgroundColor: "#ffffff", // fallback color
-          minHeight: "100vh"
-        }}>
-      <CssBaseline />
-      <NextSeo
-        title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
-      />
-      <Header />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <div style={{
+      backgroundImage: "url(/background.png)",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center center",
+      backgroundSize: "100% 100%", // Changed to scale with width and height
+      backgroundColor: "#ffffff", // fallback color
+      minHeight: "100vh"
+    }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <NextSeo
+          title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
+        />
+        <Header />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </div>
   );
 }
 export default MyApp;
