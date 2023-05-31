@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
 export default function HomePage() {
   const router = useRouter();
@@ -17,14 +18,14 @@ export default function HomePage() {
   return (
     <>
       <NextSeo
-          title={'りーどみー'}
-          description={'あなたのプロフィール帳シェアしませんか'}
+          title={siteTitle}
+          description={siteDescription}
           openGraph={{
-            title: 'りーどみー',
-            description: 'あなたのプロフィール帳シェアしませんか',
+            title: siteTitle,
+            description: siteDescription,
             images: [
               {
-                url: 'https://readmeee.vercel.app/top_ogp.png', // あなたのドメインに置き換えてください
+                url: 'https://readmeee.vercel.app/top_ogp.png',
                 width: 800,
                 height: 600,
                 alt: 'Top OGP Image',
@@ -37,7 +38,6 @@ export default function HomePage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-
       }}>
         <Box display="flex" alignItems="center" justifyContent="center" style={{ 
           width: '100%',
@@ -54,22 +54,56 @@ export default function HomePage() {
             backgroundColor: '#FF82B2', 
             color: '#000000', 
             position: 'static', 
-            marginTop: '20px', // Creates space between video and button
-            fontSize: '1.0em', // Adjust font size as needed
-            padding: '10px 10px', // Adjust padding as needed
+            marginTop: '20px', 
+            fontSize: '1.0em', 
+            padding: '10px 10px', 
           }}
           onClick={handleClick}
         >
           はじめる
         </Button>
-        <Box width="50%" display="flex" justifyContent="center">
-          <Typography variant="h6" style={{ margin: '10px 0', textAlign: 'center' }}>
-            あなただけのプロフィール帳をTwitterでシェアしませんか？
+
+
+
+        {/* <Grid container component="main" justifyContent="center">
+          <Grid item xs={12} sm={6} md={6}>
+            <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
+            あなただけのプロフィール帳
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
+              Twitterでシェアしませんか
+            </Typography>
+          </Grid>
+        </Grid> */}
+
+        <Box 
+            sx={{
+              my: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
+            あなただけのプロフィール帳
+          </Typography>
+        </Box>
+        <Box 
+            sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+          >
+          <Typography variant="h6" style={{textAlign: 'center', width: '100%' }}>
+            Twitterでシェアしませんか
           </Typography>
         </Box>
         <img src="/template1.png" alt="Template1" style={{ 
-          maxHeight: '40%',  
-          maxWidth: '40%', 
+          maxHeight: '60%',  
+          maxWidth: '60%', 
           objectFit: 'contain' 
         }}/>
       </div>

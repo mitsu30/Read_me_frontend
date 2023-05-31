@@ -233,7 +233,7 @@ export default function App () {
                     }}
                     onClick={handleSubmit} // 変更
                   >
-                    これでつくる！
+                    これでつくる
                   </Button>
                 </Container>
               </Box>

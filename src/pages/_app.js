@@ -32,9 +32,6 @@ const theme = createTheme({
       color: '#FF773E',
       fontWeight: 'bold',
     },
-    body1: {
-      color: '#FF773E',
-    },
     body2: {
       color: '#FF773E',
       fontWeight: 'bold',
