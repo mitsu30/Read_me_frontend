@@ -13,15 +13,6 @@ export default function ResultPage({ imageText }) {
   const { id, shared } = router.query; 
   const shareUrl = `https://read-me-frontend-git-14mvp3-mitsu30.vercel.app/result/${id}?shared=true`;
 
-  if (shared === 'true') {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -122,6 +113,16 @@ export default function ResultPage({ imageText }) {
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
+
+  if (shared === 'true') {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   console.log(context.query)
   // Send a GET request to your API to get the data by id
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/${id}`);
