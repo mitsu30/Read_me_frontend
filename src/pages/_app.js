@@ -3,7 +3,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from "@mui/material";
 import Header from '../components/header'; 
 import { NextSeo } from 'next-seo';
-import { GlobalStyle } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {

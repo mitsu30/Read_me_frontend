@@ -267,8 +267,8 @@ export default function App () {
           </Grid>
       </Grid>
       }
-      {isLoading && <Loading>作成中...</Loading>}
-      {isNavigating && <Loading>遷移中...</Loading>}
+      {isLoading && <Loading>ちょっとまってね</Loading>}
+      {isNavigating && <Loading>ちょっとまってね</Loading>}
     </>
   );
 };
