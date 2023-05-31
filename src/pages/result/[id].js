@@ -51,8 +51,9 @@ export default function ResultPage({ imageText }) {
           ],
           site_name: 'りーどみー',
         }}
-      />
+        />
       
+      {shared !== 'true' && (
       <Container
         sx={{
           display: 'flex',
@@ -63,14 +64,13 @@ export default function ResultPage({ imageText }) {
         }}
       >
         <Typography component="h1" variant="h3" align="center">
-          完成！
+          できあがり！
         </Typography>
 
         <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img src={imageText.image_url} alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
         </Box>
 
-        {shared !== 'true' && (
           <>
             <Button 
               variant="contained" 
@@ -103,8 +103,8 @@ export default function ResultPage({ imageText }) {
               </Box>
             </Modal>
           </>
-        )}
       </Container>
+      )}
     </>
   );
 }

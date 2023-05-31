@@ -43,7 +43,17 @@ export default function Header() {
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />  {/* 追加 */}
           <Link href="/" >
-              <img src="/logo.png" alt="ロゴ" style={{ width: '150px', height: 'auto' }} />
+              <img 
+                src="/logo.png" 
+                alt="ロゴ" 
+                style={{ 
+                  width: '150px', 
+                  height: 'auto', 
+                  transition: '0.3s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'} // ホバー時にロゴを大きくする
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} // ホバーが終わったら元のサイズに戻す
+                  />
           </Link>
         </Toolbar>
       </AppBar>

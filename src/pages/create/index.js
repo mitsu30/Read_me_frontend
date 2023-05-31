@@ -55,6 +55,7 @@ export default function App () {
   const [ogImageUrl, setOgImageUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const router = useRouter();
 
@@ -98,6 +99,7 @@ export default function App () {
         setOgImageUrl(response.data.ogImageUrl);
   
         // Push new path to router
+        setIsNavigating(true);
         router.push({
           pathname: '/result/[id]', // Adjust to be dynamic route
           query: { id: response.data.id }, // Use unique id from the response
@@ -121,7 +123,7 @@ export default function App () {
 
   return (
     <>
-      {!isLoading &&
+      {(!isLoading && !isNavigating) &&
       <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
         <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
           <Box
@@ -266,6 +268,7 @@ export default function App () {
       </Grid>
       }
       {isLoading && <Loading>作成中...</Loading>}
+      {isNavigating && <Loading>遷移中...</Loading>}
     </>
   );
 };
