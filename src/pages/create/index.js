@@ -125,7 +125,7 @@ export default function App () {
     <>
       {(!isLoading && !isNavigating) &&
       <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
-        <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
+        <Grid item xs={12} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
           <Box
             sx={{
               my: 5,
@@ -215,7 +215,8 @@ export default function App () {
                       mb: 2, 
                       width: '40%', // 変更
                       backgroundColor: '#FF82B2',
-                      color: '#000000'  
+                      color: '#white',
+                      fontWeight: 'bold'  
                     }}
                     onClick={handlePreview} // 追加
                   >
@@ -229,17 +230,18 @@ export default function App () {
                       mb: 2, 
                       width: '40%', // 変更
                       backgroundColor: '#FF82B2',
-                      color: '#000000'  
+                      color: '#white',
+                      fontWeight: 'bold'  
                     }}
                     onClick={handleSubmit} // 変更
                   >
-                    これでつくる
+                    つくる!
                   </Button>
                 </Container>
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
+          <Grid item xs={12}  md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
             <Box
               sx={{
                 my: 5,
@@ -250,7 +252,7 @@ export default function App () {
               }}
             >
               <Typography component="h1" variant="h5">
-                プロフィール帳のデザインはこれだよ！
+                デザインはこれだよ！
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
                 {
@@ -263,9 +265,29 @@ export default function App () {
             </Box>
           </Grid>
       </Grid>
-      }
-      {isLoading && <Loading>ちょっとまってね</Loading>}
-      {isNavigating && <Loading>ちょっとまってね</Loading>}
+    }
+    {isLoading && 
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+        <Loading>まってね</Loading>
+      </Box> 
+    } 
+    {isNavigating && 
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+        <Loading>もうちょっと</Loading>
+      </Box> 
+    } 
     </>
   );
 };

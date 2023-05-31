@@ -33,54 +33,41 @@ export default function HomePage() {
             ],
           }}
         />
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <Box display="flex" alignItems="center" justifyContent="center" style={{ 
           width: '100%',
         }}>
           <img src="/logo.png" alt="Logo" style={{
-            maxHeight: '70%',  
-            maxWidth: '70%', 
+            maxHeight: '100%',  
+            maxWidth: '100%', 
             objectFit: 'contain'
           }}/>
         </Box>
-        <Button 
-          variant="contained"
-          style={{ 
-            backgroundColor: '#FF82B2', 
-            color: '#000000', 
-            position: 'static', 
-            marginTop: '20px', 
-            fontSize: '1.0em', 
-            padding: '10px 10px', 
-          }}
-          onClick={handleClick}
-        >
-          はじめる
-        </Button>
-
-
-
-        {/* <Grid container component="main" justifyContent="center">
-          <Grid item xs={12} sm={6} md={6}>
-            <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
-            あなただけのプロフィール帳
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6}>
-            <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
-              Twitterでシェアしませんか
-            </Typography>
-          </Grid>
-        </Grid> */}
-
+        <Box>
+          <Button 
+            variant="contained"
+            style={{ 
+              backgroundColor: '#FF6699', 
+              color: 'white', 
+              position: 'static', 
+              marginTop: '20px', 
+              fontSize: '1.0em', 
+              padding: '10px 10px', 
+              fontWeight: 'bold',
+            }}
+            onClick={handleClick}
+          >
+            はじめる
+          </Button>
+        </Box>
         <Box 
             sx={{
-              my: 3,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -101,12 +88,13 @@ export default function HomePage() {
             Twitterでシェアしませんか
           </Typography>
         </Box>
+        
         <img src="/template1.png" alt="Template1" style={{ 
           maxHeight: '60%',  
           maxWidth: '60%', 
           objectFit: 'contain' 
         }}/>
-      </div>
+      </Box>
     </>
   );
 }
