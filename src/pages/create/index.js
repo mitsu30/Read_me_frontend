@@ -277,7 +277,7 @@ export default function App () {
           alignItems: 'center',
         }}
         >
-        <Loading>ちょっとまってね</Loading>
+        <Loading>まっててね</Loading>
       </Box> 
     } 
     {isNavigating && 
