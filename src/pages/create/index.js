@@ -14,9 +14,9 @@ import { styled } from '@mui/system';
 import { useEffect } from 'react';
 
 
-const MAX_LINE_LENGTH_OF_ANSWER1 = 16;
-const MAX_LINE_LENGTH_OF_ANSWER2 = 16;
-const MAX_LINE_LENGTH_OF_ANSWER3 = 32;
+const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
+const MAX_LINE_LENGTH_OF_ANSWER2 = 13;
+const MAX_LINE_LENGTH_OF_ANSWER3 = 26;
 const MAX_LINE_COUNT = 3;
 
 const defaultTheme = createTheme();
@@ -151,7 +151,7 @@ export default function App () {
                   helperText={answer1Error}
                   onChange={(e) => {
                     if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
-                      setAnswer1Error('16文字以内で入力してください。');
+                      setAnswer1Error('13文字以内で入力してください。');
                     } else {
                       setAnswer1Error('');
                       setAnswer1(e.target.value);
@@ -171,7 +171,7 @@ export default function App () {
                   helperText={answer2Error}
                   onChange={(e) => {
                     if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER2) {
-                      setAnswer2Error('16文字以内で入力してください。');
+                      setAnswer2Error('13文字以内で入力してください。');
                     } else {
                       setAnswer2Error('');
                       setAnswer2(e.target.value);
@@ -194,7 +194,7 @@ export default function App () {
                   onChange={(e) => {
                     const lines = e.target.value.split('\n');
                     if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_ANSWER3)) {
-                      setAnswer3Error('1行は32文字以内、改行は2回までとしてください。');
+                      setAnswer3Error('1行は26文字以内、改行は2回までとしてください。');
                     } else {
                       setAnswer3Error('');
                       setAnswer3(e.target.value);
