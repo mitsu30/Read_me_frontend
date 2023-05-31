@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
@@ -14,11 +13,14 @@ export default function ResultPage({ imageText }) {
   const { id, shared } = router.query; 
   const shareUrl = `https://read-me-frontend-git-14mvp3-mitsu30.vercel.app/result/${id}?shared=true`;
 
-  useEffect(() => {
-    if (shared === 'true') {
-      router.push('/');
-    }
-  }, [shared, router]);
+  if (shared === 'true') {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   const [open, setOpen] = useState(false);
 

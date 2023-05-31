@@ -186,7 +186,7 @@ export default function App () {
                   margin="normal"
                   fullWidth
                   name="answer3"
-                  label="みんなにひと言！"
+                  label="みんなにひとこと！"
                   id="answer3"
                   value={answer3}
                   multiline
