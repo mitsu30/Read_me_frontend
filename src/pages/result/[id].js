@@ -64,7 +64,7 @@ export default function ResultPage({ imageText }) {
           height: '100vh'
         }}
       >
-        <Typography component="h1" variant="h4" align="center">
+        <Typography component="h1" variant="h5" align="center">
           できあがり！
         </Typography>
 
@@ -100,7 +100,7 @@ export default function ResultPage({ imageText }) {
               }}
             >
               <Box sx={{ width: 400, padding: 2, bgcolor: 'background.paper' }}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography id="modal-modal-title" variant="h5" component="h2">
                   りーどみー(ベータ版)を使っていただきありがとうございました！
                 </Typography>
                 <Typography id="modal-modal-description" variant="body1" sx={{ mt: 2 }}>

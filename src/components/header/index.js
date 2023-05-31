@@ -51,7 +51,7 @@ export default function Header() {
                   height: 'auto', 
                   transition: '0.3s'
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'} // ホバー時にロゴを大きくする
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} // ホバー時にロゴを大きくする
                   onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} // ホバーが終わったら元のサイズに戻す
                   />
           </Link>
@@ -98,7 +98,7 @@ export default function Header() {
           boxShadow: 24,
           p: 4,
         }}>
-          <Typography id="modal-title" variant="h6" component="h2">
+          <Typography id="modal-title" variant="h4" component="h2">
             {modalContent}
           </Typography>
           <Typography id="modal-description" variant="body2" color="text.secondary" sx={{ mt: 2 }}>
