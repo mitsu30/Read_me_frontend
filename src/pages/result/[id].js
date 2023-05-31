@@ -119,7 +119,7 @@ export default function ResultPage({ imageText }) {
 }
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const { id, shared } = context.query;
 
   if (shared === 'true') {
     return {
