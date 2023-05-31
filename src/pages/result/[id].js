@@ -56,6 +56,7 @@ export default function ResultPage({ imageText }) {
       {shared !== 'true' && (
       <Container
         sx={{
+          my: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -63,7 +64,7 @@ export default function ResultPage({ imageText }) {
           height: '100vh'
         }}
       >
-        <Typography component="h1" variant="h3" align="center">
+        <Typography component="h1" variant="h4" align="center">
           できあがり！
         </Typography>
 
@@ -74,11 +75,19 @@ export default function ResultPage({ imageText }) {
           <>
             <Button 
               variant="contained" 
+              style={{ 
+                backgroundColor: '#00acee',
+                color: 'white', 
+                position: 'static', 
+                marginTop: '20px', 
+                fontSize: '1.0em', 
+                padding: '8px 8px', 
+                fontWeight: 'bold',
+              }}
               onClick={handleOpen}
-              sx={{ marginY: 2 }}>
-                Twitterでシェア！
+            >
+                Twitterでシェア
             </Button>
-
             <Modal
               open={open}
               onClose={handleClose}

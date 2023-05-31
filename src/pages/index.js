@@ -44,8 +44,8 @@ export default function HomePage() {
           width: '100%',
         }}>
           <img src="/logo.png" alt="Logo" style={{
-            maxHeight: '100%',  
-            maxWidth: '100%', 
+            maxHeight: '80%',  
+            maxWidth: '80%', 
             objectFit: 'contain'
           }}/>
         </Box>
@@ -56,9 +56,9 @@ export default function HomePage() {
               backgroundColor: '#FF6699', 
               color: 'white', 
               position: 'static', 
-              marginTop: '20px', 
-              fontSize: '1.0em', 
-              padding: '10px 10px', 
+              marginTop: '10px', 
+              fontSize: '1.2em', 
+              padding: '15px 30px', 
               fontWeight: 'bold',
             }}
             onClick={handleClick}

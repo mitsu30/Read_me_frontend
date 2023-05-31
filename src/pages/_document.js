@@ -1,10 +1,8 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { ThemeProvider } from "@emotion/react";
-import { createTheme } from "@mui/material";
 
 export default function Document() {
   return (
-    <Html>
+    <Html style={{minHeight: "100vh"}}>
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap"
@@ -17,6 +15,7 @@ export default function Document() {
           backgroundPosition: "center center",
           backgroundSize: "cover",
           backgroundColor: "#ffffff", // fallback color
+          minHeight: "100vh"
         }}>
         <Main />
         <NextScript />

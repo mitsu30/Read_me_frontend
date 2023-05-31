@@ -128,7 +128,7 @@ export default function App () {
         <Grid item xs={12} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
           <Box
             sx={{
-              my: 5,
+              my: 3,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -214,7 +214,7 @@ export default function App () {
                       mt: 3, 
                       mb: 2, 
                       width: '40%', // 変更
-                      backgroundColor: '#FF82B2',
+                      backgroundColor: '#FF6699',
                       color: '#white',
                       fontWeight: 'bold'  
                     }}
@@ -229,7 +229,7 @@ export default function App () {
                       mt: 3, 
                       mb: 2, 
                       width: '40%', // 変更
-                      backgroundColor: '#FF82B2',
+                      backgroundColor: '#FF6699',
                       color: '#white',
                       fontWeight: 'bold'  
                     }}
@@ -244,7 +244,7 @@ export default function App () {
           <Grid item xs={12}  md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
             <Box
               sx={{
-                my: 5,
+                my: 3,
                 mx: 4,
                 display: 'flex',
                 flexDirection: 'column',
@@ -252,14 +252,14 @@ export default function App () {
               }}
             >
               <Typography component="h1" variant="h5">
-                デザインはこれだよ！
+                デザインはこれ！
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
                 {
                   imageUrl.startsWith('data:image/jpeg;base64,') ?
-                  <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                  <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'relative'}} />
                 :
-                  <img src={imageUrl} alt="Template" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                  <img src={imageUrl} alt="Template" style={{width: '100%', height: '100%', objectFit: 'relative'}} />
                 }
               </Box>
             </Box>
