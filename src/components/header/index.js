@@ -36,14 +36,14 @@ export default function Header() {
 
   return (
     <>
-      <AppBar position="static" style={{backgroundColor: '#FFD5EC', color: '#000000', zIndex: 2}}>
+      <AppBar position="static" style={{backgroundColor: '#FFEEFF', color: '#000000', zIndex: 2}}>
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />  {/* 追加 */}
           <Link href="/" >
-              <img src="/logo.png" alt="ロゴ" style={{ width: '100px', height: 'auto' }} />
+              <img src="/logo.png" alt="ロゴ" style={{ width: '150px', height: 'auto' }} />
           </Link>
         </Toolbar>
       </AppBar>
