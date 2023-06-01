@@ -33,7 +33,8 @@ export default function ResultPage({ imageText }) {
     <>
       <NextSeo
         twitter={{
-          cardType: "summary_large_image"
+          cardType: "summary_large_image",
+          site: "@readmee_profile"
         }}
         title={'りーどみー'}
         description={'あなたのプロフィール帳シェアしませんか'}
