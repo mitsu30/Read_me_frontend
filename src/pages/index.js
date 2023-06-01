@@ -1,19 +1,17 @@
 import { NextSeo } from 'next-seo';
-import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 
 export default function HomePage() {
   const router = useRouter();
+  const siteTitle = "りーどみー";
+  const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
   const handleClick = () => {
     router.push('/create'); 
   };
-
-  const siteTitle = "りーどみー";
-  const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
   return (
     <>
@@ -52,14 +50,18 @@ export default function HomePage() {
         <Box>
           <Button 
             variant="contained"
-            style={{ 
-              backgroundColor: '#FF6699', 
-              color: 'white', 
-              position: 'static', 
-              marginTop: '10px', 
-              fontSize: '1.2em', 
-              padding: '15px 30px', 
+            sx={{ 
+              mt: 2, 
+              mb: 2, 
+              width: '100%', 
+              backgroundColor: '#FF6699',
+              '&:hover': {
+                backgroundColor: '#E60073',
+              },
+              color: '#white',
               fontWeight: 'bold',
+              fontSize: '1.2em',
+              padding: '15px 30px' 
             }}
             onClick={handleClick}
           >

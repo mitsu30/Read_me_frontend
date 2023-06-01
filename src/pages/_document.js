@@ -33,7 +33,7 @@ export default function Document() {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
           backgroundSize: "cover",
-          backgroundColor: "#ffffff", // fallback color
+          backgroundColor: "#ffffff", 
           minHeight: "100vh"
         }}
       >

@@ -63,7 +63,6 @@ export default function App () {
   const router = useRouter();
 
   useEffect(() => {
-    // Dummy request to wake up the server as soon as possible
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/wakeup`)
     .then(data => {
       console.log("Server wakeup response: ", data);
@@ -88,27 +87,22 @@ export default function App () {
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
       
-      // If status is not 200, throw an error
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);
       }
   
-      // Create a promise to wait for the image to load
       const img = new Image();
   
       img.onload = () => {
-        // Set image URL and OG image URL state
         setImageUrl(response.data.url);
         setOgImageUrl(response.data.ogImageUrl);
   
-        // Push new path to router
         setIsNavigating(true);
         router.push({
-          pathname: '/result/[id]', // Adjust to be dynamic route
-          query: { id: response.data.id }, // Use unique id from the response
+          pathname: '/result/[id]', 
+          query: { id: response.data.id }, 
         });
   
-        // Set loading state to false
         setIsLoading(false);
       };
   
@@ -120,24 +114,24 @@ export default function App () {
   
     } catch (error) {
       console.error(error);
-      setIsLoading(false); // In case of an error, also set loading state to false
+      setIsLoading(false); 
     }
   };
 
   return (
     <>
       {(!isLoading && !isNavigating) &&
-      <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
-        <Grid item xs={12} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
-          <Box
-            sx={{
-              my: 2,
-              mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
+        <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
+          <Grid item xs={12} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
+            <Box
+              sx={{
+                my: 2,
+                mx: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
               <Typography component="h1" variant="h5">
                 入力してね♪
               </Typography>
@@ -207,7 +201,7 @@ export default function App () {
                   maxWidth="sm"
                   sx={{
                     display: 'flex',
-                    justifyContent: 'space-between', // 変更
+                    justifyContent: 'space-between', 
                   }}
                 >
                   <Button 
@@ -216,12 +210,15 @@ export default function App () {
                     sx={{ 
                       mt: 3, 
                       mb: 2, 
-                      width: '40%', // 変更
+                      width: '40%', 
                       backgroundColor: '#FF6699',
+                      '&:hover': {
+                        backgroundColor: '#E60073',
+                      },
                       color: '#white',
                       fontWeight: 'bold'  
                     }}
-                    onClick={handlePreview} // 追加
+                    onClick={handlePreview} 
                   >
                     プレビュー
                   </Button>
@@ -231,12 +228,15 @@ export default function App () {
                     sx={{ 
                       mt: 3, 
                       mb: 2, 
-                      width: '40%', // 変更
+                      width: '40%', 
                       backgroundColor: '#FF6699',
+                      '&:hover': {
+                        backgroundColor: '#E60073',
+                      },
                       color: '#white',
                       fontWeight: 'bold'  
                     }}
-                    onClick={handleSubmit} // 変更
+                    onClick={handleSubmit} 
                   >
                     つくる!
                   </Button>

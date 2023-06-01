@@ -60,7 +60,6 @@ export default function ResultPage({ imageText }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          // justifyContent: 'center',
           height: '100vh'
         }}
       >
@@ -131,10 +130,8 @@ export async function getServerSideProps(context) {
     };
   }
 
-  console.log(context.query)
-  // Send a GET request to your API to get the data by id
+
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/${id}`);
-  console.log(response)
   const imageText = await response.json();
 
   return {
