@@ -10,11 +10,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';  // 追加
+import Link from 'next/link';
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
 
   const handleDrawerOpen = () => {
@@ -25,7 +26,8 @@ export default function Header() {
     setDrawerOpen(false);
   };
 
-  const handleModalOpen = (content) => {
+  const handleModalOpen = (title, content) => {
+    setModalTitle(title);
     setModalContent(content);
     setModalOpen(true);
   };
@@ -41,7 +43,7 @@ export default function Header() {
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
             <MenuIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1 }} />  {/* 追加 */}
+          <Box sx={{ flexGrow: 1 }} />
           <Link href="/" >
               <img 
                 src="/logo.png" 
@@ -51,29 +53,28 @@ export default function Header() {
                   height: 'auto', 
                   transition: '0.3s'
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} // ホバー時にロゴを大きくする
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} // ホバーが終わったら元のサイズに戻す
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                   />
           </Link>
         </Toolbar>
       </AppBar>
 
-
       <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerClose}>
         <List>
-          <ListItem button onClick={() => handleModalOpen('コミュニティ')}>
+          <ListItem button onClick={() => handleModalOpen('コミュニティ', '準備中です！')}>
             <ListItemText primary="コミュニティ" />
           </ListItem>
-          <ListItem button onClick={() => handleModalOpen('ログイン')}>
+          <ListItem button onClick={() => handleModalOpen('ログイン', '準備中です！')}>
             <ListItemText primary="ログイン" />
           </ListItem>
-          <ListItem button onClick={() => handleModalOpen('利用規約')}>
+          <ListItem button onClick={() => handleModalOpen('利用規約', '準備中です！')}>
             <ListItemText primary="利用規約" />
           </ListItem>
-          <ListItem button onClick={() => handleModalOpen('プライバシーポリシー')}>
+          <ListItem button component="a" href="https://kiyac.app/privacypolicy/8LceFAKn3LueySAB3tNs" target="_blank">
             <ListItemText primary="プライバシーポリシー" />
           </ListItem>
-          <ListItem button onClick={() => handleModalOpen('お問い合わせ')}>
+          <ListItem button component="a" href="https://twitter.com/readmee_profile" target="_blank">
             <ListItemText primary="お問い合わせ" />
           </ListItem>
           <ListItem>
@@ -99,10 +100,10 @@ export default function Header() {
           p: 4,
         }}>
           <Typography id="modal-title" variant="h4" component="h2">
-            {modalContent}
+            {modalTitle}
           </Typography>
           <Typography id="modal-description" variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-            準備中です！
+            {modalContent}
           </Typography>
         </Box>
       </Modal>
