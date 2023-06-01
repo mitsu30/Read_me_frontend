@@ -1,17 +1,16 @@
-import { useState } from "react";
-import axios from "axios";
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
+import { useState } from "react";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { styled } from '@mui/system';
+import axios from "axios";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useRouter } from 'next/router';
-import { styled } from '@mui/system';
-import { useEffect } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography'
 
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
@@ -19,14 +18,6 @@ const MAX_LINE_LENGTH_OF_ANSWER2 = 13;
 const MAX_LINE_LENGTH_OF_ANSWER3 = 26;
 const MAX_LINE_COUNT = 3;
 
-
-
-const defaultTheme = createTheme();
-const theme = createTheme({
-  typography: {
-    fontFamily: 'Yomogi, sans-serif',
-  }
-})
 
 const Loading = styled('div')({
   position: 'fixed',
@@ -54,8 +45,6 @@ export default function App () {
   const [answer1Error, setAnswer1Error] = useState("");
   const [answer2Error, setAnswer2Error] = useState("");
   const [answer3Error, setAnswer3Error] = useState("");
-
-  const [ogImageUrl, setOgImageUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -95,8 +84,6 @@ export default function App () {
   
       img.onload = () => {
         setImageUrl(response.data.url);
-        setOgImageUrl(response.data.ogImageUrl);
-  
         setIsNavigating(true);
         router.push({
           pathname: '/result/[id]', 
@@ -258,12 +245,7 @@ export default function App () {
                 デザインはこれ！
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
-                {
-                  imageUrl.startsWith('data:image/jpeg;base64,') ?
-                  <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'relative'}} />
-                :
-                  <img src={imageUrl} alt="Template" style={{width: '100%', height: '100%', objectFit: 'relative'}} />
-                }
+                  <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'relative'}}></img>
               </Box>
             </Box>
           </Grid>
