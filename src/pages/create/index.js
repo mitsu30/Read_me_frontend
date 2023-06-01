@@ -1,30 +1,23 @@
-import { useState } from "react";
-import axios from "axios";
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
+import { useState } from "react";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { styled } from '@mui/system';
+import axios from "axios";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useRouter } from 'next/router';
-import { styled } from '@mui/system';
-import { useEffect } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography'
 
 
-const MAX_LINE_LENGTH_OF_ANSWER1 = 16;
-const MAX_LINE_LENGTH_OF_ANSWER2 = 16;
-const MAX_LINE_LENGTH_OF_ANSWER3 = 32;
+const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
+const MAX_LINE_LENGTH_OF_ANSWER2 = 13;
+const MAX_LINE_LENGTH_OF_ANSWER3 = 26;
 const MAX_LINE_COUNT = 3;
 
-const defaultTheme = createTheme();
-const theme = createTheme({
-  typography: {
-    fontFamily: 'Yomogi, sans-serif',
-  }
-})
 
 const Loading = styled('div')({
   position: 'fixed',
@@ -32,8 +25,9 @@ const Loading = styled('div')({
   top: '50%',
   transform: 'translate(-50%, -50%)',
   zIndex: 9999,
-  color: '#000',
-  fontSize: '2em',
+  color: '#FF773E',
+  fontSize: '1.5em',
+  fontWeight: 'bold',
   animation: 'blinkingText 1.2s infinite',
   '@keyframes blinkingText': {
     '0%': { opacity: 1 },
@@ -52,14 +46,12 @@ export default function App () {
   const [answer2Error, setAnswer2Error] = useState("");
   const [answer3Error, setAnswer3Error] = useState("");
 
-  const [ogImageUrl, setOgImageUrl] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const router = useRouter();
 
   useEffect(() => {
-    // Dummy request to wake up the server as soon as possible
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/wakeup`)
     .then(data => {
       console.log("Server wakeup response: ", data);
@@ -84,26 +76,20 @@ export default function App () {
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
       
-      // If status is not 200, throw an error
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);
       }
   
-      // Create a promise to wait for the image to load
       const img = new Image();
   
       img.onload = () => {
-        // Set image URL and OG image URL state
         setImageUrl(response.data.url);
-        setOgImageUrl(response.data.ogImageUrl);
-  
-        // Push new path to router
+        setIsNavigating(true);
         router.push({
-          pathname: '/result/[id]', // Adjust to be dynamic route
-          query: { id: response.data.id }, // Use unique id from the response
+          pathname: '/result/[id]', 
+          query: { id: response.data.id }, 
         });
   
-        // Set loading state to false
         setIsLoading(false);
       };
   
@@ -115,24 +101,24 @@ export default function App () {
   
     } catch (error) {
       console.error(error);
-      setIsLoading(false); // In case of an error, also set loading state to false
+      setIsLoading(false); //念の為
     }
   };
 
   return (
     <>
-      {!isLoading &&
-      <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
-        <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
-          <Box
-            sx={{
-              my: 5,
-              mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
+      {(!isLoading && !isNavigating) &&
+        <Grid container component="main" sx={{ height: '100vh' }} justifyContent="center">
+          <Grid item xs={12} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
+            <Box
+              sx={{
+                my: 2,
+                mx: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
               <Typography component="h1" variant="h5">
                 入力してね♪
               </Typography>
@@ -140,7 +126,6 @@ export default function App () {
                 <TextField
                   color="secondary"
                   margin="normal"
-                  required
                   fullWidth
                   id="answer1"
                   label="ニックネームは？"
@@ -151,7 +136,7 @@ export default function App () {
                   helperText={answer1Error}
                   onChange={(e) => {
                     if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
-                      setAnswer1Error('16文字以内で入力してください。');
+                      setAnswer1Error('13文字以内で入力してください。');
                     } else {
                       setAnswer1Error('');
                       setAnswer1(e.target.value);
@@ -161,7 +146,6 @@ export default function App () {
                 <TextField
                   color="secondary"
                   margin="normal"
-                  required
                   fullWidth
                   name="answer2"
                   label="しゅみは？"
@@ -171,7 +155,7 @@ export default function App () {
                   helperText={answer2Error}
                   onChange={(e) => {
                     if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER2) {
-                      setAnswer2Error('16文字以内で入力してください。');
+                      setAnswer2Error('13文字以内で入力してください。');
                     } else {
                       setAnswer2Error('');
                       setAnswer2(e.target.value);
@@ -181,10 +165,9 @@ export default function App () {
                 <TextField
                   color="secondary"
                   margin="normal"
-                  required
                   fullWidth
                   name="answer3"
-                  label="みんなにひと言！"
+                  label="みんなにひとこと！"
                   id="answer3"
                   value={answer3}
                   multiline
@@ -194,7 +177,7 @@ export default function App () {
                   onChange={(e) => {
                     const lines = e.target.value.split('\n');
                     if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_ANSWER3)) {
-                      setAnswer3Error('1行は32文字以内、改行は2回までとしてください。');
+                      setAnswer3Error('1行は26文字以内、改行は2回までとしてください。');
                     } else {
                       setAnswer3Error('');
                       setAnswer3(e.target.value);
@@ -205,7 +188,7 @@ export default function App () {
                   maxWidth="sm"
                   sx={{
                     display: 'flex',
-                    justifyContent: 'space-between', // 変更
+                    justifyContent: 'space-between', 
                   }}
                 >
                   <Button 
@@ -214,11 +197,15 @@ export default function App () {
                     sx={{ 
                       mt: 3, 
                       mb: 2, 
-                      width: '40%', // 変更
-                      backgroundColor: '#FF82B2',
-                      color: '#000000'  
+                      width: '40%', 
+                      backgroundColor: '#FF6699',
+                      '&:hover': {
+                        backgroundColor: '#E60073',
+                      },
+                      color: '#white',
+                      fontWeight: 'bold'  
                     }}
-                    onClick={handlePreview} // 追加
+                    onClick={handlePreview} 
                   >
                     プレビュー
                   </Button>
@@ -228,22 +215,26 @@ export default function App () {
                     sx={{ 
                       mt: 3, 
                       mb: 2, 
-                      width: '40%', // 変更
-                      backgroundColor: '#FF82B2',
-                      color: '#000000'  
+                      width: '40%', 
+                      backgroundColor: '#FF6699',
+                      '&:hover': {
+                        backgroundColor: '#E60073',
+                      },
+                      color: '#white',
+                      fontWeight: 'bold'  
                     }}
-                    onClick={handleSubmit} // 変更
+                    onClick={handleSubmit} 
                   >
-                    これでつくる！
+                    つくる!
                   </Button>
                 </Container>
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
+          <Grid item xs={12}  md={6} component={Paper} elevation={6} square  style={{ backgroundColor: 'transparent' }}>
             <Box
               sx={{
-                my: 5,
+                my: 2,
                 mx: 4,
                 display: 'flex',
                 flexDirection: 'column',
@@ -251,21 +242,37 @@ export default function App () {
               }}
             >
               <Typography component="h1" variant="h5">
-                プロフィール帳のデザインはこれだよ！
+                プレビュー！
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
-                {
-                  imageUrl.startsWith('data:image/jpeg;base64,') ?
-                  <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
-                :
-                  <img src={imageUrl} alt="Template" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
-                }
+                  <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'relative'}}></img>
               </Box>
             </Box>
           </Grid>
       </Grid>
-      }
-      {isLoading && <Loading>作成中...</Loading>}
+    }
+    {isLoading && 
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+        <Loading>まっててね</Loading>
+      </Box> 
+    } 
+    {isNavigating && 
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+        <Loading>もうちょっと</Loading>
+      </Box> 
+    } 
     </>
   );
 };
