@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+const siteTitle = "りーどみー";
+const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
 export default function HomePage() {
   const router = useRouter();
@@ -16,6 +18,11 @@ export default function HomePage() {
   return (
     <>
       <NextSeo
+          twitter={{
+            cardType: "summary_large_image",
+            handle: "@readmee_profile", 
+            site: "@readmee_profile"
+          }}
           title={siteTitle}
           description={siteDescription}
           openGraph={{
