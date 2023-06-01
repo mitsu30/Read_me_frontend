@@ -13,6 +13,8 @@ export default function ResultPage({ imageText }) {
   const router = useRouter();
   const { id, shared } = router.query; 
   const shareUrl = `https://read-me-frontend-git-14mvp3-mitsu30.vercel.app/result/${id}?shared=true`;
+  const siteTitle = "りーどみー";
+  const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
   useEffect(() => {
     if (shared === 'true') {
@@ -34,14 +36,15 @@ export default function ResultPage({ imageText }) {
       <NextSeo
         twitter={{
           cardType: "summary_large_image",
+          handle: "@readmee_profile", 
           site: "@readmee_profile"
         }}
-        title={'りーどみー'}
-        description={'あなたのプロフィール帳シェアしませんか'}
+        title={siteTitle}
+        description={siteDescription}
         openGraph={{
           url: shareUrl,
-          title: 'りーどみー',
-          description: 'あなたのプロフィール帳シェアしませんか',
+          title: siteTitle,
+          description: siteDescription,
           images: [
             {
               url: imageText.image_url, 
