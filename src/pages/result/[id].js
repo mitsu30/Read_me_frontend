@@ -66,6 +66,17 @@ export default function ResultPage({ imageText }) {
         <Typography component="h1" variant="h5" align="center">
           できあがり！
         </Typography>
+        <Box 
+            sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
+            長押しまたは右クリックで画像を保存できます！
+          </Typography>
+        </Box>
 
         <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img src={imageText.image_url} alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>

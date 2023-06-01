@@ -101,7 +101,7 @@ export default function App () {
   
     } catch (error) {
       console.error(error);
-      setIsLoading(false); 
+      setIsLoading(false); //念の為
     }
   };
 
@@ -242,7 +242,7 @@ export default function App () {
               }}
             >
               <Typography component="h1" variant="h5">
-                デザインはこれ！
+                プレビュー！
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
                   <img src={imageUrl} alt="Generated" style={{width: '100%', height: '100%', objectFit: 'relative'}}></img>
