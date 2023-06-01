@@ -8,6 +8,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
+import { styled } from '@mui/system';
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  fontSize: '2em', 
+  textAlign: 'center', 
+}));
+
 
 export default function ResultPage({ imageText }) {
   const router = useRouter();
@@ -81,12 +88,22 @@ export default function ResultPage({ imageText }) {
             長押しまたは右クリックで画像を保存できます！
           </Typography>
         </Box>
+        <Box 
+            sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" style={{textAlign: 'center', width: '100%' }}>
+            下のボタンからシェアできます！
+          </Typography>
+        </Box>
 
         <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img src={imageText.image_url} alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
         </Box>
 
-          <>
             <Button 
               variant="contained" 
               style={{ 
@@ -102,6 +119,33 @@ export default function ResultPage({ imageText }) {
             >
                 Twitterでシェア
             </Button>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center', // 内容を中央に持っていきます
+                alignItems: 'center', // 内容を中央に持っていきます
+                height: '100vh', // 画面全体の高さを使用します
+                width: '80%',
+                padding: 2,
+              }}
+                >
+              <Typography id="modal-modal-title" variant="h5" component="h2">
+                りーどみー(ベータ版)をご利用いただきありがとうございました！
+              </Typography>
+              <StyledLink
+                href="https://forms.gle/UoeMHNFurtZiUAhs5"
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="none"
+                sx={{ mt: 2 }}
+              >
+                アンケート
+              </StyledLink>
+              <Typography id="modal-modal-description" variant="h5" sx={{ mt: 2 }}>
+                アンケートにご協力いただけると幸いです！
+              </Typography>
+            </Box>
             <Modal
               open={open}
               onClose={handleClose}
@@ -115,17 +159,22 @@ export default function ResultPage({ imageText }) {
             >
               <Box sx={{ width: 400, padding: 2, bgcolor: 'background.paper' }}>
                 <Typography id="modal-modal-title" variant="h5" component="h2">
-                  りーどみー(ベータ版)を使っていただきありがとうございました！
+                  りーどみー(ベータ版)をご利用いただきありがとうございました！
                 </Typography>
                 <Typography id="modal-modal-description" variant="body1" sx={{ mt: 2 }}>
                   アンケートにご協力いただけると幸いです！
                 </Typography>
-                <Link href="https://your-google-form-url" target="_blank" rel="noopener noreferrer" underline="none" sx={{ mt: 2 }}>
-                  Googleフォームへ
-                </Link>
+                <StyledLink
+                href="https://forms.gle/UoeMHNFurtZiUAhs5"
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="none"
+                sx={{ mt: 2 }}
+              >
+                   アンケート
+              </StyledLink>
               </Box>
             </Modal>
-          </>
       </Container>
       )}
     </>
