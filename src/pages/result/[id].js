@@ -15,7 +15,6 @@ const StyledLink = styled(Link)(({ theme }) => ({
   textAlign: 'center', 
 }));
 
-
 export default function ResultPage({ imageText }) {
   const router = useRouter();
   const { id, shared } = router.query; 
@@ -32,11 +31,14 @@ export default function ResultPage({ imageText }) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳')}`, '_blank');
-    setOpen(true);
+    setTimeout(() => {
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳')}`, '_blank');
+      setOpen(true);
+    }, 700); 
   };
 
   const handleClose = () => setOpen(false);
+
 
   return (
     <>
