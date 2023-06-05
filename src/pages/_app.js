@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from "@mui/material";
 import Header from '../components/header'; 
 import { NextSeo } from 'next-seo';
+import { AuthContextProvider } from "../context/AuthContext";
 
 const theme = createTheme({
   typography: {
@@ -49,14 +50,16 @@ function MyApp({ Component, pageProps }) {
       backgroundColor: "#ffffff", // fallback color
       minHeight: "100vh"
     }}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <NextSeo
-          title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
-        />
-        <Header />
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <AuthContextProvider> 
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+            <NextSeo
+              title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
+            />
+              <Header />
+                <Component {...pageProps} />
+        </ThemeProvider>
+      </AuthContextProvider>
     </div>
   );
 }
