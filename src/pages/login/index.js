@@ -1,6 +1,5 @@
 import axios from "axios";
-
-import useFirebaseAuth from "hooks/useFirebaseAuth";
+import useFirebaseAuth from "../../hooks/useFirebaseAuth"
 
 export default function LoginPage() {
   const { loginWithGoogle } = useFirebaseAuth();

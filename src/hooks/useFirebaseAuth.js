@@ -9,7 +9,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { useRouter } from "next/router";
-import { auth } from "lib/initFirebase";
+import { auth } from "../lib/initFirebase";
 
 export default function useFirebaseAuth() {
   const [currentUser, setCurrentUser] = useState(null); 
@@ -48,7 +48,7 @@ export default function useFirebaseAuth() {
   const nextOrObserver = async(user) => {
     if (!user) {
       setLoading(false);
-      return;
+      setCurrentUser(null);
     }
     
     setLoading(true);
