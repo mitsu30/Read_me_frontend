@@ -1,27 +1,76 @@
-// Googleを使ったログインを行い、ログイン成功後にユーザーをホームページにリダイレクトさせる機能。
-
+import { useState, useEffect } from "react";
+// Firebaseの認証情報が変わるたびにコールバック関数を呼び出すメソッド。
 // 新しいブラウザのポップアップウインドウを開き、その中でユーザーにGoogleとグインを行わせる関数。
 // Googleに認証プロパイダを作成するためのクラス。
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  onAuthStateChanged,
+  signOut,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { useRouter } from "next/router";
-// Firebaseの認証機能を使用するためのオブジェクト
-import { auth } from "../lib/initFirebase";
+import { auth } from "lib/initFirebase";
 
-const loginWithGoogle = async () => {
-  // Googleの認証プロパイダのインスタンスを作成している。
-  const provider = new GoogleAuthProvider();
-  // ポップアップ認証を行い、その結果を格納する。
-  const result = await signInWithPopup(auth, provider);
+export default function useFirebaseAuth() {
+  const [currentUser, setCurrentUser] = useState(null); 
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  
+  const loginWithGoogle = async () => {
+    // Googleの認証プロパイダのインスタンスを作成している。
+    const provider = new GoogleAuthProvider();
+    // ポップアップ認証を行い、その結果を格納する。
+    const result = await signInWithPopup(auth, provider);
+    
+    if (result) {
+      const user = result.user;
 
-  // 認証が成功した場合。
-  if (result) {
-    // ログインしたユーザー情報を取得する
-    const user = result.user;
-    // Google Access Tokenを取得している。Google APIを直接利用するための情報である。
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential?.accessToken;
-    // ログイン成功後、ホームページにリダイレクト
-    router.push("/");
-    return user;
-  }
-};
+      // ユーザーから取得できる情報
+      // displayName: string | null; // ユーザー表示名
+      // email: string | null; // ユーザーメール
+      // phoneNumber: string | null; // ユーザー電話番号
+      // photoURL: string | null; // Googleプロフィール写真URL
+      // uid: string; // Firebaseが生成するユニークID
+      
+      router.push("/");
+      return user;
+    }
+  };
+  
+  const clear = () => {
+    setCurrentUser(null);
+    setLoading(false);
+  };
+  
+  const logout = () => signOut(auth).then(clear);
+  
+  // コンポーネントがアンマウントされる時に認証状態のリスナーが削除されるようにする
+  const nextOrObserver = async(user) => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    
+    setLoading(true);
+    setCurrentUser(user);
+    setLoading(false);
+  };
+  
+  useEffect(() => {
+    // Firebaseの認証状態が変わるたびに呼び出される。ユーザーがログインしていない場合はローディング状態を解除し、ログインしている場合はユーザー情報を更新する。
+    const unsubscribe = onAuthStateChanged(auth, nextOrObserver);
+    return unsubscribe;
+  }, []);
+  
+  return {
+    currentUser,
+    loading,
+    loginWithGoogle,
+    logout,
+  };
+}
+
+
+
+
+
