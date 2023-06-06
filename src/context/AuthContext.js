@@ -8,12 +8,12 @@ export const AuthCtx = createContext();
 export function AuthContextProvider({ children }) {
   // useFirebaseAuthフックからcurrentUser、loading、loginWithGoogle、logoutという4つの値/関数を取得する。
   // 上で取得した4つの値/関数をAuthContextというオブジェクトにまとめる。
-  const { currentUser, loading, loginWithGoogle, logout } = useFirebaseAuth();
+  const { currentUser, loading, loginWithFirebase, logout } = useFirebaseAuth();
 
   const AuthContext = {
     currentUser: currentUser,
     loading: loading,
-    loginWithGoogle: loginWithGoogle,
+    loginWithFirebase: loginWithFirebase,
     logout: logout,
   };
   
