@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router';
 import axios from "axios";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth"
 
 export default function LoginPage() {
   const { loginWithGoogle } = useFirebaseAuth();
+  const router = useRouter();
 
   const handleGoogleLogin = () => {
     const verifyIdToken = async () => {
@@ -14,7 +16,8 @@ export default function LoginPage() {
       };
 
       try {
-        axios.post("/auth", null, config);
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, null, config);
+        router.push('/additional_info_google');
       } catch (err) {
         let message;
         if (axios.isAxiosError(err) && err.response) {
