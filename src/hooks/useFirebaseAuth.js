@@ -7,6 +7,7 @@ import {
   signOut,
   signInWithPopup,
   GoogleAuthProvider,
+  GithubAuthProvider,
 } from "firebase/auth";
 import { useRouter } from "next/router";
 import { auth } from "../lib/initFirebase";
@@ -16,12 +17,29 @@ export default function useFirebaseAuth() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   
-  const loginWithGoogle = async () => {
-    // Googleの認証プロパイダのインスタンスを作成している。
-    const provider = new GoogleAuthProvider();
-    // ポップアップ認証を行い、その結果を格納する。
-    const result = await signInWithPopup(auth, provider);
-    
+  // const loginWithGoogle = async () => {
+  //   // Googleの認証プロパイダのインスタンスを作成している。
+  //   const provider = new GoogleAuthProvider();
+  //   const provider = new GithubAuthProvider();
+  //   // ポップアップ認証を行い、その結果を格納する。
+  //   const result = await signInWithPopup(auth, provider);
+  
+  const getProvider = (method) => {
+    switch (method) {
+      case "google":
+        return new GoogleAuthProvider();
+      case "github":
+        return new GithubAuthProvider();
+    }
+  };
+
+  const loginWithFirebase = async (method) => {
+    const getResult = () => {
+        return signInWithPopup(auth, getProvider(method));
+    };
+
+    const result = await getResult();
+
     if (result) {
       const user = result.user;
 
@@ -65,7 +83,7 @@ export default function useFirebaseAuth() {
   return {
     currentUser,
     loading,
-    loginWithGoogle,
+    loginWithFirebase, 
     logout,
   };
 }
