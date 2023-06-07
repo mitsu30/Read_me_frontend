@@ -17,8 +17,7 @@ export default function LoginPage() {
       };
 
       try {
-        console.log(accessToken);
-        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, { accessToken }, config);
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, null, config);
         // router.push('/additional_info_google');
       } catch (err) {
         let message;

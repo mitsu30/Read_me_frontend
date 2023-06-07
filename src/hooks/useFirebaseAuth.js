@@ -42,8 +42,6 @@ export default function useFirebaseAuth() {
 
     if (result) {
       const user = result.user;
-      const credential = GithubAuthProvider.credentialFromResult(result);
-      const accessToken = credential.accessToken;
 
       // ユーザーから取得できる情報
       // displayName: string | null; // ユーザー表示名
@@ -54,7 +52,7 @@ export default function useFirebaseAuth() {
 
             
       router.push("/");
-      return { user, accessToken };
+      return { user };
     }
   };
   
