@@ -3,12 +3,13 @@ import axios from "axios";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth"
 
 export default function LoginPage() {
-  const { loginWithGoogle } = useFirebaseAuth();
+  const { loginWithFirebase } = useFirebaseAuth();
   const router = useRouter();
 
-  const handleGoogleLogin = () => {
+
+  const handleGitHubLogin = () => {
     const verifyIdToken = async () => {
-      const user = await loginWithGoogle();
+      const { user, accessToken } = await loginWithFirebase("github");
       const token = await user?.getIdToken();
 
       const config = {
@@ -16,8 +17,9 @@ export default function LoginPage() {
       };
 
       try {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, null, config);
-        router.push('/additional_info_google');
+        console.log(accessToken);
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, { accessToken }, config);
+        // router.push('/additional_info_google');
       } catch (err) {
         let message;
         if (axios.isAxiosError(err) && err.response) {
@@ -32,10 +34,12 @@ export default function LoginPage() {
   };
 
   return (
+    <>
     <div>
-      <button onClick={handleGoogleLogin}>
-        <span>Sign in with Google</span>
+      <button onClick={handleGitHubLogin}>
+        <span>Sign in with GitHub</span>
       </button>
     </div>
+    </>
   );
 }

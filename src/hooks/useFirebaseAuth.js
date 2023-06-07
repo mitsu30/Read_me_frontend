@@ -42,6 +42,8 @@ export default function useFirebaseAuth() {
 
     if (result) {
       const user = result.user;
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
 
       // ユーザーから取得できる情報
       // displayName: string | null; // ユーザー表示名
@@ -49,9 +51,10 @@ export default function useFirebaseAuth() {
       // phoneNumber: string | null; // ユーザー電話番号
       // photoURL: string | null; // Googleプロフィール写真URL
       // uid: string; // Firebaseが生成するユニークID
-      
+
+            
       router.push("/");
-      return user;
+      return { user, accessToken };
     }
   };
   
