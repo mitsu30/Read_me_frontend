@@ -4,7 +4,14 @@ import { createTheme } from "@mui/material";
 import Header from '../components/header'; 
 import { NextSeo } from 'next-seo';
 import { AuthContextProvider } from "../context/AuthContext";
+import { SnackbarProvider } from 'notistack';
+import { styled } from '@mui/system';
 
+const CustomSnackbarProvider = styled(SnackbarProvider)({
+  '& .MuiSnackbar-root': {
+    backgroundColor: '#FF773E',
+  },
+});
 
 const theme = createTheme({
   typography: {
@@ -52,14 +59,22 @@ function MyApp({ Component, pageProps }) {
       minHeight: "100vh"
     }}>
       <AuthContextProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <NextSeo
-          title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
-        />
-        <Header />
-        <Component {...pageProps} />
-      </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+            <NextSeo
+              title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
+            />
+              <CustomSnackbarProvider
+                maxSnack={3}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+              > 
+                <Header />
+                  <Component {...pageProps} />
+            </CustomSnackbarProvider>
+        </ThemeProvider>
       </AuthContextProvider>
     </div>
   );

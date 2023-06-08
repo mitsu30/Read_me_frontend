@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthContext } from '../../context/AuthContext'; 
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -20,6 +22,8 @@ export default function Header() {
   const [modalContent, setModalContent] = useState('');
 
   const { currentUser, logout } = useAuthContext();
+  const { enqueueSnackbar } = useSnackbar(); 
+  const router = useRouter();  
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -40,11 +44,12 @@ export default function Header() {
   };
 
   const handleLoginClick = () => {
-    handleModalOpen('ログイン', '準備中です！');
+    router.push('/login');
   };
 
   const handleLogoutClick = () => {
     logout();
+    enqueueSnackbar('ログアウトに成功しました', { variant: 'success' });
   };
 
   return (
