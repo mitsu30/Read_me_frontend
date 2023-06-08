@@ -9,7 +9,7 @@ export default function LoginPage() {
 
   const handleGitHubLogin = () => {
     const verifyIdToken = async () => {
-      const { user, accessToken } = await loginWithFirebase("github");
+      const { user } = await loginWithFirebase("github");
       const token = await user?.getIdToken();
 
       const config = {

@@ -42,7 +42,7 @@ export default function useFirebaseAuth() {
 
     if (result) {
       const user = result.user;
-
+      
       // ユーザーから取得できる情報
       // displayName: string | null; // ユーザー表示名
       // email: string | null; // ユーザーメール
