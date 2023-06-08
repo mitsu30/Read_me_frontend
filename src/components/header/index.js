@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuthContext } from '../../context/AuthContext'; 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -18,6 +19,8 @@ export default function Header() {
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
 
+  const { currentUser, logout } = useAuthContext();
+
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
   };
@@ -34,6 +37,14 @@ export default function Header() {
 
   const handleModalClose = () => {
     setModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    handleModalOpen('ログイン', '準備中です！');
+  };
+
+  const handleLogoutClick = () => {
+    logout();
   };
 
   return (
@@ -65,8 +76,11 @@ export default function Header() {
           <ListItem button onClick={() => handleModalOpen('コミュニティ', '準備中です！')}>
             <ListItemText primary="コミュニティ" />
           </ListItem>
-          <ListItem button onClick={() => handleModalOpen('ログイン', '準備中です！')}>
+          {/* <ListItem button onClick={() => handleModalOpen('ログイン', '準備中です！')}>
             <ListItemText primary="ログイン" />
+          </ListItem> */}
+          <ListItem button onClick={currentUser ? handleLogoutClick : handleLoginClick}>
+            <ListItemText primary={currentUser ? 'ログアウト' : 'ログイン'} />
           </ListItem>
           <ListItem button onClick={() => handleModalOpen('利用規約', '準備中です！')}>
             <ListItemText primary="利用規約" />
