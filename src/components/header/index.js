@@ -8,8 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Link from 'next/link';
-import AppDrawer from '../app_drawer'; 
-import InformationModal from '../information_modal'; 
+import AppDrawer from './AppDrawer'; 
+import InformationModal from './InformationModal'; 
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
