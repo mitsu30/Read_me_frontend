@@ -9,15 +9,21 @@ export default function LoginPage() {
 
   const handleGitHubLogin = () => {
     const verifyIdToken = async () => {
-      const { user } = await loginWithFirebase("github");
+      const { user, details } = await loginWithFirebase("github");
       const token = await user?.getIdToken();
 
       const config = {
         headers: { authorization: `Bearer ${token}` },
       };
 
+      const userDetails = {
+        username: details.username,
+        isNewUser: details.isNewUser
+      };
+
       try {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, null, config);
+        console.log(details);
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, userDetails, config);
         // router.push('/additional_info_google');
       } catch (err) {
         let message;

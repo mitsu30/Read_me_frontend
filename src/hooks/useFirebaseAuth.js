@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
+  getAdditionalUserInfo,
 } from "firebase/auth";
 import { useRouter } from "next/router";
 import { auth } from "../lib/initFirebase";
@@ -42,6 +43,10 @@ export default function useFirebaseAuth() {
 
     if (result) {
       const user = result.user;
+      const details = getAdditionalUserInfo(result);
+      console.log(result);
+      console.log(details);
+
       
       // ユーザーから取得できる情報
       // displayName: string | null; // ユーザー表示名
@@ -52,7 +57,7 @@ export default function useFirebaseAuth() {
 
             
       router.push("/");
-      return { user };
+      return { user, details };
     }
   };
   
