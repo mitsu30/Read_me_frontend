@@ -1,7 +1,12 @@
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import axios from "axios";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth"
+import CenteredBox from '../../components/CenteredBox';
+import { FaGithub } from 'react-icons/fa'; 
 
 export default function LoginPage() {
   const { loginWithFirebase } = useFirebaseAuth();
@@ -44,11 +49,35 @@ export default function LoginPage() {
 
   return (
     <>
-    <div>
-      <button onClick={handleGitHubLogin}>
-        <span>Sign in with GitHub</span>
-      </button>
-    </div>
+      <CenteredBox>
+        <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
+          RUNTEQのみんなはこちら！
+        </Typography>
+      </CenteredBox>
+      <CenteredBox>
+        <Button 
+          variant="contained"
+          sx={{ 
+            mt: 2, 
+            mb: 2, 
+            width: '40%', 
+            backgroundColor: '#FF6699',
+            '&:hover': {
+              backgroundColor: '#E60073',
+            },
+            color: '#white',
+            fontWeight: 'bold',
+            fontSize: '1.0em',
+            padding: '8px 10px' 
+          }}
+          onClick={handleGitHubLogin}
+        >
+          <FaGithub style={{ marginRight: '8px' }} /> 
+          GitHubログイン
+        </Button>
+      </CenteredBox>
     </>
   );
 }
+
+
