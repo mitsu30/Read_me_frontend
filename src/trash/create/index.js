@@ -11,13 +11,30 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
-import Loading from '../../components/Loading';
 
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
 const MAX_LINE_LENGTH_OF_ANSWER2 = 13;
 const MAX_LINE_LENGTH_OF_ANSWER3 = 26;
 const MAX_LINE_COUNT = 3;
+
+
+const Loading = styled('div')({
+  position: 'fixed',
+  left: '50%',
+  top: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: 9999,
+  color: '#FF773E',
+  fontSize: '1.5em',
+  fontWeight: 'bold',
+  animation: 'blinkingText 1.2s infinite',
+  '@keyframes blinkingText': {
+    '0%': { opacity: 1 },
+    '50%': { opacity: 0 },
+    '100%': { opacity: 1 },
+  },
+});
 
 export default function App () {
   const [answer1, setAnswer1] = useState("");
@@ -234,8 +251,28 @@ export default function App () {
           </Grid>
       </Grid>
     }
-    {isLoading && <Loading>まっててね</Loading>} 
-    {isNavigating && <Loading>もうちょっと</Loading>}
+    {isLoading && 
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+        <Loading>まっててね</Loading>
+      </Box> 
+    } 
+    {isNavigating && 
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+        <Loading>もうちょっと</Loading>
+      </Box> 
+    } 
     </>
   );
 };
