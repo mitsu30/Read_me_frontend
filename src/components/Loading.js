@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 
-const LoadingDiv = styled('div')({
+export const Loading = styled('div')({
   position: 'fixed',
   left: '50%',
   top: '50%',
@@ -16,11 +16,3 @@ const LoadingDiv = styled('div')({
     '100%': { opacity: 1 },
   },
 });
-
-export default function Loading ({ children }) {
-  return (
-    <LoadingDiv>
-      {children}
-    </LoadingDiv>
-  )
-}
