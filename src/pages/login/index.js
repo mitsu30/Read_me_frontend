@@ -29,11 +29,15 @@ export default function LoginPage() {
       };
 
       try {
-        console.log(details);
+        // console.log(details);
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, userDetails, config);
-        enqueueSnackbar('ログインに成功しました', { variant: 'success' });
+        enqueueSnackbar('ログインしたよ', { variant: 'success' });
         router.push("/");
-        // router.push('/additional_info_google');
+        if (response.data.isNewUser) {
+          router.push('/additional_info');
+        } else {
+          router.push('/');
+        } 
       } catch (err) {
         let message;
         if (axios.isAxiosError(err) && err.response) {
@@ -51,7 +55,7 @@ export default function LoginPage() {
     <>
       <CenteredBox>
         <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
-          RUNTEQのみんなはこちら！
+          RUNTEQのみんなはこっち！
         </Typography>
       </CenteredBox>
       <CenteredBox>
