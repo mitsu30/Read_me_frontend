@@ -33,6 +33,7 @@ export default function LoginPage() {
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, userDetails, config);
         enqueueSnackbar('ログインしたよ', { variant: 'success' });
         router.push("/");
+        localStorage.setItem('username', details.username); // ユーザー名をローカルストレージに保存
         if (response.data.isNewUser) {
           router.push('/additional_info');
         } else {
