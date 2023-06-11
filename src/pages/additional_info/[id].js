@@ -58,9 +58,19 @@ export default function AdditionalInfoPage({ initialData }) {
             alignItems: 'center',
           }}
         >
-          <Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
+            <Typography component="h1" variant="h3">
+              ユーザー登録
+            </Typography>
+          </Box>
+          <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
             ニックネームをおしえてね
+            </Typography>
+          </Box>
+          <Box>
+            <Typography component="h1" variant="h5">
+            (RUNTEQで使っている名前)
             </Typography>
           </Box>
           <Box component="form">
@@ -76,7 +86,7 @@ export default function AdditionalInfoPage({ initialData }) {
               onChange={(e) => setUsername(e.target.value)}
             />
           </Box>
-          <Box>
+          <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
               アイコン用の画像をえらんでね
             </Typography>
