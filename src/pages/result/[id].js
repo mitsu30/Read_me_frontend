@@ -39,7 +39,6 @@ export default function ResultPage({ imageText }) {
 
   const handleClose = () => setOpen(false);
 
-
   return (
     <>
       <NextSeo
