@@ -21,10 +21,10 @@ export default function AdditionalInfoPage({ initialData }) {
   const handleUpdateProfile = async () => {
     try {
       const formData = new FormData();
-      formData.append('name', username);
-      formData.append('avatar', avatar);
+      formData.append('user[name]', username); 
+      formData.append('user[avatar]', avatar);
 
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/${id}`, formData, {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
