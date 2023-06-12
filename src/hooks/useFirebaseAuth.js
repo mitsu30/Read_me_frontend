@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
+import nookies from "nookies";
 // Firebaseの認証情報が変わるたびにコールバック関数を呼び出すメソッド。
 // 新しいブラウザのポップアップウインドウを開き、その中でユーザーにGoogleとグインを行わせる関数。
 // Googleに認証プロパイダを作成するためのクラス。
 import {
-  onAuthStateChanged,
   signOut,
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
+  onIdTokenChanged,
   getAdditionalUserInfo,
 } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -64,6 +65,7 @@ export default function useFirebaseAuth() {
   const clear = () => {
     setCurrentUser(null);
     setLoading(false);
+    router.push("/");
   };
   
   const logout = () => signOut(auth).then(clear);
@@ -73,19 +75,33 @@ export default function useFirebaseAuth() {
     if (!user) {
       setLoading(false);
       setCurrentUser(null);
+      nookies.set(undefined, "token", "", { path: "/" });
+      return;
     }
     
     setLoading(true);
+    const token = await user.getIdToken();
     setCurrentUser(user);
+    nookies.set(undefined, "token", token, { path: "/" });
     setLoading(false);
   };
   
+  // FirebaseのIDトークンが変わるたびに呼び出される。ユーザーがログインしていない場合はローディング状態を解除し、ログインしている場合はユーザー情報を更新する。
   useEffect(() => {
-    // Firebaseの認証状態が変わるたびに呼び出される。ユーザーがログインしていない場合はローディング状態を解除し、ログインしている場合はユーザー情報を更新する。
-    const unsubscribe = onAuthStateChanged(auth, nextOrObserver);
+    const unsubscribe = onIdTokenChanged(auth, nextOrObserver);
     return unsubscribe;
   }, []);
-  
+
+  // 60分ごとに指定した処理を実行するタイマーを作成している。その処理の中で、現在ログインしているユーザーのIDトークンを取得し直す.コンポーネントがアンマウントされるときにクリーンアップ関数が実行され、タイマーが解除される.
+  useEffect(() => {
+    const handle = setInterval(async () => {
+      const user = auth.currentUser;
+      if (user) await user.getIdToken(true);
+    }, 60 * 60 * 1000);
+
+    return () => clearInterval(handle);
+  }, []);
+
   return {
     currentUser,
     loading,
