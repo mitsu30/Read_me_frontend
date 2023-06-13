@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from "axios";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth"

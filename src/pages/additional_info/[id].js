@@ -8,27 +8,35 @@ import { useState } from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
+import nookies from "nookies";
 
 export default function AdditionalInfoPage({ initialData }) {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { id } = router.query;
 
+  const defaultAvatarUrl = '/default_avatar.png';
   const [username, setUsername] = useState(initialData.name);
   const [avatar, setAvatar] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(defaultAvatarUrl);
 
   const handleUpdateProfile = async () => {
     try {
       const formData = new FormData();
       formData.append('user[name]', username); 
-      formData.append('user[avatar]', avatar);
+      if (avatar) { // ユーザーが画像を選択していればその画像を送信
+        formData.append('user[avatar]', avatar);
+      }
 
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, formData, {
-        headers: {
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { 
           'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${cookies.token}` 
         },
-      });
+      };
+
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, formData, config);
 
       if (response.status === 200) {
         enqueueSnackbar('プロフィールを更新しました', { variant: 'success' });
@@ -99,6 +107,7 @@ export default function AdditionalInfoPage({ initialData }) {
               type="file"
               id="avatar"
               name="avatar"
+              accept="image/png, image/jpeg"
               onChange={handleAvatarChange}
               />
           </Box>
@@ -135,6 +144,10 @@ export default function AdditionalInfoPage({ initialData }) {
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
+  const cookies = nookies.get(context);
+  const config = {
+    headers: { authorization: `Bearer ${cookies.token}` },
+  };
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`);
   const data = await response.json();
