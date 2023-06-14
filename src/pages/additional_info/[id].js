@@ -4,12 +4,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from "axios";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import nookies from "nookies";
 
 export default function AdditionalInfoPage({ initialData }) {
@@ -21,15 +23,29 @@ export default function AdditionalInfoPage({ initialData }) {
   const [username, setUsername] = useState(initialData.name);
   const [avatar, setAvatar] = useState(null);
   const [preview, setPreview] = useState(defaultAvatarUrl);
+  
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState('');
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
+      setGroups(response.data.groups);
+      // const data = response.data.groups
+    };
+    fetchGroups();
+  }, []);
 
   const handleUpdateProfile = async () => {
     try {
       const formData = new FormData();
       formData.append('user[name]', username); 
-      if (avatar) { // ユーザーが画像を選択していればその画像を送信
-        formData.append('user[avatar]', avatar);
+      if (avatar) { 
+        formData.append('avatar', avatar);
       }
-
+  
+      formData.append('group_id', selectedGroup);
+  
       const cookies = nookies.get(null);
       const config = {
         headers: { 
@@ -37,9 +53,9 @@ export default function AdditionalInfoPage({ initialData }) {
           authorization: `Bearer ${cookies.token}` 
         },
       };
-
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, formData, config);
-
+  
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/resister_new_RUNTEQ_student`, formData, config);
+  
       if (response.status === 200) {
         enqueueSnackbar('プロフィールを更新しました', { variant: 'success' });
         router.push("/");
@@ -50,6 +66,10 @@ export default function AdditionalInfoPage({ initialData }) {
       enqueueSnackbar('エラーが発生しました', { variant: 'error' });
       console.error(error);
     }
+  };
+
+  const handleGroupChange = (event) => {
+    setSelectedGroup(event.target.value);
   };
 
   const handleAvatarChange = (e) => {
@@ -112,17 +132,15 @@ export default function AdditionalInfoPage({ initialData }) {
             </Typography>
           </Box>
           <Box component="form">
-            <TextField
-              color="secondary"
-              margin="normal"
+            <Select
+              value={selectedGroup}
+              onChange={handleGroupChange}
               fullWidth
-              id="username"
-              label="ニックネーム"
-              name="username"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+            >
+              {groups.map((group) => (
+                <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
+              ))}
+            </Select>
           </Box>
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
