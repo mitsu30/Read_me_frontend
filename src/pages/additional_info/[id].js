@@ -4,10 +4,12 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import nookies from "nookies";
 
 export default function AdditionalInfoPage({ initialData }) {
@@ -54,10 +56,20 @@ export default function AdditionalInfoPage({ initialData }) {
     setAvatar(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
   }
+  
+  const formRef = useRef();
+
+  const handleAvatarCancel = () => {
+    setAvatar(null);
+    setPreview(defaultAvatarUrl);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+  };
 
   return (
     <Grid container component="main" justifyContent="center">
-      <Grid item xs={12} md={6}>
+      <Grid item xs={10} md={8}>
         <Box
           sx={{
             my: 2,
@@ -96,20 +108,45 @@ export default function AdditionalInfoPage({ initialData }) {
           </Box>
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
-              アイコン用の画像をえらんでね
+            何期かおしえてね
             </Typography>
           </Box>
-          <Box>
+          <Box component="form">
             <TextField
               color="secondary"
               margin="normal"
               fullWidth
-              type="file"
-              id="avatar"
-              name="avatar"
-              accept="image/png, image/jpeg"
-              onChange={handleAvatarChange}
-              />
+              id="username"
+              label="ニックネーム"
+              name="username"
+              autoFocus
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </Box>
+          <Box sx={{mt: 2 }}>
+            <Typography component="h1" variant="h5">
+              アイコン用の画像をえらんでね
+            </Typography>
+          </Box>
+          <Box>
+            <form ref={formRef}>
+              <TextField
+                color="secondary"
+                margin="normal"
+                fullWidth
+                type="file"
+                id="avatar"
+                name="avatar"
+                accept="image/png, image/jpeg"
+                onChange={handleAvatarChange}
+                />
+            </form>
+            {preview && preview !== defaultAvatarUrl && (
+              <IconButton onClick={handleAvatarCancel}>
+                <CloseIcon />
+              </IconButton>
+            )}
           </Box>
           {preview && (
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
