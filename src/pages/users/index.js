@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton } from '@mui/material';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Avatar } from '@mui/material'; 
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { TextField } from '@mui/material';
+
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -12,6 +16,7 @@ const Users = () => {
   const [sortBy, setSortBy] = useState('created_at');
   const [order, setOrder] = useState('asc');
   const [group, setGroup] = useState('RUNTEQ');
+  const [searchName, setSearchName] = useState('');
 
   const toggleOrder = () => {
     setOrder(order === 'asc' ? 'desc' : 'asc');
@@ -19,12 +24,12 @@ const Users = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&order=${order}&group_id=${group}`);
+      const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&order=${order}&group_id=${group}&name=${searchName}`);
       setUsers(result.data);
       console.log(result.data)
     };
     fetchData();
-  }, [page, sortBy, order, group]);
+  }, [page, sortBy, order, group, searchName]);
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -37,7 +42,17 @@ const Users = () => {
     
   return (
     <div>
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
+        <Typography component="h1" variant="h3">
+          RUNTEQのみんな
+        </Typography>
+      </Box>
       <div>
+        <TextField
+          label="なまえで検索！"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+        />
         <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <MenuItem value="created_at">Created At</MenuItem>
           <MenuItem value="name">ニックネーム</MenuItem>
@@ -56,7 +71,7 @@ const Users = () => {
             <TableRow>
               <TableCell align="center" style={{ width: '20%' }}></TableCell>
               <TableCell align="center" style={{ width: '40%' }}>
-                ニックネーム
+                なまえ
                 <IconButton onClick={toggleOrder}>
                   {order === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
                 </IconButton>
