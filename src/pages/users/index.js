@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { Avatar } from '@mui/material'; 
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -9,6 +12,10 @@ const Users = () => {
   const [sortBy, setSortBy] = useState('created_at');
   const [order, setOrder] = useState('asc');
   const [group, setGroup] = useState('RUNTEQ');
+
+  const toggleOrder = () => {
+    setOrder(order === 'asc' ? 'desc' : 'asc');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,10 +42,6 @@ const Users = () => {
           <MenuItem value="created_at">Created At</MenuItem>
           <MenuItem value="name">ニックネーム</MenuItem>
         </Select>
-        <Select value={order} onChange={(e) => setOrder(e.target.value)}>
-          <MenuItem value="asc">昇順</MenuItem>
-          <MenuItem value="desc">降順</MenuItem>
-        </Select>
         <Select value={group} onChange={(e) => setGroup(e.target.value)}>
           <MenuItem value='RUNTEQ'>RUNTEQのみんな</MenuItem>  
           {groups.map((group) => ( // 取得したグループデータをもとに選択肢を動的に生成
@@ -51,17 +54,24 @@ const Users = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>ニックネーム</TableCell>
-              <TableCell>所属</TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center">
+                ニックネーム
+                <IconButton onClick={toggleOrder}>
+                  {order === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+                </IconButton>
+              </TableCell>
+              <TableCell align="center">所属</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell><img src={user.avatar} alt={user.name} /></TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.group}</TableCell>
+                <TableCell>
+                <Avatar src={user.avatar} alt={user.name} /> 
+                </TableCell>
+                <TableCell align="center">{user.name}</TableCell>
+                <TableCell align="center">{user.group}</TableCell>
               </TableRow>
             ))}
           </TableBody>
