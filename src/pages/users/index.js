@@ -54,8 +54,8 @@ const Users = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center">
+              <TableCell align="center" style={{ width: '20%' }}></TableCell>
+              <TableCell align="center" style={{ width: '40%' }}>
                 ニックネーム
                 <IconButton onClick={toggleOrder}>
                   {order === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
@@ -67,8 +67,8 @@ const Users = () => {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>
-                <Avatar src={user.avatar} alt={user.name} /> 
+                <TableCell style={{ width: '20%' }}>
+                <Avatar src={user.avatar} alt={user.name} sx={{ width: 60, height: 60 }}/> 
                 </TableCell>
                 <TableCell align="center">{user.name}</TableCell>
                 <TableCell align="center">{user.group}</TableCell>
