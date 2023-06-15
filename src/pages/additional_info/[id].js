@@ -168,7 +168,10 @@ export default function AdditionalInfoPage({ initialData }) {
           </Box>
           {preview && (
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
-              <Avatar alt="アバター画像プレビュー" src={preview} />
+              <Avatar alt="アバター画像プレビュー" 
+                src={preview} 
+                sx={{ width: 100, height: 100 }}
+              />
             </Box>
           )}
           <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
