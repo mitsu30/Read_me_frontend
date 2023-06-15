@@ -8,7 +8,7 @@ const Users = () => {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('created_at');
   const [order, setOrder] = useState('asc');
-  const [group, setGroup] = useState('');
+  const [group, setGroup] = useState('RUNTEQ');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +40,7 @@ const Users = () => {
           <MenuItem value="desc">降順</MenuItem>
         </Select>
         <Select value={group} onChange={(e) => setGroup(e.target.value)}>
-          <MenuItem value=''>RUNTEQのみんな</MenuItem>  
+          <MenuItem value='RUNTEQ'>RUNTEQのみんな</MenuItem>  
           {groups.map((group) => ( // 取得したグループデータをもとに選択肢を動的に生成
             <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
           ))}
