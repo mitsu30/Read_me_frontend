@@ -43,9 +43,18 @@ const Users = () => {
   return (
     <div>
       <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
-        <Typography component="h1" variant="h3">
-          RUNTEQのみんな
-        </Typography>
+      <Typography 
+        component="h1" 
+        variant="h1" 
+        fontWeight="bold" 
+        style={{ 
+          // transform: 'scaleX(1.2)',
+          fontFamily: 'Hachi Maru Pop, sans-serif',
+          // textShadow: '3px 3px 3px rgba(0, 0, 0, 0.5)', // 水平オフセット、垂直オフセット、ブラー半径、影の色を設定
+        }}
+      >
+        RUNTEQ
+      </Typography>
       </Box>
       <div>
         <TextField
@@ -58,7 +67,7 @@ const Users = () => {
           <MenuItem value="name">ニックネーム</MenuItem>
         </Select>
         <Select value={group} onChange={(e) => setGroup(e.target.value)}>
-          <MenuItem value='RUNTEQ'>RUNTEQのみんな</MenuItem>  
+          <MenuItem value='RUNTEQ'>みんな</MenuItem>  
           {groups.map((group) => ( // 取得したグループデータをもとに選択肢を動的に生成
             <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
           ))}
@@ -70,13 +79,14 @@ const Users = () => {
           <TableHead>
             <TableRow>
               <TableCell align="center" style={{ width: '20%' }}></TableCell>
-              <TableCell align="center" style={{ width: '40%' }}>
+              <TableCell align="center" style={{ width: '20%' }}>
                 なまえ
                 <IconButton onClick={toggleOrder}>
                   {order === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
                 </IconButton>
               </TableCell>
-              <TableCell align="center">所属</TableCell>
+              <TableCell align="center" style={{ width: '20%' }}>所属</TableCell>
+              <TableCell align="center" style={{ width: '40%' }}>あいさつ</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -87,6 +97,7 @@ const Users = () => {
                 </TableCell>
                 <TableCell align="center">{user.name}</TableCell>
                 <TableCell align="center">{user.group}</TableCell>
+                <TableCell align="center">{user.greeting}</TableCell>
               </TableRow>
             ))}
           </TableBody>
