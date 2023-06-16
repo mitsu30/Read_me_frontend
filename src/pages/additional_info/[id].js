@@ -27,6 +27,8 @@ export default function AdditionalInfoPage({ initialData }) {
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState('');
 
+  const [greeting, setGreeting] = useState('');
+
   useEffect(() => {
     const fetchGroups = async () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
@@ -40,6 +42,7 @@ export default function AdditionalInfoPage({ initialData }) {
     try {
       const formData = new FormData();
       formData.append('user[name]', username); 
+      formData.append('user[greeting]', greeting); 
       if (avatar) { 
         formData.append('avatar', avatar);
       }
@@ -144,6 +147,24 @@ export default function AdditionalInfoPage({ initialData }) {
           </Box>
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
+            みんなにひとこと！
+            </Typography>
+          </Box>
+          <Box component="form">
+            <TextField
+              color="secondary"
+              margin="normal"
+              fullWidth
+              id="greeting"
+              label="ひとこと"
+              name="greeting"
+              autoFocus
+              value={greeting}
+              onChange={(e) => setGreeting(e.target.value)}
+            />
+          </Box>
+          <Box sx={{mt: 2 }}>
+            <Typography component="h1" variant="h5">
               アイコン用の画像をえらんでね
             </Typography>
           </Box>
@@ -170,7 +191,7 @@ export default function AdditionalInfoPage({ initialData }) {
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
               <Avatar alt="アバター画像プレビュー" 
                 src={preview} 
-                sx={{ width: 100, height: 100 }}
+                sx={{ width: 90, height: 90 }}
               />
             </Box>
           )}
