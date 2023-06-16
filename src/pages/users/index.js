@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton } from '@mui/material';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton, Grid } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Avatar } from '@mui/material'; 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 const Users = () => {
@@ -17,6 +20,9 @@ const Users = () => {
   const [order, setOrder] = useState('asc');
   const [group, setGroup] = useState('RUNTEQ');
   const [searchName, setSearchName] = useState('');
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggleOrder = () => {
     setOrder(order === 'asc' ? 'desc' : 'asc');
@@ -43,36 +49,55 @@ const Users = () => {
   return (
     <div>
       <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
-      <Typography 
-        component="h1" 
-        variant="h1" 
-        fontWeight="bold" 
-        style={{ 
-          // transform: 'scaleX(1.2)',
-          fontFamily: 'Hachi Maru Pop, sans-serif',
-          // textShadow: '3px 3px 3px rgba(0, 0, 0, 0.5)', // 水平オフセット、垂直オフセット、ブラー半径、影の色を設定
-        }}
-      >
-        RUNTEQ
-      </Typography>
+        <Typography 
+          component="h1" 
+          variant="h1" 
+          fontWeight="bold" 
+          style={{ 
+            fontFamily: 'Hachi Maru Pop, sans-serif',
+            fontSize: isSmallScreen ? '3rem' : '6rem',  // 画面幅に応じてフォントサイズを変更
+          }}
+        >
+          RUNTEQ
+        </Typography>
       </Box>
-      <div>
-        <TextField
-          label="なまえで検索！"
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value)}
-        />
-        <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <MenuItem value="created_at">Created At</MenuItem>
-          <MenuItem value="name">ニックネーム</MenuItem>
-        </Select>
-        <Select value={group} onChange={(e) => setGroup(e.target.value)}>
-          <MenuItem value='RUNTEQ'>みんな</MenuItem>  
-          {groups.map((group) => ( // 取得したグループデータをもとに選択肢を動的に生成
-            <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
-          ))}
-        </Select>
-      </div>
+      <Grid container justifyContent="center" style={{ margin: '1em 0' }}>
+        <Grid item xs={12} sm={"auto"}>
+          <TextField
+            label="なまえで検索！"
+            value={searchName}
+            size="small"
+            onChange={(e) => setSearchName(e.target.value)}
+            style={{ backgroundColor: '#f0f0f0' }}
+          />
+        </Grid>
+      <Grid item xs={12} sm={"auto"}>
+        <FormControl sx={{ minWidth: 120 }} size="small">
+          <Select 
+            value={sortBy} 
+            onChange={(e) => setSortBy(e.target.value)}
+            style={{ backgroundColor: '#f0f0f0' }}
+          >
+            <MenuItem value="created_at">Created At</MenuItem>
+            <MenuItem value="name">ニックネーム</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={"auto"}>
+        <FormControl sx={{minWidth: 120 }} size="small">
+          <Select 
+            value={group} 
+            onChange={(e) => setGroup(e.target.value)}
+            style={{backgroundColor: '#f0f0f0' }}
+          >
+            <MenuItem value='RUNTEQ'>みんな</MenuItem>  
+            {groups.map((group) => ( // 取得したグループデータをもとに選択肢を動的に生成
+              <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        </Grid>
+      </Grid>
 
       <TableContainer component={Paper}>
         <Table>
@@ -86,7 +111,7 @@ const Users = () => {
                 </IconButton>
               </TableCell>
               <TableCell align="center" style={{ width: '20%' }}>所属</TableCell>
-              <TableCell align="center" style={{ width: '40%' }}>あいさつ</TableCell>
+              <TableCell align="center" style={{ width: isSmallScreen ? '30%' : '40%', display: isSmallScreen ? 'none' : 'table-cell' }}>みんなにひとこと！</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,7 +122,7 @@ const Users = () => {
                 </TableCell>
                 <TableCell align="center">{user.name}</TableCell>
                 <TableCell align="center">{user.group}</TableCell>
-                <TableCell align="center">{user.greeting}</TableCell>
+                <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>{user.greeting}</TableCell>
               </TableRow>
             ))}
           </TableBody>
