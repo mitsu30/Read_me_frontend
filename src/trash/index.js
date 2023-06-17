@@ -3,15 +3,13 @@ import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import CenteredBox from '../components/CenteredBox';
-
 const siteTitle = "りーどみー";
 const siteDescription = "あなたのプロフィール帳シェアしませんか";
-const logoStyle = { maxHeight: '80%', maxWidth: '80%', objectFit: 'contain' };
-const templateStyle = { maxHeight: '60%',  maxWidth: '60%', objectFit: 'contain' };
 
 export default function HomePage() {
   const router = useRouter();
+  const siteTitle = "りーどみー";
+  const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
   const handleClick = () => {
     router.push('/create'); 
@@ -40,9 +38,21 @@ export default function HomePage() {
             ],
           }}
         />
-      <CenteredBox>
-        <Box display="flex" alignItems="center" justifyContent="center" style={{ width: '100%' }}>
-          <img src="/logo.png" alt="Logo" style={logoStyle}/>
+      <Box 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Box display="flex" alignItems="center" justifyContent="center" style={{ 
+          width: '100%',
+        }}>
+          <img src="/logo.png" alt="Logo" style={{
+            maxHeight: '80%',  
+            maxWidth: '80%', 
+            objectFit: 'contain'
+          }}/>
         </Box>
         <Box>
           <Button 
@@ -65,18 +75,35 @@ export default function HomePage() {
             はじめる
           </Button>
         </Box>
-        <CenteredBox>
+        <Box 
+            sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
             あなただけのプロフィール帳
           </Typography>
-        </CenteredBox>
-        <CenteredBox>
+        </Box>
+        <Box 
+            sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+          >
           <Typography variant="h6" style={{textAlign: 'center', width: '100%' }}>
             Twitterでシェアしませんか
           </Typography>
-        </CenteredBox>
-        <img src="/template1.png" alt="Template1" style={templateStyle}/>
-      </CenteredBox>
+        </Box>
+        
+        <img src="/template1.png" alt="Template1" style={{ 
+          maxHeight: '60%',  
+          maxWidth: '60%', 
+          objectFit: 'contain' 
+        }}/>
+      </Box>
     </>
   );
 }

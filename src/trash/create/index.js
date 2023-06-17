@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { useState } from "react";
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import axios from "axios";
+import { styled } from '@mui/system';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
@@ -8,8 +11,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
-import { Loading } from '../../components/Loading'
-import { usePreviewAndSubmit } from '../../hooks/usePreviewAndSubmit';
+import { Loading } from '../../components/Loading';
 
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
@@ -17,13 +19,21 @@ const MAX_LINE_LENGTH_OF_ANSWER2 = 13;
 const MAX_LINE_LENGTH_OF_ANSWER3 = 26;
 const MAX_LINE_COUNT = 3;
 
+
 export default function App () {
   const [answer1, setAnswer1] = useState("");
   const [answer2, setAnswer2] = useState("");
   const [answer3, setAnswer3] = useState("");
+  const [imageUrl, setImageUrl] = useState("/template1.png");
+
   const [answer1Error, setAnswer1Error] = useState("");
   const [answer2Error, setAnswer2Error] = useState("");
   const [answer3Error, setAnswer3Error] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/wakeup`)
@@ -32,8 +42,52 @@ export default function App () {
     })
   }, []);
 
+  const handlePreview = async (e) => {
+    e.preventDefault();
+
+  try {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/preview`, { image_text: { answer1, answer2, answer3 } });
+    setImageUrl(response.data.url);
+    } catch (error) {
+    console.error(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
   
-  const { imageUrl, isLoading, isNavigating, handlePreview, handleSubmit } = usePreviewAndSubmit(answer1, answer2, answer3);
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
+      
+      if (response.status !== 200) {
+        throw new Error('Request failed with status: ' + response.status);
+      }
+  
+      const img = new Image();
+  
+      img.onload = () => {
+        setImageUrl(response.data.url);
+        setIsNavigating(true);
+        router.push({
+          pathname: '/result/[id]', 
+          query: { id: response.data.id }, 
+        });
+  
+        setIsLoading(false);
+      };
+  
+      img.onerror = () => {
+        throw new Error('Image load failed');
+      };
+  
+      img.src = response.data.url;
+  
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false); //念の為
+    }
+  };
 
   return (
     <>

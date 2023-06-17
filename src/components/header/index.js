@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
+import { useAuthContext } from '../../context/AuthContext'; 
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
 import Link from 'next/link';
+import AppDrawer from './AppDrawer'; 
+import InformationModal from './InformationModal'; 
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
+
+  const router = useRouter();  
+
+  const { currentUser, logout } = useAuthContext();
+  const { enqueueSnackbar } = useSnackbar(); 
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -34,6 +38,15 @@ export default function Header() {
 
   const handleModalClose = () => {
     setModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
+  const handleLogoutClick = () => {
+    logout();
+    enqueueSnackbar('ログアウトに成功しました', { variant: 'success' });
   };
 
   return (
@@ -59,54 +72,20 @@ export default function Header() {
           </Link>
         </Toolbar>
       </AppBar>
-
-      <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerClose}>
-        <List>
-          <ListItem button onClick={() => handleModalOpen('コミュニティ', '準備中です！')}>
-            <ListItemText primary="コミュニティ" />
-          </ListItem>
-          <ListItem button onClick={() => handleModalOpen('ログイン', '準備中です！')}>
-            <ListItemText primary="ログイン" />
-          </ListItem>
-          <ListItem button onClick={() => handleModalOpen('利用規約', '準備中です！')}>
-            <ListItemText primary="利用規約" />
-          </ListItem>
-          <ListItem button component="a" href="https://kiyac.app/privacypolicy/8LceFAKn3LueySAB3tNs" target="_blank">
-            <ListItemText primary="プライバシーポリシー" />
-          </ListItem>
-          <ListItem button component="a" href="https://twitter.com/readmee_profile" target="_blank">
-            <ListItemText primary="お問い合わせ" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="© 2023 りーどみー" />
-          </ListItem>
-        </List>
-      </Drawer>
-
-      <Modal
-        open={modalOpen}
-        onClose={handleModalClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}>
-          <Typography id="modal-title" variant="h4" component="h2">
-            {modalTitle}
-          </Typography>
-          <Typography id="modal-description" variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-            {modalContent}
-          </Typography>
-        </Box>
-      </Modal>
+      <AppDrawer 
+        drawerOpen={drawerOpen} 
+        handleDrawerClose={handleDrawerClose} 
+        handleModalOpen={handleModalOpen}
+        handleLoginClick={handleLoginClick}
+        handleLogoutClick={handleLogoutClick}
+        currentUser={currentUser}
+      />
+      <InformationModal 
+        modalOpen={modalOpen} 
+        handleModalClose={handleModalClose} 
+        modalTitle={modalTitle} 
+        modalContent={modalContent} 
+      />
     </>
   );
 }

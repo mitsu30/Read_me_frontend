@@ -3,9 +3,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Header from '../components/header'; 
 import { NextSeo } from 'next-seo';
 import { AuthContextProvider } from "../context/AuthContext";
-import theme from '../utils/theme';
-import StyledAppWrapper from '../../styles/StyledAppWrapper';
-import CustomSnackbarProvider from '../../styles/CustomSnackbarProvider';
+import theme from './theme';
+import StyledAppWrapper from './StyledAppWrapper';
+import CustomSnackbarProvider from './CustomSnackbarProvider';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <CssBaseline />
             <NextSeo
-              title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
+              title="りーどみー" 
             />
               <CustomSnackbarProvider
                 maxSnack={3}
