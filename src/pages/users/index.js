@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton, Grid } from '@mui/material';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+// import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+// import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Avatar } from '@mui/material'; 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -16,16 +16,16 @@ const Users = () => {
   const [groups, setGroups] = useState([]); 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('created_at_desc');
-  const [order, setOrder] = useState('asc');
+  // const [order, setOrder] = useState('asc');
   const [group, setGroup] = useState('RUNTEQ');
   const [searchName, setSearchName] = useState('');
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const toggleOrder = () => {
-    setOrder(order === 'asc' ? 'desc' : 'asc');
-  };
+  // const toggleOrder = () => {
+  //   setOrder(order === 'asc' ? 'desc' : 'asc');
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,9 +109,9 @@ const Users = () => {
               <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}></TableCell>
               <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>
                 なまえ
-                <IconButton onClick={toggleOrder} size="small">
+                {/* <IconButton onClick={toggleOrder} size="small">
                   {order === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-                </IconButton>
+                </IconButton> */}
               </TableCell>
               <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell>
               <TableCell align="center" style={{ width: isSmallScreen ? '30%' : '40%', height: '10px', display: isSmallScreen ? 'none' : 'table-cell', borderBottom: '1px solid #808080' }}>みんなにひとこと！</TableCell>
