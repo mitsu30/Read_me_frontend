@@ -30,14 +30,18 @@ export default function LoginPage() {
       try {
         // console.log(details);
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, userDetails, config);
-        enqueueSnackbar('ログインしたよ', { variant: 'success' });
-      
-        if (userDetails.isNewUser) {
-          // 新規ユーザーの場合はユーザーIDをURLに含める
-          router.push(`/additional_info/${response.data.id}`);
+        if (response.data.status === "success") {
+          enqueueSnackbar('ログインしたよ！', { variant: 'success' });
+          if (userDetails.isNewUser) {
+            router.push(`/additional_info/${response.data.id}`);
+          } else {
+            router.push('/users');
+          }
+        //APIのレスポンスが "success" ではない場合（つまり、APIのリクエスト自体は成功したが、その結果としてエラーが返された場合）
         } else {
-          router.push('/');
+          enqueueSnackbar(response.data.message, { variant: 'error' });
         }
+      //APIリクエスト自体がエラーを引き起こした場合（つまり、ネットワークエラーやサーバーのダウンなど）
       } catch (err) {
         let message;
         if (axios.isAxiosError(err) && err.response) {

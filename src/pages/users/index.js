@@ -29,12 +29,12 @@ const Users = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&order=${order}&group_id=${group}&name=${searchName}`);
+      const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&group_id=${group}&name=${searchName}`);
       setUsers(result.data);
       console.log(result.data)
     };
     fetchData();
-  }, [page, sortBy, order, group, searchName]);
+  }, [page, sortBy, group, searchName]);
 
   useEffect(() => {
     const fetchGroups = async () => {
