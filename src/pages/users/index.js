@@ -15,7 +15,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]); 
   const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState('created_at');
+  const [sortBy, setSortBy] = useState('created_at_desc');
   const [order, setOrder] = useState('asc');
   const [group, setGroup] = useState('RUNTEQ');
   const [searchName, setSearchName] = useState('');
@@ -77,8 +77,8 @@ const Users = () => {
             onChange={(e) => setSortBy(e.target.value)}
             style={{backgroundColor: '#f0f0f0' }}
           >
-            <MenuItem value="created_at">Created At</MenuItem>
-            <MenuItem value="name">ニックネーム</MenuItem>
+            <MenuItem value="created_at_desc">新着順</MenuItem>
+            <MenuItem value="name_asc">名前順</MenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -98,6 +98,10 @@ const Users = () => {
         </Grid>
       </Grid>
 
+      <div>
+        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button>
+        <Button onClick={() => setPage(page + 1)}>つぎ</Button>
+      </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -128,8 +132,8 @@ const Users = () => {
         </Table>
       </TableContainer>
       <div>
-        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>Previous</Button>
-        <Button onClick={() => setPage(page + 1)}>Next</Button>
+        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button>
+        <Button onClick={() => setPage(page + 1)}>つぎ</Button>
       </div>
     </div>
   );
