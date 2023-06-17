@@ -9,11 +9,6 @@ export default function Document() {
           rel="stylesheet"
         />
 
-        {/* New font link */}
-        <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" 
-          rel="stylesheet"
-        />
-
         {/* Google Tag Manager */}
         <script
           async
