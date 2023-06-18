@@ -61,7 +61,7 @@ export default function AdditionalInfoPage({ initialData }) {
   
       if (response.status === 200) {
         enqueueSnackbar('プロフィールを更新しました', { variant: 'success' });
-        router.push("/");
+        router.push("/users");
       } else {
         enqueueSnackbar('プロフィールの更新に失敗しました', { variant: 'error' });
       }
@@ -222,18 +222,35 @@ export default function AdditionalInfoPage({ initialData }) {
 }
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const { uid } = context.query;
   const cookies = nookies.get(context);
   const config = {
     headers: { authorization: `Bearer ${cookies.token}` },
   };
+  
+  let initialData = null;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`);
-  const data = await response.json();
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${uid}`, config);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.status && data.status === 'ERROR') {
+      throw new Error(data.message);
+    }
+
+    initialData = data.data;
+  } catch (error) {
+    console.error("An error occurred while fetching user data:", error);
+  }
 
   return {
     props: {
-      initialData: data.data
+      initialData: initialData,
     },
   };
 }

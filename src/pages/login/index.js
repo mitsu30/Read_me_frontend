@@ -6,6 +6,9 @@ import axios from "axios";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth"
 import CenteredBox from '../../components/CenteredBox';
 import { FaGithub } from 'react-icons/fa'; 
+import { useState } from 'react';  
+import { Loading } from '../../components/Loading'
+import Box from '@mui/material/Box';
 
 export default function LoginPage() {
   const { loginWithFirebase } = useFirebaseAuth();
@@ -13,7 +16,11 @@ export default function LoginPage() {
   
   const { enqueueSnackbar } = useSnackbar(); 
 
+  const [authenticating, setAuthenticating] = useState(false);
+
   const handleGitHubLogin = () => {
+    setAuthenticating(true);
+
     const verifyIdToken = async () => {
       const { user, details } = await loginWithFirebase("github");
       const token = await user?.getIdToken();
@@ -33,7 +40,7 @@ export default function LoginPage() {
         if (response.data.status === "success") {
           enqueueSnackbar('ログインしたよ！', { variant: 'success' });
           if (userDetails.isNewUser) {
-            router.push(`/additional_info/${response.data.id}`);
+            router.push(response.data.is_student ? `/additional_info_runteq/${response.data.uid}` : `/additional_info_general/${response.data.uid}`);
           } else {
             router.push('/users');
           }
@@ -54,6 +61,18 @@ export default function LoginPage() {
     };
     verifyIdToken();
   };
+
+  {authenticating && 
+    <Box 
+      sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
+    >
+      <Loading>認証中...</Loading>
+    </Box>
+  }
 
   return (
     <>
