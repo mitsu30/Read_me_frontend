@@ -31,7 +31,7 @@ export default function LoginPage() {
 
       const userDetails = {
         username: details.username,
-        isNewUser: details.isNewUser
+        // isNewUser: details.isNewUser
       };
 
       try {
@@ -39,7 +39,7 @@ export default function LoginPage() {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, userDetails, config);
         if (response.data.status === "success") {
           enqueueSnackbar('ログインしたよ！', { variant: 'success' });
-          if (userDetails.isNewUser) {
+          if (response.data.isNewUser) {
             router.push(response.data.is_student ? `/additional_info_runteq/${response.data.uid}` : `/additional_info_general/${response.data.uid}`);
           } else {
             router.push('/users');
