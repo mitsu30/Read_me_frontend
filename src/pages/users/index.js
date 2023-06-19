@@ -51,11 +51,11 @@ const Users = () => {
           variant="h1" 
           fontWeight="bold" 
           style={{ 
-            transform: 'scaleX(1.3)',
-            fontSize: isSmallScreen ? '5rem' : '7.0rem',  // 画面幅に応じてフォントサイズを変更
+            // transform: 'scaleX(1.3)',
+            fontSize: isSmallScreen ? '3rem' : '5.5rem',  // 画面幅に応じてフォントサイズを変更
           }}
         >
-          RUNTEQ
+          スクールのなかま
         </Typography>
       </Box>
       <Grid container justifyContent="center" style={{ margin: '1em 0' }}>
