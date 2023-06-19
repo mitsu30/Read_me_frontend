@@ -243,7 +243,16 @@ export async function getServerSideProps(context) {
       throw new Error(data.message);
     }
 
-    initialData = data.data;
+    initialData = data.data
+    // Check if the user is not a student.
+    if (!initialData.is_student) {
+      return {
+        redirect: {
+          destination: '/?unauthorized=true', 
+          permanent: false,
+        },
+      };
+    }
   } catch (error) {
     console.error("An error occurred while fetching user data:", error);
   }
