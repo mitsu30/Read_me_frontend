@@ -12,12 +12,11 @@ import Box from '@mui/material/Box';
 
 export default function LoginPage() {
   const { loginWithFirebase } = useFirebaseAuth();
+  const { enqueueSnackbar } = useSnackbar(); 
+  const [authenticating, setAuthenticating] = useState(false);
+  const [navigating, setNavigating] = useState(false);
   const router = useRouter();
   
-  const { enqueueSnackbar } = useSnackbar(); 
-
-  const [authenticating, setAuthenticating] = useState(false);
-
   const handleGitHubLogin = () => {
     setAuthenticating(true);
 
@@ -31,19 +30,26 @@ export default function LoginPage() {
 
       const userDetails = {
         username: details.username,
-        // isNewUser: details.isNewUser
       };
 
       try {
-        // console.log(details);
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, userDetails, config);
+
         if (response.data.status === "success") {
           enqueueSnackbar('ログインしたよ！', { variant: 'success' });
-          if (response.data.isNewUser) {
-            router.push(response.data.is_student ? `/additional_info_runteq` : `/additional_info_general`);
-          } else {
-            router.push('/users');
-          }
+          setAuthenticating(false); 
+          setNavigating(true);
+          try {
+            if (response.data.isNewUser) {
+              await router.push(response.data.is_student ? `/additional_info_runteq` : `/additional_info_general`);
+            } else {
+              await router.push('/users');
+              setNavigating(false);
+            }
+          } catch (err) {
+            console.error("Navigation error: ", err);
+            enqueueSnackbar('遷移中にエラーが発生したよ。', { variant: 'error' });
+          } 
         //APIのレスポンスが "success" ではない場合（つまり、APIのリクエスト自体は成功したが、その結果としてエラーが返された場合）
         } else {
           enqueueSnackbar(response.data.message, { variant: 'error' });
@@ -53,61 +59,63 @@ export default function LoginPage() {
         let message;
         if (axios.isAxiosError(err) && err.response) {
           console.error(err.response.data.message);
+          enqueueSnackbar('認証中にエラーが発生したよ。', { variant: 'error' });
         } else {
           message = String(err);
           console.error(message);
         }
       } finally {
-        setAuthenticating(false);
+        if (!navigating) setAuthenticating(false);
       }
     };
     verifyIdToken();
   };
 
 
-  if (authenticating) {
-    return (
+  return (
+    <>
+    {(authenticating || navigating) &&
       <Box 
-        sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-      >
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
         <Loading>認証中...</Loading>
       </Box>
-    )
-  } else {
-    return (
-      <>
-        <CenteredBox>
-          <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
-            RUNTEQのみんなはこっち！
-          </Typography>
-        </CenteredBox>
-        <CenteredBox>
-          <Button 
-            variant="contained"
-            sx={{ 
-              mt: 2, 
-              mb: 2, 
-              width: '40%', 
-              backgroundColor: '#FF6699',
-              '&:hover': {
-                backgroundColor: '#E60073',
-              },
-              color: '#white',
-              fontWeight: 'bold',
-              fontSize: '1.0em',
-              padding: '8px 10px' 
-            }}
-            onClick={handleGitHubLogin}
-          >
-            <FaGithub style={{ marginRight: '8px' }} /> 
-            GitHubログイン
-          </Button>
-        </CenteredBox>
-      </>
-    );
-  }
+    }
+    { (!authenticating && !navigating) && 
+    <>
+      <CenteredBox>
+        <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
+          RUNTEQのみんなはこっち！
+        </Typography>
+      </CenteredBox>
+      <CenteredBox>
+        <Button 
+          variant="contained"
+          sx={{ 
+            mt: 2, 
+            mb: 2, 
+            width: '40%', 
+            backgroundColor: '#FF6699',
+            '&:hover': {
+              backgroundColor: '#E60073',
+            },
+            color: '#white',
+            fontWeight: 'bold',
+            fontSize: '1.0em',
+            padding: '8px 10px' 
+          }}
+          onClick={handleGitHubLogin}
+        >
+          <FaGithub style={{ marginRight: '8px' }} /> 
+          GitHubログイン
+        </Button>
+      </CenteredBox>
+    </>
+    }
+    </>
+  )
 }

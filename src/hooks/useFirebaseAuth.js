@@ -56,8 +56,6 @@ export default function useFirebaseAuth() {
       // photoURL: string | null; // Googleプロフィール写真URL
       // uid: string; // Firebaseが生成するユニークID
 
-            
-      router.push("/");
       return { user, details };
     }
   };
