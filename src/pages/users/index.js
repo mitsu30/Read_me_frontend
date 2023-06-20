@@ -9,9 +9,9 @@ import FormControl from '@mui/material/FormControl';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [groups, setGroups] = useState([]); 
+const Users = ({ initialUsers, initialGroups }) => {
+  const [users, setUsers] = useState(initialUsers);
+  const [groups, setGroups] = useState(initialGroups); 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('created_at_desc');
   // const [order, setOrder] = useState('asc');
@@ -21,15 +21,11 @@ const Users = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // const toggleOrder = () => {
-  //   setOrder(order === 'asc' ? 'desc' : 'asc');
-  // };
-
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&group_id=${group}&name=${searchName}`);
       setUsers(result.data);
-      console.log(result.data)
+      // console.log(result.data)
     };
     fetchData();
   }, [page, sortBy, group, searchName]);
@@ -136,5 +132,17 @@ const Users = () => {
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const initialUsersRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=1&sort_by=created_at_desc&group_id=RUNTEQ&name=`);
+  const initialGroupsRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
+  
+  return {
+    props: {
+      initialUsers: initialUsersRes.data,
+      initialGroups: initialGroupsRes.data.groups
+    }
+  }
+}
 
 export default Users;
