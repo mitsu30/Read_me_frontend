@@ -1,5 +1,6 @@
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -14,11 +15,11 @@ export default function HomePage() {
   const router = useRouter();
 
   // コンポーネントがマウントされた時にクエリパラメータの'unauthorized'をチェックする
-  useEffect(() => {
-    if (router.query.unauthorized) {
-      enqueueSnackbar('許可されていないアクセスです', { variant: 'error' });
-    }
-  }, [router.query]);
+  // useEffect(() => {
+  //   if (router.query.unauthorized) {
+  //     enqueueSnackbar('許可されていないアクセスです', { variant: 'error' });
+  //   }
+  // }, [router.query]);
 
 
   const handleClick = () => {

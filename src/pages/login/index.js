@@ -40,7 +40,7 @@ export default function LoginPage() {
         if (response.data.status === "success") {
           enqueueSnackbar('ログインしたよ！', { variant: 'success' });
           if (response.data.isNewUser) {
-            router.push(response.data.is_student ? `/additional_info_runteq/${response.data.uid}` : `/additional_info_general/${response.data.uid}`);
+            router.push(response.data.is_student ? `/additional_info_runteq` : `/additional_info_general`);
           } else {
             router.push('/users');
           }
