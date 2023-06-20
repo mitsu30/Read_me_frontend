@@ -57,54 +57,57 @@ export default function LoginPage() {
           message = String(err);
           console.error(message);
         }
+      } finally {
+        setAuthenticating(false);
       }
     };
     verifyIdToken();
   };
 
-  {authenticating && 
-    <Box 
-      sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    }}
-    >
-      <Loading>認証中...</Loading>
-    </Box>
+
+  if (authenticating) {
+    return (
+      <Box 
+        sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+      >
+        <Loading>認証中...</Loading>
+      </Box>
+    )
+  } else {
+    return (
+      <>
+        <CenteredBox>
+          <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
+            RUNTEQのみんなはこっち！
+          </Typography>
+        </CenteredBox>
+        <CenteredBox>
+          <Button 
+            variant="contained"
+            sx={{ 
+              mt: 2, 
+              mb: 2, 
+              width: '40%', 
+              backgroundColor: '#FF6699',
+              '&:hover': {
+                backgroundColor: '#E60073',
+              },
+              color: '#white',
+              fontWeight: 'bold',
+              fontSize: '1.0em',
+              padding: '8px 10px' 
+            }}
+            onClick={handleGitHubLogin}
+          >
+            <FaGithub style={{ marginRight: '8px' }} /> 
+            GitHubログイン
+          </Button>
+        </CenteredBox>
+      </>
+    );
   }
-
-  return (
-    <>
-      <CenteredBox>
-        <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
-          RUNTEQのみんなはこっち！
-        </Typography>
-      </CenteredBox>
-      <CenteredBox>
-        <Button 
-          variant="contained"
-          sx={{ 
-            mt: 2, 
-            mb: 2, 
-            width: '40%', 
-            backgroundColor: '#FF6699',
-            '&:hover': {
-              backgroundColor: '#E60073',
-            },
-            color: '#white',
-            fontWeight: 'bold',
-            fontSize: '1.0em',
-            padding: '8px 10px' 
-          }}
-          onClick={handleGitHubLogin}
-        >
-          <FaGithub style={{ marginRight: '8px' }} /> 
-          GitHubログイン
-        </Button>
-      </CenteredBox>
-    </>
-  );
 }
-
-
