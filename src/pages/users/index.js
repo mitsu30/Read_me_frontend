@@ -103,9 +103,6 @@ const Users = ({ initialUsers, initialGroups }) => {
               <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}></TableCell>
               <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>
                 なまえ
-                {/* <IconButton onClick={toggleOrder} size="small">
-                  {order === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-                </IconButton> */}
               </TableCell>
               <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell>
               <TableCell align="center" style={{ width: isSmallScreen ? '30%' : '40%', height: '10px', display: isSmallScreen ? 'none' : 'table-cell', borderBottom: '1px solid #808080' }}>みんなにひとこと！</TableCell>
