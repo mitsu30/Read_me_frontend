@@ -106,7 +106,7 @@ export async function getServerSideProps(context) {
   };
 
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, config);
-  // console.log(res)
+  console.log(res)
   return { props: { user: res.data.data } };
 }
 

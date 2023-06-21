@@ -21,7 +21,7 @@ export default function AdditionalInfoPage({ initialData }) {
   const [preview, setPreview] = useState(initialData.avatar_url || '');
   
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState(initialData.groups.id || '');
 
   const [greeting, setGreeting] = useState(initialData.greeting || '');
 
