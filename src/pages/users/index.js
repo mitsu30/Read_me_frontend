@@ -101,7 +101,7 @@ const Users = ({ initialUsers, initialGroups }) => {
           <TableHead>
             <TableRow style={{ height: '10px'}}>
               <TableCell align="center" style={{ width: '10%', height: '10px', borderBottom: '1px solid #808080' }}></TableCell>
-              <TableCell align="center" style={{ width: '25%', height: '10px', borderBottom: '1px solid #808080' }}>
+              <TableCell align="center" style={{ width: '30%', height: '10px', borderBottom: '1px solid #808080' }}>
                 なまえ
               </TableCell>
               <TableCell align="center" style={{ width: '25%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell>
