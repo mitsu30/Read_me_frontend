@@ -8,8 +8,6 @@ import { useState, useEffect, useRef } from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import nookies from "nookies";
@@ -18,15 +16,14 @@ export default function AdditionalInfoPage({ initialData }) {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const defaultAvatarUrl = '/default_avatar.png';
   const [username, setUsername] = useState(initialData.name);
   const [avatar, setAvatar] = useState(null);
-  const [preview, setPreview] = useState(defaultAvatarUrl);
+  const [preview, setPreview] = useState(initialData.avatar_url || '');
   
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState('');
 
-  const [greeting, setGreeting] = useState('');
+  const [greeting, setGreeting] = useState(initialData.greeting || '');
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -40,7 +37,7 @@ export default function AdditionalInfoPage({ initialData }) {
   const handleUpdateProfile = async () => {
     
     if (selectedGroup === '') {
-      enqueueSnackbar('グループを選択してね！', { variant: 'error' });
+      enqueueSnackbar('グループをえらんでね！', { variant: 'error' });
       return;
     }
 
@@ -48,6 +45,12 @@ export default function AdditionalInfoPage({ initialData }) {
       enqueueSnackbar('ひとことを50文字以内で入力してね！', { variant: 'error' });
       return;
     }
+    
+    if (preview === '') {
+      enqueueSnackbar('アイコン用の画像をえらんでね！', { variant: 'error' });
+      return;
+    }
+
 
     try {
       const formData = new FormData();
@@ -56,7 +59,6 @@ export default function AdditionalInfoPage({ initialData }) {
       if (avatar) { 
         formData.append('user[avatar]', avatar);
       }
-  
       formData.append('group_id', selectedGroup);
   
       const cookies = nookies.get(null);
@@ -90,16 +92,6 @@ export default function AdditionalInfoPage({ initialData }) {
     setPreview(URL.createObjectURL(e.target.files[0]));
   }
   
-  const formRef = useRef();
-
-  const handleAvatarCancel = () => {
-    setAvatar(null);
-    setPreview(defaultAvatarUrl);
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-  };
-
   return (
     <Grid container component="main" justifyContent="center">
       <Grid item xs={10} md={8}>
@@ -179,23 +171,16 @@ export default function AdditionalInfoPage({ initialData }) {
             </Typography>
           </Box>
           <Box>
-            <form ref={formRef}>
-              <TextField
-                color="secondary"
-                margin="normal"
-                fullWidth
-                type="file"
-                id="avatar"
-                name="avatar"
-                accept="image/png, image/jpeg"
-                onChange={handleAvatarChange}
-                />
-            </form>
-            {preview && preview !== defaultAvatarUrl && (
-              <IconButton onClick={handleAvatarCancel}>
-                <CloseIcon />
-              </IconButton>
-            )}
+            <TextField
+              color="secondary"
+              margin="normal"
+              fullWidth
+              type="file"
+              id="avatar"
+              name="avatar"
+              accept="image/png, image/jpeg"
+              onChange={handleAvatarChange}
+              />
           </Box>
           {preview && (
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
