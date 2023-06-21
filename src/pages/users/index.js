@@ -100,18 +100,18 @@ const Users = ({ initialUsers, initialGroups }) => {
         <Table>
           <TableHead>
             <TableRow style={{ height: '10px'}}>
-              <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}></TableCell>
-              <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>
+              <TableCell align="center" style={{ width: '10%', height: '10px', borderBottom: '1px solid #808080' }}></TableCell>
+              <TableCell align="center" style={{ width: '25%', height: '10px', borderBottom: '1px solid #808080' }}>
                 なまえ
               </TableCell>
-              <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell>
+              <TableCell align="center" style={{ width: '25%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell>
               <TableCell align="center" style={{ width: isSmallScreen ? '30%' : '40%', height: '10px', display: isSmallScreen ? 'none' : 'table-cell', borderBottom: '1px solid #808080' }}>みんなにひとこと！</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell style={{ width: '20%' }}>
+                <TableCell>
                 <Avatar src={user.avatar} alt={user.name} sx={{ width: 80, height: 80 }}/> 
                 </TableCell>
                 <TableCell align="center">{user.name}</TableCell>
