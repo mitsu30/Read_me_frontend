@@ -49,27 +49,28 @@ const MyPage = ({ user }) => {
         マイページ
       </Typography>
     </Box>
+    
     <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow style={{ height: '10px'}}>
-              <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>アイコン</TableCell>
-              <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>
+              <TableCell align="center" style={{ width: '10%', height: '10px', borderBottom: '1px solid #808080' }}></TableCell>
+              <TableCell align="center" style={{ width: '25%', height: '10px', borderBottom: '1px solid #808080' }}>
                 なまえ
               </TableCell>
-              <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>コミュニティ</TableCell>
-              <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>グループ</TableCell>
+              {/* <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell> */}
+              <TableCell align="center" style={{ width: '25%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell>
               <TableCell align="center" style={{ width: isSmallScreen ? '30%' : '40%', height: '10px', display: isSmallScreen ? 'none' : 'table-cell', borderBottom: '1px solid #808080' }}>みんなにひとこと！</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
               <TableRow key={user.id}>
-                <TableCell style={{ width: '20%' }}>
+                <TableCell >
                   <Avatar src={user.avatar_url} alt={user.name} sx={{ width: 80, height: 80 }}/> 
                 </TableCell>
                 <TableCell align="center">{user.name}</TableCell>
-                <TableCell align="center">{user.communities.map(community => community.name).join(', ')}</TableCell>
+                {/* <TableCell align="center">{user.communities.map(community => community.name).join(', ')}</TableCell> */}
                 <TableCell align="center">{user.groups.map(group => group.name).join(', ')}</TableCell>
                 <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>{user.greeting}</TableCell>
               </TableRow>
@@ -77,6 +78,7 @@ const MyPage = ({ user }) => {
         </Table>
       </TableContainer>
     </Box>
+
     <Tabs value={value} onChange={handleChange} centered>
       <Tab  label="プロフィール帳" />
       <Tab label="お気に入り" />
