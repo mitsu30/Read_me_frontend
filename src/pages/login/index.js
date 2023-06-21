@@ -41,7 +41,7 @@ export default function LoginPage() {
           setNavigating(true);
           try {
             if (response.data.isNewUser) {
-              await router.push(response.data.is_student ? `/additional_info_runteq` : `/additional_info_general`);
+              await router.push(response.data.is_student ? `/mypage/edit` : `/mypage/edit`);
             } else {
               await router.push('/users');
               setNavigating(false);
