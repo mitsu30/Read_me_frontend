@@ -51,8 +51,8 @@ export async function getServerSideProps(context) {
   };
 
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/templates`, config);
-  console.log(res)
-  return { props: { template: res.data.data } };
+  console.log(res.data)
+  return { props: { templates: res.data} };
 }
 
 
