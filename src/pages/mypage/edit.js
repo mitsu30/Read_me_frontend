@@ -21,7 +21,7 @@ export default function AdditionalInfoPage({ initialData }) {
   const [preview, setPreview] = useState(initialData.avatar_url || '');
   
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState(initialData.groups.id || '');
+  const [selectedGroup, setSelectedGroup] = useState(initialData.groups[0].id || '');
 
   const [greeting, setGreeting] = useState(initialData.greeting || '');
 
@@ -69,7 +69,7 @@ export default function AdditionalInfoPage({ initialData }) {
         },
       };
   
-      const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, formData, config);
+      const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/update`, formData, config);
   
       if (response.status === 200) {
         enqueueSnackbar('プロフィールを更新しました', { variant: 'success' });
@@ -224,7 +224,8 @@ export async function getServerSideProps(context) {
   
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
   const data = await response.json();
-  console.log(data);  
+  // console.log(data);  
+  // console.log(data.data.groups[0].id);  
 
   return {
     props: {

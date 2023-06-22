@@ -105,7 +105,7 @@ export async function getServerSideProps(context) {
     headers: { authorization: `Bearer ${cookies.token}` },
   };
 
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, config);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/show`, config);
   console.log(res)
   return { props: { user: res.data.data } };
 }
