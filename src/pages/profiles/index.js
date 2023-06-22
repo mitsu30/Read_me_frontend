@@ -5,41 +5,45 @@ import nookies from "nookies";
 import axios from 'axios';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: 450, // カードの最大幅を設定
-  margin: theme.spacing(10) // カードの周りの余白を設定
+  width: 300, // カードの幅を固定
+  margin: theme.spacing(6), // カードの周りの余白を設定
+  padding: theme.spacing(1), // カードの内側の余白を設定
+  display: 'flex', // カードの内容をフレックスボックスとして扱う
+  flexDirection: 'column', // カードの方向をカラム（垂直）に設定
+  alignItems: 'center', // カードの内容を中央に配置
 }));
 
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  height: 0,
-  paddingTop: '52.36%', // 1.91:1
-  margin: theme.spacing(2),// 画像とカードの間の余白を設定
+  height: 156, // 画像の高さを固定
+  width: '100%', // 画像の幅を100%に設定
+  objectFit: 'contain', // 画像を全体が見えるように配置
 }));
-
 
 const DesignTemplates = ({ templates }) => {
   const [open, setOpen] = useState(false);
   const [currentTemplate, setCurrentTemplate] = useState(null);
 
   const handleClickOpen = (template) => {
-      setCurrentTemplate(template);
-      setOpen(true);
+    setCurrentTemplate(template);
+    setOpen(true);
   };
 
   const handleClose = () => {
-      setOpen(false);
+    setOpen(false);
   };
 
   const handleButtonClick = () => {
-      window.location.href = currentTemplate.next_path;
+    window.location.href = currentTemplate.next_path;
   };
 
   return (
     <Grid container spacing={2}>
       {templates.map((template) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} key={template.id} onClick={() => handleClickOpen(template)}>
+        <Grid item key={template.id} onClick={() => handleClickOpen(template)}>
           <StyledCard>
             {template.name}
             <StyledCardMedia
+              component="img" // img要素を使用
               image={template.image_path}
             />
           </StyledCard>
@@ -67,7 +71,7 @@ export async function getServerSideProps(context) {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/templates`, config);
   console.log(res.data)
   return { props: { templates: res.data} };
-  }
+}
 
 
 export default DesignTemplates;
