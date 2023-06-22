@@ -21,7 +21,7 @@ export default function AdditionalInfoPage({ initialData }) {
   const [preview, setPreview] = useState(initialData.avatar_url || '');
   
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState(initialData.groups__id || '');
+  const [selectedGroup, setSelectedGroup] = useState(initialData.groups.id || '');
 
   const [greeting, setGreeting] = useState(initialData.greeting || '');
 
@@ -223,8 +223,9 @@ export async function getServerSideProps(context) {
   };
   
   const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
-  console.log(response.data);  
-  // console.log(data.data.groups[0].id);  
+  // console.log(response.data.data);  
+  // console.log(response.data.data.groups.id);  
+  // // console.log(data.data.groups[0].id);  
 
   return {
     props: {
