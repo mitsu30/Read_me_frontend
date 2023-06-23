@@ -47,7 +47,15 @@ export default function App () {
     e.preventDefault();
 
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles`, { image_text: { answer1, answer2, answer3 } });
+    const cookies = nookies.get(null);
+    const config = {
+      headers: { 
+        'Content-Type': 'multipart/form-data',
+        authorization: `Bearer ${cookies.token}` 
+      },
+    };
+
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/preview`, { answers: { body1, body2, body3 } }, config);
     setImageUrl(response.data.url);
     } catch (error) {
     console.error(error);
@@ -72,6 +80,7 @@ export default function App () {
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);
       }
+      console.log(response);
   
       const img = new Image();
   
@@ -79,8 +88,8 @@ export default function App () {
         setImageUrl(response.data.url);
         setIsNavigating(true);
         router.push({
-          pathname: '/result/[id]', 
-          query: { id: response.data.id }, 
+          pathname: '/profiles/[id]', 
+          query: { id: response.data.uuid }, 
         });
   
         setIsLoading(false);
