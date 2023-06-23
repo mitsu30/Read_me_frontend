@@ -1,9 +1,10 @@
-import { Card, CardContent, Typography, Avatar, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, Avatar, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
 import axios from 'axios';
 import nookies from "nookies";
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { styled } from '@mui/system';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -24,6 +25,21 @@ const TabPanel = (props) => {
     </div>
   );
 }
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  width: 280, // カードの幅を固定
+  margin: theme.spacing(6), // カードの周りの余白を設定
+  padding: theme.spacing(1), // カードの内側の余白を設定
+  display: 'flex', // カードの内容をフレックスボックスとして扱う
+  flexDirection: 'column', // カードの方向をカラム（垂直）に設定
+  alignItems: 'center', // カードの内容を中央に配置
+}));
+
+const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
+  height: 156, // 画像の高さを固定
+  width: '100%', // 画像の幅を100%に設定
+  objectFit: 'contain', // 画像を全体が見えるように配置
+}));
 
 const MyPage = ({ user }) => {
   const [value, setValue] = useState(0);
@@ -86,7 +102,18 @@ const MyPage = ({ user }) => {
 
     <TabPanel value={value} index={0}>
       <CardContent>
-        準備中よ！
+        <Grid container spacing={2} justify="center"> 
+        {user.profiles.map((profile) => (
+          <Grid item key={profile.id} >
+            <StyledCard>
+              <StyledCardMedia
+                component="img" 
+                image={profile.image_url}
+              />
+            </StyledCard>
+          </Grid>
+        ))}
+        </Grid>
       </CardContent>
     </TabPanel>
 
@@ -107,6 +134,7 @@ export async function getServerSideProps(context) {
 
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, config);
   // console.log(res)
+  // console.log(res.data.data)
   return { props: { user: res.data.data } };
 }
 
