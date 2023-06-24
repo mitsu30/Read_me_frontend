@@ -2,9 +2,12 @@ import { Card, CardMedia, CardContent, Typography, Avatar, Tabs, Tab, Box, Table
 import axios from 'axios';
 import nookies from "nookies";
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/system';
+
+
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -45,10 +48,18 @@ const MyPage = ({ user }) => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const router = useRouter();
+  
+  //どのタブが現在アクティブであるかを管理している。
+  //ユーザーが切り替えたタブを追跡し、表示するコンテンツを更新する
+  const handleChange = (event, newValue) => {  
+    setValue(newValue); 
   };
+
+  const handleCardClick = (profile) => {
+    router.push(`/mypage/${profile.uuid}`);
+  };
+
 
   return (
     <>
@@ -105,7 +116,7 @@ const MyPage = ({ user }) => {
         <Grid container spacing={2} justify="center"> 
         {user.profiles.map((profile) => (
           <Grid item key={profile.id} >
-            <StyledCard>
+            <StyledCard onClick={() => handleCardClick(profile)}>
               <StyledCardMedia
                 component="img" 
                 image={profile.image_url}
@@ -134,7 +145,7 @@ export async function getServerSideProps(context) {
 
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, config);
   // console.log(res)
-  // console.log(res.data.data)
+  console.log(res.data.data)
   return { props: { user: res.data.data } };
 }
 
