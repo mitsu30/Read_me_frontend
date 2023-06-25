@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Box, CardMedia, CardContent, Grid, Card, IconButton  } from '@mui/material';
+import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typography  } from '@mui/material';
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
@@ -9,6 +9,7 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import LockIcon from '@mui/icons-material/Lock';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import { useState } from 'react';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -32,6 +33,31 @@ const IconCard = styled(Card)(({ theme }) => ({
 
 export default function ProfilePage({ profileImage }) {
   const router = useRouter();
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleDeleteProfile = async () => {
+    const config = {
+      headers: { authorization: `Bearer ${cookies.token}` },
+    };
+    try {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/profile/${profileImage.id}`, config);
+      if (response.status === 200) {
+        router.push('/mypage');  // or wherever you want to redirect after delete
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      handleCloseModal();
+    }
+  };
 
   return (
     <>
@@ -51,12 +77,32 @@ export default function ProfilePage({ profileImage }) {
             <IconButton><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
             <IconButton><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
             <IconButton><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
-            <IconButton><DeleteIcon /></IconButton>
+            <IconButton onClick={handleOpenModal}><DeleteIcon /></IconButton>
             <IconButton><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
           </IconCard>
         </Box>
       </Grid>
     </CardContent>
+    
+    <Modal
+      open={openModal}
+      onClose={handleCloseModal}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh'}}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: 'black', padding: '1rem' }}>
+          <Typography variant="h6" component="h2">
+            このプロフィール帳を削除しますか？
+          </Typography>
+          <Box sx={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <Button variant="outlined" color="primary" onClick={handleDeleteProfile}>はい</Button>
+            <Button variant="outlined" color="secondary" onClick={handleCloseModal}>いいえ</Button>
+          </Box>
+        </Box>
+      </Box>
+    </Modal>
+
     </>
   );
 }
