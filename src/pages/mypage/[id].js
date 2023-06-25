@@ -10,6 +10,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { useState } from 'react';
+import { useSnackbar } from 'notistack';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -33,6 +34,8 @@ const IconCard = styled(Card)(({ theme }) => ({
 
 export default function ProfilePage({ profileImage }) {
   const router = useRouter();
+  const { id } = router.query;
+  const { enqueueSnackbar } = useSnackbar();
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -42,15 +45,23 @@ export default function ProfilePage({ profileImage }) {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
+  
   const handleDeleteProfile = async () => {
+    const cookies = nookies.get(null);
     const config = {
-      headers: { authorization: `Bearer ${cookies.token}` },
+      headers: { 
+        'Content-Type': 'multipart/form-data',
+        authorization: `Bearer ${cookies.token}` 
+      },
     };
+    
     try {
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1//profiles/${profileImage.id}`, config);
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1//profiles/${id}`, config);
       if (response.status === 200) {
-        router.push('/mypage');  // or wherever you want to redirect after delete
+        setTimeout(() => {
+          router.push('/mypage');  // or wherever you want to redirect after delete
+        }, 100);
+        enqueueSnackbar('プロフィール帳を削除したよ！', { variant: 'success' });
       }
     } catch (error) {
       console.error(error);
@@ -114,7 +125,7 @@ export async function getServerSideProps(context) {
     headers: { authorization: `Bearer ${cookies.token}` },
   };
 
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1//profiles/${id}`, config);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
   const profileImage = await res.data;
   // console.log(res)
   // console.log(res.data)

@@ -130,7 +130,7 @@ const MyPage = ({ user }) => {
 
     <TabPanel value={value} index={1}>
       <CardContent>
-        準備中なの！
+        準備中です！
       </CardContent>
     </TabPanel>
     </>
@@ -145,7 +145,7 @@ export async function getServerSideProps(context) {
 
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, config);
   // console.log(res)
-  console.log(res.data.data)
+  // console.log(res.data.data)
   return { props: { user: res.data.data } };
 }
 
