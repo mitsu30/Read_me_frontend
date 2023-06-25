@@ -48,7 +48,7 @@ export default function ProfilePage({ profileImage }) {
       headers: { authorization: `Bearer ${cookies.token}` },
     };
     try {
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/profile/${profileImage.id}`, config);
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1//profiles/${profileImage.id}`, config);
       if (response.status === 200) {
         router.push('/mypage');  // or wherever you want to redirect after delete
       }
@@ -114,7 +114,7 @@ export async function getServerSideProps(context) {
     headers: { authorization: `Bearer ${cookies.token}` },
   };
 
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/profile/${id}`, config);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1//profiles/${id}`, config);
   const profileImage = await res.data;
   // console.log(res)
   // console.log(res.data)
