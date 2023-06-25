@@ -12,17 +12,22 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
-  margin: 'auto', // カードの周りの余白を設定
-  padding: theme.spacing(1), // カードの内側の余白を設定
-  display: 'flex', // カードの内容をフレックスボックスとして扱う
-  flexDirection: 'column', // カードの方向をカラム（垂直）に設定
-  alignItems: 'flex', // カードの内容を中央に配置
+  margin: 'auto', 
+  padding: theme.spacing(1), 
+  display: 'flex', 
+  flexDirection: 'column', 
+  alignItems: 'flex', 
 }));
 
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   height: 'auto',
   width: '100%',
   objectFit: 'contain',
+}));
+
+const IconCard = styled(Card)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'flex',  
 }));
 
 export default function ProfilePage({ profileImage }) {
@@ -34,20 +39,22 @@ export default function ProfilePage({ profileImage }) {
       <Grid item sx={{
                 my: 5,
               }}>
-        <StyledCard>
+        <StyledCard sx={{ my: 2}}>
           <StyledCardMedia
             component="img" 
             image={profileImage.image_url}
-          />
-          <Box sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+            />
+        </StyledCard>
+        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+          <IconCard>    
             <IconButton><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
             <IconButton><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
             <IconButton><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
             <IconButton><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
             <IconButton><DeleteIcon /></IconButton>
             <IconButton><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
-          </Box>
-        </StyledCard>
+          </IconCard>
+        </Box>
       </Grid>
     </CardContent>
     </>
