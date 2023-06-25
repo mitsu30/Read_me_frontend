@@ -8,9 +8,13 @@ import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import LockIcon from '@mui/icons-material/Lock';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { useState } from 'react';
 import { useSnackbar } from 'notistack';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -32,11 +36,15 @@ const IconCard = styled(Card)(({ theme }) => ({
   alignItems: 'flex',  
 }));
 
-export default function ProfilePage({ profileImage }) {
+export default function ProfilePage({ profileImage, userCommunities }) {
   const router = useRouter();
   const { id } = router.query;
   const { enqueueSnackbar } = useSnackbar();
   const [openModal, setOpenModal] = useState(false);
+  const [openModalForOpenRange, setOpenModalForOpenRange] = useState(false);
+  const [openRange, setOpenRange] = useState('');  // default value here...
+  const [communities, setCommunities] = useState(userCommunities.user_communities.map(community => ({ ...community, checked: false })));
+
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -70,6 +78,37 @@ export default function ProfilePage({ profileImage }) {
     }
   };
 
+  const handleOpenModalForOpenRange = () => {
+    setOpenModalForOpenRange(true);
+  };
+
+  const handleCloseModalForOpenRange = () => {
+    setOpenModalForOpenRange(false);
+  };
+  
+  const handleCheckboxChange = (index) => {
+    setCommunities(communities.map((community, i) => i === index ? { ...community, checked: !community.checked } : community));
+  };
+
+  const handleOpenRangeChange = (event) => {
+    setOpenRange(event.target.value);
+    // fetch user's communities here if necessary...
+  };
+
+  const handleOpenRangeUpdate = async () => {
+    // send request to backend open_ranges controller here...
+    // for example:
+    /*
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges`,
+      { open_range: openRange },
+      config
+    );
+    */
+    handleCloseModalForOpenRange();
+  };
+
+
   return (
     <>
     <CardContent>
@@ -87,7 +126,7 @@ export default function ProfilePage({ profileImage }) {
             <IconButton><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
             <IconButton><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
             <IconButton><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
-            <IconButton><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
+            <IconButton onClick={handleOpenModalForOpenRange}><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
             <IconButton onClick={handleOpenModal}><DeleteIcon /></IconButton>
             <IconButton><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
           </IconCard>
@@ -114,6 +153,48 @@ export default function ProfilePage({ profileImage }) {
       </Box>
     </Modal>
 
+    <Modal
+      open={openModalForOpenRange}
+      onClose={handleCloseModalForOpenRange}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh'}}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: 'black', padding: '1rem' }}>
+          <Typography variant="h6" component="h2">
+            プロフィール帳の公開範囲
+          </Typography>
+          <Select
+            value={openRange}
+            onChange={handleOpenRangeChange}
+            sx={{ marginTop: '1rem' }}
+          >
+            <MenuItem value="private">プライベート</MenuItem>
+            <MenuItem value="public">公開</MenuItem>
+            <MenuItem value="friends_only">友達のみ</MenuItem>
+          </Select>
+
+          {openRange === 'friends_only' && communities.map((community, index) => (
+            <FormControlLabel
+              key={index}
+              control={
+                <Checkbox
+                  checked={community.checked}
+                  onChange={() => handleCheckboxChange(index)}
+                  color="primary"
+                />
+              }
+              label={community.name}
+            />
+          ))}
+
+          <Box sx={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <Button variant="outlined" color="primary" onClick={handleOpenRangeUpdate}>更新する</Button>
+            <Button variant="outlined" color="secondary" onClick={handleCloseModalForOpenRange}>もどる</Button>
+          </Box>
+        </Box>
+      </Box>
+    </Modal>
     </>
   );
 }
@@ -125,13 +206,20 @@ export async function getServerSideProps(context) {
     headers: { authorization: `Bearer ${cookies.token}` },
   };
 
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
-  const profileImage = await res.data;
+  const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
+  const profileImage = await profileRes.data;
+  console.log(profileImage)
+
+  const communitiesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/communities/${id}`, config);
+  const userCommunities = await communitiesRes.data;
+  console.log(userCommunities)
+
   // console.log(res)
   // console.log(res.data)
   return { 
     props: { 
-      profileImage
+      profileImage,
+      userCommunities,
     } 
   };
 }
