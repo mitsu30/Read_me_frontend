@@ -6,7 +6,7 @@ import axios from 'axios';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import SettingsIcon from '@mui/icons-material/Settings';
+import LockIcon from '@mui/icons-material/Lock';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
@@ -42,8 +42,8 @@ export default function ProfilePage({ profileImage }) {
           <Box sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
             <IconButton><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
             <IconButton><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
-            <IconButton><ChatBubbleOutlineOutlinedIcon sx={{ color: 'gray' }}/></IconButton>
-            <IconButton><SettingsIcon /></IconButton>
+            <IconButton><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
+            <IconButton><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
             <IconButton><DeleteIcon /></IconButton>
             <IconButton><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
           </Box>
