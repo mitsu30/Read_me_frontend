@@ -195,8 +195,8 @@ export default function ProfilePage({ profileImage, userCommunities }) {
             onChange={handleOpenRangeChange}
             sx={{ marginTop: '1rem' }}
           >
-            <MenuItem value="opened">自分のみ</MenuItem>
-            <MenuItem value="closed">全体に公開</MenuItem>
+            <MenuItem value="opened">全体に公開</MenuItem>
+            <MenuItem value="closed">自分のみ</MenuItem>
             <MenuItem value="membered_communities_only">コミュニティのなかま</MenuItem>
           </Select>
 
