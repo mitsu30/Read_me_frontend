@@ -44,8 +44,7 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
   const [openModal, setOpenModal] = useState(false);
   const [openModalForOpenRange, setOpenModalForOpenRange] = useState(false);
   const [openRange, setOpenRange] = useState(profileImage.privacy);  
-  // const [communities, setCommunities] = useState(userCommunities.user_communities.map(community => ({ ...community, checked: false })));
-  const [communities, setCommunities] = useState(userCommunities.user_communities.map(community => {
+  const [communities, setCommunities] = useState(userCommunities.map(community => {
     const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
     return { ...community, checked: isChecked }
   }));
@@ -245,15 +244,15 @@ export async function getServerSideProps(context) {
 
   const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
   const profileImage = await profileRes.data;
-  console.log(profileImage)
+  // console.log(profileImage)
 
   const communitiesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/communities/${id}`, config);
-  const userCommunities = await communitiesRes.data;
-  console.log(userCommunities)
+  const userCommunities = await communitiesRes.data.user_communities;
+  // console.log(userCommunities)
   
   const openRangesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges/${id}`, config);
   const openRanges = await openRangesRes.data.open_ranges;
-  console.log(openRanges)
+  // console.log(openRanges)
 
   return { 
     props: { 

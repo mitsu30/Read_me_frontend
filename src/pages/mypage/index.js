@@ -7,8 +7,6 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/system';
 
-
-
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -30,7 +28,7 @@ const TabPanel = (props) => {
 }
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  width: 280, // カードの幅を固定
+  width: 300, // カードの幅を固定
   margin: theme.spacing(6), // カードの周りの余白を設定
   padding: theme.spacing(1), // カードの内側の余白を設定
   display: 'flex', // カードの内容をフレックスボックスとして扱う
@@ -121,6 +119,7 @@ const MyPage = ({ user }) => {
                 component="img" 
                 image={profile.image_url}
               />
+              公開範囲:{profile.privacy}
             </StyledCard>
           </Grid>
         ))}
@@ -144,8 +143,7 @@ export async function getServerSideProps(context) {
   };
 
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, config);
-  console.log(res)
-  console.log(res.data.data)
+  // console.log(res.data.data)
   return { props: { user: res.data.data } };
 }
 
