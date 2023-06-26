@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typography  } from '@mui/material';
+import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useSnackbar } from 'notistack';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -92,10 +93,14 @@ export default function ProfilePage({ profileImage, userCommunities }) {
 
   const handleOpenRangeChange = (event) => {
     setOpenRange(event.target.value);
-    // fetch user's communities here if necessary...
   };
 
   const handleOpenRangeUpdate = async () => {
+    if (openRange === "membered_communities_only" && !communities.some(community => community.checked)) {
+      enqueueSnackbar('プロフィール帳を公開するコミュニティを選択してください', { variant: 'error' });
+      return;
+    }
+
     try {
         const formData = new FormData();
         formData.append('profile[privacy]', openRange); 
@@ -190,15 +195,17 @@ export default function ProfilePage({ profileImage, userCommunities }) {
           <Typography variant="h6" component="h2">
             プロフィール帳の公開範囲
           </Typography>
-          <Select
-            value={openRange}
-            onChange={handleOpenRangeChange}
-            sx={{ marginTop: '1rem' }}
-          >
-            <MenuItem value="opened">全体に公開</MenuItem>
-            <MenuItem value="closed">自分のみ</MenuItem>
-            <MenuItem value="membered_communities_only">コミュニティのなかま</MenuItem>
-          </Select>
+          <FormControl sx={{minWidth: 120 }} size="small">
+            <Select
+              value={openRange}
+              onChange={handleOpenRangeChange}
+              sx={{ marginTop: '1rem' }}
+            >
+              <MenuItem value="opened">全体に公開</MenuItem>
+              <MenuItem value="closed">自分のみ</MenuItem>
+              <MenuItem value="membered_communities_only">コミュニティのなかま</MenuItem>
+            </Select>
+          </FormControl>
 
           {openRange === 'membered_communities_only' && communities.map((community, index) => (
             <FormControlLabel
