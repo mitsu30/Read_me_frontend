@@ -42,7 +42,7 @@ export default function ProfilePage({ profileImage, userCommunities }) {
   const { enqueueSnackbar } = useSnackbar();
   const [openModal, setOpenModal] = useState(false);
   const [openModalForOpenRange, setOpenModalForOpenRange] = useState(false);
-  const [openRange, setOpenRange] = useState('');  // default value here...
+  const [openRange, setOpenRange] = useState('');  
   const [communities, setCommunities] = useState(userCommunities.user_communities.map(community => ({ ...community, checked: false })));
 
 
@@ -96,18 +96,44 @@ export default function ProfilePage({ profileImage, userCommunities }) {
   };
 
   const handleOpenRangeUpdate = async () => {
-    // send request to backend open_ranges controller here...
-    // for example:
-    /*
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges`,
-      { open_range: openRange },
-      config
-    );
-    */
-    handleCloseModalForOpenRange();
-  };
+    try {
+        const formData = new FormData();
+        formData.append('profile[privacy]', openRange); 
+        if (openRange === "membered_communities_only") { 
+          const checkedCommunities = communities.filter(community => community.checked).map(community => community.id);
+          for (let i = 0; i < checkedCommunities.length; i++) {
+            formData.append(`community_id`, checkedCommunities[i]);
+          }
+        }
+        console.log(...formData);
+    
+        const cookies = nookies.get(null);
+        const config = {
+          headers: { 
+            'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${cookies.token}` 
+          },
+        };
 
+        const response = await axios.patch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges/${id}`,
+          formData,
+          config
+        );
+
+        handleCloseModalForOpenRange();
+
+        if (response.status === 200) {
+            enqueueSnackbar('プロフィール帳を更新しました', { variant: 'success' });
+            router.push("/users");
+          } else {
+            enqueueSnackbar('プロフィール帳の更新に失敗しました', { variant: 'error' });
+          }
+        } catch (error) {
+          enqueueSnackbar('エラーが発生しました', { variant: 'error' });
+          console.error(error);
+        }
+      };
 
   return (
     <>
@@ -169,12 +195,12 @@ export default function ProfilePage({ profileImage, userCommunities }) {
             onChange={handleOpenRangeChange}
             sx={{ marginTop: '1rem' }}
           >
-            <MenuItem value="private">プライベート</MenuItem>
-            <MenuItem value="public">公開</MenuItem>
-            <MenuItem value="friends_only">友達のみ</MenuItem>
+            <MenuItem value="opened">自分のみ</MenuItem>
+            <MenuItem value="closed">全体に公開</MenuItem>
+            <MenuItem value="membered_communities_only">コミュニティのなかま</MenuItem>
           </Select>
 
-          {openRange === 'friends_only' && communities.map((community, index) => (
+          {openRange === 'membered_communities_only' && communities.map((community, index) => (
             <FormControlLabel
               key={index}
               control={
@@ -208,14 +234,12 @@ export async function getServerSideProps(context) {
 
   const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
   const profileImage = await profileRes.data;
-  console.log(profileImage)
+  // console.log(profileImage)
 
   const communitiesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/communities/${id}`, config);
   const userCommunities = await communitiesRes.data;
-  console.log(userCommunities)
+  // console.log(userCommunities)
 
-  // console.log(res)
-  // console.log(res.data)
   return { 
     props: { 
       profileImage,
