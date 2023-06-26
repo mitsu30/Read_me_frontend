@@ -61,9 +61,9 @@ const MyPage = ({ user }) => {
   const renderPrivacySetting = (privacy) => {
     switch(privacy) {
       case 'opened':
-        return '自分のみ';
-      case 'closed':
         return '全体';
+      case 'closed':
+        return '自分のみ';
       case 'membered_communities_only':
         return '所属コミュニティ';
       default:
