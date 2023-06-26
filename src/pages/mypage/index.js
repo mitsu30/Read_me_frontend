@@ -57,8 +57,20 @@ const MyPage = ({ user }) => {
   const handleCardClick = (profile) => {
     router.push(`/mypage/${profile.uuid}`);
   };
-
-
+  
+  const renderPrivacySetting = (privacy) => {
+    switch(privacy) {
+      case 'opened':
+        return '自分のみ';
+      case 'closed':
+        return '全体';
+      case 'membered_communities_only':
+        return '所属コミュニティ';
+      default:
+        return '';
+    }
+  };
+  
   return (
     <>
     <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
@@ -119,7 +131,13 @@ const MyPage = ({ user }) => {
                 component="img" 
                 image={profile.image_url}
               />
-              公開範囲:{profile.privacy}
+              公開範囲: {renderPrivacySetting(profile.privacy)}
+              {profile.privacy === 'membered_communities_only' && (
+                <Typography>
+                  公開コミュニティ: {profile.open_range_communities.join(', ')}
+                </Typography>
+              )}
+
             </StyledCard>
           </Grid>
         ))}
