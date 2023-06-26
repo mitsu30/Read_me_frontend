@@ -8,6 +8,7 @@ import { TextField } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useRouter } from 'next/router';
 
 const Users = ({ initialUsers, initialGroups }) => {
   const [users, setUsers] = useState(initialUsers);
@@ -20,6 +21,8 @@ const Users = ({ initialUsers, initialGroups }) => {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,15 +112,15 @@ const Users = ({ initialUsers, initialGroups }) => {
           </TableHead>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id}>
+              <TableRow key={user.id} style={{ cursor: 'pointer' }} onClick={() => router.push(`/users/${user.id}`)}>
                 <TableCell>
-                <Avatar src={user.avatar} alt={user.name} sx={{ width: 80, height: 80 }}/> 
+                  <Avatar src={user.avatar} alt={user.name} sx={{ width: 80, height: 80 }}/> 
                 </TableCell>
                 <TableCell align="center">{user.name}</TableCell>
                 <TableCell align="center">{user.group}</TableCell>
                 <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>{user.greeting}</TableCell>
               </TableRow>
-            ))}
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -132,6 +135,7 @@ const Users = ({ initialUsers, initialGroups }) => {
 export async function getServerSideProps() {
   const initialUsersRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=1&sort_by=created_at_desc&group_id=RUNTEQ&name=`);
   const initialGroupsRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
+  // console.log(initialUsersRes.data);
   
   return {
     props: {
