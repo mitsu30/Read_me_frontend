@@ -37,14 +37,18 @@ const IconCard = styled(Card)(({ theme }) => ({
   alignItems: 'flex',  
 }));
 
-export default function ProfilePage({ profileImage, userCommunities }) {
+export default function ProfilePage({ profileImage, userCommunities, openRanges  }) {
   const router = useRouter();
   const { id } = router.query;
   const { enqueueSnackbar } = useSnackbar();
   const [openModal, setOpenModal] = useState(false);
   const [openModalForOpenRange, setOpenModalForOpenRange] = useState(false);
-  const [openRange, setOpenRange] = useState('');  
-  const [communities, setCommunities] = useState(userCommunities.user_communities.map(community => ({ ...community, checked: false })));
+  const [openRange, setOpenRange] = useState(profileImage.privacy);  
+  // const [communities, setCommunities] = useState(userCommunities.user_communities.map(community => ({ ...community, checked: false })));
+  const [communities, setCommunities] = useState(userCommunities.user_communities.map(community => {
+    const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
+    return { ...community, checked: isChecked }
+  }));
 
 
   const handleOpenModal = () => {
@@ -130,7 +134,7 @@ export default function ProfilePage({ profileImage, userCommunities }) {
 
         if (response.status === 200) {
             enqueueSnackbar('プロフィール帳を更新しました', { variant: 'success' });
-            router.push("/users");
+            router.push("/mypage");
           } else {
             enqueueSnackbar('プロフィール帳の更新に失敗しました', { variant: 'error' });
           }
@@ -241,16 +245,21 @@ export async function getServerSideProps(context) {
 
   const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
   const profileImage = await profileRes.data;
-  // console.log(profileImage)
+  console.log(profileImage)
 
   const communitiesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/communities/${id}`, config);
   const userCommunities = await communitiesRes.data;
-  // console.log(userCommunities)
+  console.log(userCommunities)
+  
+  const openRangesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges/${id}`, config);
+  const openRanges = await openRangesRes.data.open_ranges;
+  console.log(openRanges)
 
   return { 
     props: { 
       profileImage,
       userCommunities,
+      openRanges,
     } 
   };
 }
