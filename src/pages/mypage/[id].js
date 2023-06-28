@@ -241,7 +241,7 @@ export async function getServerSideProps(context) {
   const config = {
     headers: { authorization: `Bearer ${cookies.token}` },
   };
-
+  
   const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
   const profileImage = await profileRes.data;
   // console.log(profileImage)
@@ -261,4 +261,22 @@ export async function getServerSideProps(context) {
       openRanges,
     } 
   };
+// } catch (error) {
+//   // If the API returned a response, it will be available at error.response
+//   if (error.response) {
+//     if (error.response.status === 400 && error.response.data.message === "Firebase ID token has expired. Get a fresh token from your app and try again.") {
+//       return { 
+//         redirect: {
+//           destination: '/login', // Redirect to login page
+//           permanent: false,
+//         },
+//         props: {} 
+//       }
+//     }
+//   }
+//   // Otherwise, the request failed before it could get a response
+//   else {
+//     throw error;
+//   }
+
 }
