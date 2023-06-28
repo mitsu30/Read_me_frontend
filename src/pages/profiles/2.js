@@ -16,14 +16,14 @@ import Typography from '@mui/material/Typography'
 import { Loading } from '../../components/Loading';
 import nookies from "nookies";
 
-const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
-const MAX_LINE_LENGTH_OF_ANSWER6 = 13;
-const MAX_LINE_LENGTH_OF_ANSWER7 = 26;
+const MAX_LINE_LENGTH_OF_ANSWER1 = 6;
+const MAX_LINE_LENGTH_OF_ANSWER6 = 14;
+const MAX_LINE_LENGTH_OF_ANSWER7 = 15;
 
 export default function App () {
   const [body1, setBody1] = useState("");
-  const [body2, setBody2] = useState("1");
-  const [body3, setBody3] = useState("1");
+  const [body2, setBody2] = useState("");
+  const [body3, setBody3] = useState("");
   const [body4, setBody4] = useState("");
   const [body5, setBody5] = useState("");
   const [body6, setBody6] = useState("");
@@ -51,7 +51,7 @@ export default function App () {
       },
     };
 
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/preview`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/second/preview`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
     setImageUrl(response.data.url);
     } catch (error) {
     console.error(error);
@@ -71,7 +71,7 @@ export default function App () {
         },
       };
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/second`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
       
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);
@@ -127,7 +127,7 @@ export default function App () {
                   margin="normal"
                   fullWidth
                   id="answer1"
-                  label="なまえは？"
+                  label="なまえ"
                   name="answer1"
                   autoFocus
                   value={body1}
@@ -135,65 +135,82 @@ export default function App () {
                   helperText={body1Error}
                   onChange={(e) => {
                     if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
-                      setBody1Error('13文字以内で入力してください。');
+                      setBody1Error('6文字以内で入力してください。');
                     } else {
                       setBody1Error('');
                       setBody1(e.target.value);
                     }
                   }}
                 />
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="month-label">月は？</InputLabel>
-                  <Select
-                    labelId="month-label"
-                    id="month-select"
-                    value={body2}
-                    onChange={(e) => setBody2(e.target.value)}
-                  >
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => (
-                      <MenuItem key={num} value={num}>{num}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="day-label">日は？</InputLabel>
-                  <Select
-                    labelId="day-label"
-                    id="day-select"
-                    value={body3}
-                    onChange={(e) => setBody3(e.target.value)}
-                  >
-                    {Array.from({ length: 31 }, (_, i) => i + 1).map((num) => (
-                      <MenuItem key={num} value={num}>{num}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="zodiac-sign-label">せいざは？</InputLabel>
-                  <Select
-                    labelId="zodiac-sign-label"
-                    id="zodiac-sign-select"
-                    value={body4}
-                    onChange={(e) => setBody4(e.target.value)}
-                  >
-                    {ZodiacSigns.map((sign) => (
-                      <MenuItem key={sign} value={sign}>{sign}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="blood-type-label">けつえきがたは？</InputLabel>
-                  <Select
-                    labelId="blood-type-label"
-                    id="blood-type-select"
-                    value={body5}
-                    onChange={(e) => setBody5(e.target.value)}
-                  >
-                    {['A', 'B', 'O', 'AB'].map((type) => (
-                      <MenuItem key={type} value={type}>{type}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <FormControl fullWidth variant="outlined" margin="normal">
+                      <InputLabel htmlFor="month-select">たんじょうつき</InputLabel>
+                      <Select
+                        labelId="month-label"
+                        id="month-select"
+                        value={body2}
+                        onChange={(e) => setBody2(e.target.value)}
+                        label="たんじょうつき"
+                      >
+                        {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => (
+                          <MenuItem key={num} value={num}>{num}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl fullWidth variant="outlined" margin="normal">
+                      <InputLabel htmlFor="day-select">たんじょうび</InputLabel>
+                      <Select
+                        labelId="day-label"
+                        id="day-select"
+                        value={body3}
+                        onChange={(e) => setBody3(e.target.value)}
+                        label="たんじょうび"
+                      >
+                        {Array.from({ length: 31 }, (_, i) => i + 1).map((num) => (
+                          <MenuItem key={num} value={num}>{num}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <FormControl fullWidth variant="outlined" margin="normal">
+                      <InputLabel htmlFor="zodiac-sign-select">せいざ</InputLabel>
+                      <Select
+                        labelId="zodiac-sign-label"
+                        id="zodiac-sign-select"
+                        value={body4}
+                        onChange={(e) => setBody4(e.target.value)}
+                        label="せいざ"
+                      >
+                        {ZodiacSigns.map((sign) => (
+                          <MenuItem key={sign} value={sign}>{sign}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl fullWidth variant="outlined" margin="normal">
+                      <InputLabel htmlFor="blood-type-select">けつえきがた</InputLabel>
+                      <Select
+                        labelId="blood-type-label"
+                        id="blood-type-select"
+                        value={body5}
+                        onChange={(e) => setBody5(e.target.value)}
+                        label="けつえきがた"
+                      >
+                        {['A', 'B', 'O', 'AB'].map((type) => (
+                          <MenuItem key={type} value={type}>{type}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
                 <TextField
                   color="secondary"
                   margin="normal"
@@ -205,8 +222,8 @@ export default function App () {
                   error={body6Error !== ''}
                   helperText={body6Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER2) {
-                      setBody6Error('13文字以内で入力してください。');
+                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER6) {
+                      setBody6Error('14文字以内で入力してください。');
                     } else {
                       setBody6Error('');
                       setBody6(e.target.value);
@@ -221,14 +238,12 @@ export default function App () {
                   label="じぶんのせいかく"
                   id="answer7"
                   value={body7}
-                  multiline
                   rows={MAX_LINE_LENGTH_OF_ANSWER7}
                   error={body7Error !== ''}
                   helperText={body7Error}
                   onChange={(e) => {
-                    const lines = e.target.value.split('\n');
-                    if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_ANSWER3)) {
-                      setBody7Error('1行は26文字以内、改行は2回までとしてください。');
+                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER7) {
+                      setBody7Error('15文字以内で入力してください。');
                     } else {
                       setBody7Error('');
                       setBody7(e.target.value);
