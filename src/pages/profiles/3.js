@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { useState } from "react";
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import axios from "axios";
-import { styled } from '@mui/system';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
@@ -17,12 +15,12 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
 import { Loading } from '../../components/Loading';
 import nookies from "nookies";
+import { useSnackbar } from 'notistack';
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 6;
 const MAX_LINE_LENGTH_OF_ANSWER2 = 12;
 const MAX_LINE_LENGTH_OF_ANSWER4 = 23;
 const MAX_LINE_LENGTH_OF_ANSWER5 = 15;
-const MAX_LINE_COUNT = 3;
 
 export default function App () {
   const [body1, setBody1] = useState("");
@@ -37,10 +35,37 @@ export default function App () {
   const [body4Error, setBody4Error] = useState("");
   const [body5Error, setBody5Error] = useState("");
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
   const router = useRouter();
+
+  const validateForm = () => {
+    let isValid = true;
+    if (!body1) {
+      enqueueSnackbar("なまえを入力してください", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body2) {
+      enqueueSnackbar("しゅみを入力してください", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body3) {
+      enqueueSnackbar("推しCREDOを選択してください", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body4) {
+      enqueueSnackbar("めざしたわけを入力してください", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body5) {
+      enqueueSnackbar("がんばりたいことを入力してください", { variant: 'error' });
+      isValid = false;
+    }
+    return isValid;
+  };
 
   const handlePreview = async (e) => {
     e.preventDefault();
@@ -63,6 +88,9 @@ export default function App () {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     setIsLoading(true);
   
     try {
