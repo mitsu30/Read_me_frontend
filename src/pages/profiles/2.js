@@ -15,6 +15,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
 import { Loading } from '../../components/Loading';
 import nookies from "nookies";
+import { useSnackbar } from 'notistack';
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 6;
 const MAX_LINE_LENGTH_OF_ANSWER6 = 14;
@@ -28,16 +29,51 @@ export default function App () {
   const [body5, setBody5] = useState("");
   const [body6, setBody6] = useState("");
   const [body7, setBody7] = useState("");
+  const [imageUrl, setImageUrl] = useState("/templates/2.png");
 
   const [body1Error, setBody1Error] = useState("");
   const [body6Error, setBody6Error] = useState("");
   const [body7Error, setBody7Error] = useState("");
-  
-  const [imageUrl, setImageUrl] = useState("/templates/2.png");
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
   const router = useRouter();
+
+  const validateForm = () => {
+    let isValid = true;
+    if (!body1) {
+      enqueueSnackbar("たんじょうつきを選択してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body2) {
+      enqueueSnackbar("たんじょうつきを選択してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body3) {
+      enqueueSnackbar("たんじょうびを選択してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body4) {
+      enqueueSnackbar("せいざを選択してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body5) {
+      enqueueSnackbar("けつえきがたを選択してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body6) {
+      enqueueSnackbar("みんなからいわれるを入力してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body7) {
+      enqueueSnackbar("じぶんのせいかくを入力してね", { variant: 'error' });
+      isValid = false;
+    }
+    return isValid;
+  };
 
   const handlePreview = async (e) => {
     e.preventDefault();
@@ -60,6 +96,9 @@ export default function App () {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     setIsLoading(true);
   
     try {
