@@ -148,10 +148,10 @@ export async function getServerSideProps(context) {
     res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, config);
   } else {
     // 非ログインユーザー
-    res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/show_public${id}`);
+    res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/show_public/${id}`);
   }
   
-  console.log(res.data.profiles)
+  console.log(res.data)
   return {
     props: {
       user: res.data.data

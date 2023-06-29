@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from '../components/header'; 
+import Sidebar from '../components/sidebar'; 
 import { NextSeo } from 'next-seo';
 import { AuthContextProvider } from "../context/AuthContext";
 import theme from './theme';
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }) {
                 }}
               > 
                 <Header />
+                <Sidebar />
                   <Component {...pageProps} />
             </CustomSnackbarProvider>
         </ThemeProvider>
