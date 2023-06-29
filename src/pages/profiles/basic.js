@@ -29,7 +29,7 @@ export default function App () {
   const [body5, setBody5] = useState("");
   const [body6, setBody6] = useState("");
   const [body7, setBody7] = useState("");
-  const [imageUrl, setImageUrl] = useState("/templates/2.png");
+  const [imageUrl, setImageUrl] = useState("/templates/basic.png");
 
   const [body1Error, setBody1Error] = useState("");
   const [body6Error, setBody6Error] = useState("");
@@ -87,7 +87,7 @@ export default function App () {
       },
     };
 
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/second/preview`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/basic/preview`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
     setImageUrl(response.data.url);
     } catch (error) {
     console.error(error);
@@ -110,7 +110,7 @@ export default function App () {
         },
       };
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/second`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/basic`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
       
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);

@@ -141,7 +141,7 @@ export async function getServerSideProps(context) {
   headers: { authorization: `Bearer ${cookies.token}` },
   };
 
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
   const profileImage = await res.data;
   // console.log(res.data);
 

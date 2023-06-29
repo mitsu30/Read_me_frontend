@@ -68,7 +68,7 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
     };
     
     try {
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1//profiles/${id}`, config);
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
       if (response.status === 200) {
         setTimeout(() => {
           router.push('/mypage');  // or wherever you want to redirect after delete
@@ -242,7 +242,7 @@ export async function getServerSideProps(context) {
     headers: { authorization: `Bearer ${cookies.token}` },
   };
   
-  const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/${id}`, config);
+  const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
   const profileImage = await profileRes.data;
   // console.log(profileImage)
 
