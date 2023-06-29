@@ -45,23 +45,23 @@ export default function App () {
   const validateForm = () => {
     let isValid = true;
     if (!body1) {
-      enqueueSnackbar("なまえを入力してください", { variant: 'error' });
+      enqueueSnackbar("なまえを入力してね", { variant: 'error' });
       isValid = false;
     }
     if (!body2) {
-      enqueueSnackbar("しゅみを入力してください", { variant: 'error' });
+      enqueueSnackbar("しゅみを入力してね", { variant: 'error' });
       isValid = false;
     }
     if (!body3) {
-      enqueueSnackbar("推しCREDOを選択してください", { variant: 'error' });
+      enqueueSnackbar("推しCREDOを選択してね", { variant: 'error' });
       isValid = false;
     }
     if (!body4) {
-      enqueueSnackbar("めざしたわけを入力してください", { variant: 'error' });
+      enqueueSnackbar("めざしたわけを入力してね", { variant: 'error' });
       isValid = false;
     }
     if (!body5) {
-      enqueueSnackbar("がんばりたいことを入力してください", { variant: 'error' });
+      enqueueSnackbar("がんばりたいことを入力してね", { variant: 'error' });
       isValid = false;
     }
     return isValid;

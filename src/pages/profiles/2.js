@@ -45,7 +45,7 @@ export default function App () {
   const validateForm = () => {
     let isValid = true;
     if (!body1) {
-      enqueueSnackbar("たんじょうつきを選択してね", { variant: 'error' });
+      enqueueSnackbar("なまえを入力してね", { variant: 'error' });
       isValid = false;
     }
     if (!body2) {
