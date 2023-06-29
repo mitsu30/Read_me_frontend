@@ -6,6 +6,7 @@ import { AuthContextProvider } from "../context/AuthContext";
 import theme from '../utils/theme';
 import StyledAppWrapper from '../../styles/StyledAppWrapper';
 import CustomSnackbarProvider from '../../styles/CustomSnackbarProvider';
+import Layout from '../components/Layoyt'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -14,7 +15,7 @@ function MyApp({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <CssBaseline />
             <NextSeo
-              title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
+              title="りーどみー" 
             />
               <CustomSnackbarProvider
                 maxSnack={3}
@@ -24,7 +25,9 @@ function MyApp({ Component, pageProps }) {
                 }}
               > 
                 <Header />
-                  <Component {...pageProps} />
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
             </CustomSnackbarProvider>
         </ThemeProvider>
       </AuthContextProvider>

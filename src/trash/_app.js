@@ -7,6 +7,7 @@ import { AuthContextProvider } from "../context/AuthContext";
 import theme from './theme';
 import StyledAppWrapper from './StyledAppWrapper';
 import CustomSnackbarProvider from './CustomSnackbarProvider';
+import Layout from '../components/Layoyt'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -25,8 +26,9 @@ function MyApp({ Component, pageProps }) {
                 }}
               > 
                 <Header />
-                <Sidebar />
-                  <Component {...pageProps} />
+                  <Layout> 
+                    <Component {...pageProps} />
+                  </Layout>
             </CustomSnackbarProvider>
         </ThemeProvider>
       </AuthContextProvider>
