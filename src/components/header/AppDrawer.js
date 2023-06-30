@@ -6,7 +6,6 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,9 +15,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import Link from '@mui/material/Link'; 
+import PersonIcon from '@mui/icons-material/Person';
+import SchoolIcon from '@mui/icons-material/School';
+import DescriptionIcon from '@mui/icons-material/Description';
+import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import InfoIcon from '@mui/icons-material/Info';
+import LoginIcon from '@mui/icons-material/Login';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 
 const drawerWidth = 240;
 
@@ -101,6 +106,16 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const menuItems = [
+    {text: 'ログイン', icon: <LoginIcon sx={{ color: '#f0c4ca' }}/>},
+    {text: 'スクールのなかま', icon: <Diversity3Icon sx={{ color: '#f0c4ca' }}/>},
+    {text: '利用規約', icon: <DescriptionIcon sx={{ color: '#f0c4ca' }}/>},
+    {text: 'プライバシーポリシー', icon: <PrivacyTipIcon sx={{ color: '#f0c4ca' }}/>},
+    {text: 'お問い合わせ', icon: <ContactMailIcon sx={{ color: '#f0c4ca' }}/>},
+    {text: '© 2023 りーどみー'},
+  ];
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -123,7 +138,7 @@ export default function MiniDrawer() {
               src="/logo.png"
               alt="logo"
               style={{
-                width: '120px',
+                width: '105px',
                 height: 'auto',
                 transition: '0.3s'
               }}
@@ -141,8 +156,8 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {menuItems.map((item, index) => (
+            <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -157,38 +172,14 @@ export default function MiniDrawer() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
     </Box>
   );
