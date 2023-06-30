@@ -13,13 +13,15 @@ import {
 } from "firebase/auth";
 import { useRouter } from "next/router";
 import { auth } from "../lib/initFirebase";
+import { useSnackbar } from 'notistack';
 
 export default function useFirebaseAuth() {
   const [currentUser, setCurrentUser] = useState(null); 
   const [loading, setLoading] = useState(true);
+  const { enqueueSnackbar } = useSnackbar(); 
   const router = useRouter();
 
-  const AUTO_LOGOUT_TIME = 15 * 60 * 1000; // ms
+  const AUTO_LOGOUT_TIME = 15 * 60 * 1000;
   let autoLogoutTimer;
 
   useEffect(() => {
@@ -47,13 +49,6 @@ export default function useFirebaseAuth() {
     };
   }, []);
   
-  // const loginWithGoogle = async () => {
-  //   // Googleの認証プロパイダのインスタンスを作成している。
-  //   const provider = new GoogleAuthProvider();
-  //   const provider = new GithubAuthProvider();
-  //   // ポップアップ認証を行い、その結果を格納する。
-  //   const result = await signInWithPopup(auth, provider);
-  
   const getProvider = (method) => {
     switch (method) {
       case "google":
@@ -76,14 +71,6 @@ export default function useFirebaseAuth() {
       console.log(result);
       console.log(details);
 
-      
-      // ユーザーから取得できる情報
-      // displayName: string | null; // ユーザー表示名
-      // email: string | null; // ユーザーメール
-      // phoneNumber: string | null; // ユーザー電話番号
-      // photoURL: string | null; // Googleプロフィール写真URL
-      // uid: string; // Firebaseが生成するユニークID
-
       return { user, details };
     }
   };
@@ -91,6 +78,7 @@ export default function useFirebaseAuth() {
   const clear = () => {
     setCurrentUser(null);
     setLoading(false);
+    enqueueSnackbar('ログアウトしたよ！', { variant: 'success' });
     router.push("/");
   };
   
