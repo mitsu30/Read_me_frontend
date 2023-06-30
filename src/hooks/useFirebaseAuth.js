@@ -39,15 +39,15 @@ export default function useFirebaseAuth() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleBeforeunload = () => logout();
+  // useEffect(() => {
+  //   const handleBeforeunload = () => logout();
 
-    window.addEventListener('beforeunload', handleBeforeunload);
+  //   window.addEventListener('beforeunload', handleBeforeunload);
 
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeunload);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeunload);
+  //   };
+  // }, []);
   
   const getProvider = (method) => {
     switch (method) {
