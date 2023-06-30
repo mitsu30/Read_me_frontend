@@ -12,6 +12,7 @@ const PrivacyPolicy = () => (
       </Typography>
       <Typography variant="body1" paragraph>
         当社は、お客様から以下の情報を取得します。
+      </Typography>
         <ul>
           <li>氏名(ニックネームやペンネームも含む)</li>
           <li>年齢または生年月日</li>
@@ -23,13 +24,13 @@ const PrivacyPolicy = () => (
           <li>GitHubに登録しているアカウント情報</li>
           <li>GitHubに登録しているリポジトリ情報</li>
         </ul>
-      </Typography>
 
       <Typography variant="h5" gutterBottom>
       お客様の情報を利用する目的
       </Typography>
       <Typography variant="body1" paragraph>
       当社は、お客様から取得した情報を、以下の目的のために利用します。
+      </Typography>
         <ul>
           <li>当社サービスに関する登録の受付、お客様の本人確認、認証のため</li>
           <li>お客様の当社サービスの利用履歴を管理するため</li>
@@ -41,7 +42,6 @@ const PrivacyPolicy = () => (
           <li>当社規約の変更等を通知するため</li>
           <li>以上の他、当社サービスの提供、維持、保護及び改善のため</li>
         </ul>
-      </Typography>
 
       <Typography variant="h5" gutterBottom>
       安全管理のために講じた措置
@@ -55,13 +55,13 @@ const PrivacyPolicy = () => (
       </Typography>
       <Typography variant="body1" paragraph>
       当社は、お客様から取得する情報のうち、個人データ（個人情報保護法第１６条第３項）に該当するものついては、あらかじめお客様の同意を得ずに、第三者（日本国外にある者を含みます。）に提供しません。但し、次の場合は除きます。
+      </Typography>
         <ul>
           <li>個人データの取扱いを外部に委託する場合</li>
           <li>当社や当社サービスが買収された場合</li>
           <li>事業パートナーと共同利用する場合（具体的な共同利用がある場合は、その内容を別途公表します。）</li>
           <li>その他、法律によって合法的に第三者提供が許されている場合</li>
         </ul>
-      </Typography>
 
       <Typography variant="h5" gutterBottom>
       アクセス解析ツール
