@@ -39,6 +39,7 @@ export default function LoginModal({ open, onClose }) {
           enqueueSnackbar('ログインしたよ！', { variant: 'success' });
           setAuthenticating(false); 
           setNavigating(true);
+          onClose();
           try {
             if (response.data.isNewUser) {
               await router.push(response.data.is_student ? `/mypage/edit` : `/mypage/edit`);
