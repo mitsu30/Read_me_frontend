@@ -92,29 +92,29 @@ export default function LoginModal({ open, onClose }) {
     { (!authenticating && !navigating) && 
     <>
       <CenteredBox>
-      <Typography variant="body1" paragraph>
-        <Link href="/terms"><a>利用規約</a></Link>、<Link href="/privacy-policy"><a>プライバシーポリシー</a></Link>に<br/>
-            同意してからログインしてね！
-    </Typography>
-          <Button 
-            variant="contained"
-            sx={{ 
-   
-              mb: 2, 
-              backgroundColor: '#FF6699',
-              '&:hover': {
-                backgroundColor: '#E60073',
-              },
-              color: '#white',
-              fontWeight: 'bold',
-              fontSize: '1.2em',
-              padding: '2px 10px' 
-            }}
-            onClick={handleGitHubLogin}
-          > 
-            <FaGithub style={{ marginRight: '8px' }} /> 
-            GitHubログイン
-          </Button>
+        <Button 
+          variant="contained"
+          sx={{ 
+            mt: 2,
+            mb: 2, 
+            backgroundColor: '#FF6699',
+            '&:hover': {
+              backgroundColor: '#E60073',
+            },
+            color: '#white',
+            fontWeight: 'bold',
+            fontSize: '1.2em',
+            padding: '2px 10px' 
+          }}
+          onClick={handleGitHubLogin}
+        > 
+          <FaGithub style={{ marginRight: '8px' }} /> 
+          GitHubログイン
+        </Button>
+        <Typography variant="body1" paragraph>
+          <Link href="/terms"><a>利用規約</a></Link>、<Link href="/privacy-policy"><a>プライバシーポリシー</a></Link>に<br/>
+              同意してからログインしてね！
+        </Typography>
       </CenteredBox>
     </>
     }

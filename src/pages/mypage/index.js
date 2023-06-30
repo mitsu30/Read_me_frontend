@@ -1,4 +1,4 @@
-import { Card, CardMedia, CardContent, Typography, Avatar, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
+import { Button, Card, CardMedia, CardContent, Typography, Avatar, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
 import axios from 'axios';
 import nookies from "nookies";
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/system';
+import CenteredBox from '../../components/CenteredBox';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -57,6 +58,10 @@ const MyPage = ({ user }) => {
   const handleCardClick = (profile) => {
     router.push(`/mypage/${profile.uuid}`);
   };
+
+  const handleEdit = () => {
+    router.push(`/mypage/edit`);
+  }
   
   const renderPrivacySetting = (privacy) => {
     switch(privacy) {
@@ -86,6 +91,26 @@ const MyPage = ({ user }) => {
         マイページ
       </Typography>
     </Box>
+    <CenteredBox>
+        <Button 
+          variant="contained"
+          sx={{ 
+            mt: 2,
+            mb: 2, 
+            backgroundColor: '#FF6699',
+            '&:hover': {
+              backgroundColor: '#E60073',
+            },
+            color: '#white',
+            fontWeight: 'bold',
+            fontSize: '1.0em',
+            padding: '2px 15px' 
+          }}
+          onClick={handleEdit}
+        > 
+          へんしゅう
+        </Button>
+      </CenteredBox>
     
     <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
       <TableContainer component={Paper}>
