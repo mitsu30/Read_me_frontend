@@ -18,6 +18,34 @@ export default function useFirebaseAuth() {
   const [currentUser, setCurrentUser] = useState(null); 
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const AUTO_LOGOUT_TIME = 15 * 60 * 1000; // ms
+  let autoLogoutTimer;
+
+  useEffect(() => {
+    const resetTimer = () => {
+      clearTimeout(autoLogoutTimer);
+      autoLogoutTimer = setTimeout(logout, AUTO_LOGOUT_TIME);
+    };
+
+    window.addEventListener('click', resetTimer);
+    window.addEventListener('keypress', resetTimer);
+
+    return () => {
+      window.removeEventListener('click', resetTimer);
+      window.removeEventListener('keypress', resetTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeunload = () => logout();
+
+    window.addEventListener('beforeunload', handleBeforeunload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeunload);
+    };
+  }, []);
   
   // const loginWithGoogle = async () => {
   //   // Googleの認証プロパイダのインスタンスを作成している。
