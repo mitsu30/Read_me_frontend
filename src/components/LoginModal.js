@@ -95,7 +95,9 @@ export default function LoginModal({ open, onClose }) {
         <Button 
           variant="contained"
           sx={{ 
-            mt: 2,
+            mt: 3,
+            mr: 8,
+            ml: 8,
             mb: 2, 
             backgroundColor: '#FF6699',
             '&:hover': {

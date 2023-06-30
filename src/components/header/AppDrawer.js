@@ -272,18 +272,18 @@ export default function MiniDrawer() {
                       px: 2.5,
                     }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : 'auto',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      {item.icon}
-                    </ListItemIcon>
-                    <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
-                  </ListItemButton>
-                </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
           ))}
         </List>
         <Divider />
