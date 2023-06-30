@@ -18,7 +18,8 @@ const StyledLink = styled(Link)(({ theme }) => ({
 export default function ResultPage({ profileImage }) {
   const router = useRouter();
   const { id, shared } = router.query; 
-  const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
+  // const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
+  const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
@@ -143,6 +144,7 @@ export async function getServerSideProps(context) {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
   const profileImage = await res.data;
   // console.log(res.data);
+  // console.log(res.data.image_url);
 
 
   return {

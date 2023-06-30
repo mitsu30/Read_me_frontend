@@ -11,11 +11,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useSnackbar } from 'notistack';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import { NextSeo } from 'next-seo';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -39,7 +40,7 @@ const IconCard = styled(Card)(({ theme }) => ({
 
 export default function ProfilePage({ profileImage, userCommunities, openRanges  }) {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, shared } = router.query; 
   const { enqueueSnackbar } = useSnackbar();
   const [openModal, setOpenModal] = useState(false);
   const [openModalForOpenRange, setOpenModalForOpenRange] = useState(false);
@@ -48,6 +49,24 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
     const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
     return { ...community, checked: isChecked }
   }));
+
+  // const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
+  const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
+  const siteTitle = "りーどみー";
+  const siteDescription = "あなたのプロフィール帳シェアしませんか";
+
+  useEffect(() => {
+    if (shared === 'true') {
+      router.push('/');
+    }
+  }, [shared, router]);
+
+  const handleTwitterShare = () => {
+    setTimeout(() => {
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳')}`, '_blank');
+      setOpen(true);
+    }, 700); 
+  };
 
 
   const handleOpenModal = () => {
@@ -145,6 +164,29 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
 
   return (
     <>
+    <NextSeo
+        twitter={{
+          cardType: "summary_large_image",
+          handle: "@readmee_profile", 
+          site: "@readmee_profile"
+        }}
+        title={siteTitle}
+        description={siteDescription}
+        openGraph={{
+          url: shareUrl,
+          title: siteTitle,
+          description: siteDescription,
+          images: [
+            {
+              url: profileImage.image_url, 
+              width: 800,
+              height: 600,
+              alt: 'Result Image',
+            }
+          ],
+          site_name: 'りーどみー',
+        }}
+    />
     <CardContent>
       <Grid item sx={{
                 my: 5,
@@ -162,7 +204,7 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
             <IconButton><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
             <IconButton onClick={handleOpenModalForOpenRange}><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
             <IconButton onClick={handleOpenModal}><DeleteIcon /></IconButton>
-            <IconButton><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
+            <IconButton onClick={handleTwitterShare}><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
           </IconCard>
         </Box>
       </Grid>
@@ -236,7 +278,17 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
 }
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const { id, shared  } = context.query;
+  const userAgent = context.req.headers['user-agent'];
+  if (shared === 'true' && !userAgent.includes('Twitterbot')) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   const cookies = nookies.get(context);
   const config = {
     headers: { authorization: `Bearer ${cookies.token}` },
