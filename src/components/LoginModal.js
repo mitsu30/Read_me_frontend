@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import axios from "axios";
-import useFirebaseAuth from "../../hooks/useFirebaseAuth"
-import CenteredBox from '../../components/CenteredBox';
+import useFirebaseAuth from "../hooks/useFirebaseAuth"
+import CenteredBox from './CenteredBox';
 import { FaGithub } from 'react-icons/fa'; 
 import { useState } from 'react';  
-import { Loading } from '../../components/Loading'
+import { Loading } from './Loading'
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
 
-export default function LoginPage() {
+export default function LoginModal({ open, onClose }) {
   const { loginWithFirebase } = useFirebaseAuth();
   const { enqueueSnackbar } = useSnackbar(); 
   const [authenticating, setAuthenticating] = useState(false);
@@ -74,6 +74,7 @@ export default function LoginPage() {
 
   return (
     <>
+    <Dialog open={open} onClose={onClose}>
     {(authenticating || navigating) &&
       <Box 
           sx={{
@@ -88,34 +89,32 @@ export default function LoginPage() {
     { (!authenticating && !navigating) && 
     <>
       <CenteredBox>
-        <Typography variant="h6" style={{margin: '10px 0',textAlign: 'center', width: '100%' }}>
-          RUNTEQのみんなはこっち！
-        </Typography>
-      </CenteredBox>
-      <CenteredBox>
-        <Button 
-          variant="contained"
-          sx={{ 
-            mt: 2, 
-            mb: 2, 
-            width: '40%', 
-            backgroundColor: '#FF6699',
-            '&:hover': {
-              backgroundColor: '#E60073',
-            },
-            color: '#white',
-            fontWeight: 'bold',
-            fontSize: '1.0em',
-            padding: '8px 10px' 
-          }}
-          onClick={handleGitHubLogin}
-        >
-          <FaGithub style={{ marginRight: '8px' }} /> 
-          GitHubログイン
-        </Button>
+        <Box>
+          <Button 
+            variant="contained"
+            sx={{ 
+              mt: 10, 
+              mb: 2, 
+              width: '100%', 
+              backgroundColor: '#FF6699',
+              '&:hover': {
+                backgroundColor: '#E60073',
+              },
+              color: '#white',
+              fontWeight: 'bold',
+              fontSize: '1.2em',
+              padding: '15px 30px' 
+            }}
+            onClick={handleGitHubLogin}
+          > 
+            <FaGithub style={{ marginRight: '8px' }} /> 
+            GitHubログイン
+          </Button>
+        </Box>
       </CenteredBox>
     </>
     }
+    </Dialog>
     </>
   )
 }

@@ -22,6 +22,8 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import LoginIcon from '@mui/icons-material/Login';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import Link from 'next/link';
+import LoginModal from '../LoginModal';
+import { useState } from 'react';  
 
 const drawerWidth = 240;
 
@@ -94,7 +96,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function MiniDrawer() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false); 
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -104,8 +107,20 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const handleLoginModalOpen = () => {
+    setLoginModalOpen(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setLoginModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    handleLoginModalOpen();
+  };
+
   const menuItems = [
-    {text: 'ログイン', icon: <LoginIcon sx={{ color: '#f0c4ca' }}/>, link: '/login'},
+    {text: 'ログイン', icon: <LoginIcon sx={{ color: '#f0c4ca' }}/>, onClick: handleLoginClick},
     {text: 'スクールのなかま', icon: <Diversity3Icon sx={{ color: '#f0c4ca' }}/>, link: '/users'},
     {text: '利用規約', icon: <DescriptionIcon sx={{ color: '#f0c4ca' }}/>, link: '/terms'},
     {text: 'プライバシーポリシー', icon: <PrivacyTipIcon sx={{ color: '#f0c4ca' }}/>, link: '/privacy-policy'},
@@ -179,9 +194,33 @@ export default function MiniDrawer() {
                 </ListItemButton>
               </ListItem>
             :
-              <Link href={item.link} passHref key={item.text}>
-                <ListItem disablePadding sx={{ display: 'block' }}>
+              item.link ?
+                <Link href={item.link} passHref key={item.text}>
+                  <ListItem disablePadding sx={{ display: 'block' }}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                  </ListItem>
+                </Link>
+              :
+                <ListItem disablePadding key={item.text}>
                   <ListItemButton
+                    onClick={item.onClick}
                     sx={{
                       minHeight: 48,
                       justifyContent: open ? 'initial' : 'center',
@@ -200,7 +239,6 @@ export default function MiniDrawer() {
                     <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
                   </ListItemButton>
                 </ListItem>
-              </Link>
           ))}
         </List>
         <Divider />
@@ -212,6 +250,7 @@ export default function MiniDrawer() {
           </Box>
         )}
       </Drawer>
+      <LoginModal open={isLoginModalOpen} onClose={handleLoginModalClose} />
     </Box>
   );
 }
