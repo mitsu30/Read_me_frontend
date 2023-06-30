@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { Loading } from './Loading'
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
+import Typography from '@mui/material/Typography'
+import Link from 'next/link';
 
 export default function LoginModal({ open, onClose }) {
   const { loginWithFirebase } = useFirebaseAuth();
@@ -90,13 +92,15 @@ export default function LoginModal({ open, onClose }) {
     { (!authenticating && !navigating) && 
     <>
       <CenteredBox>
-        <Box>
+      <Typography variant="body1" paragraph>
+        <Link href="/terms"><a>利用規約</a></Link>、<Link href="/privacy-policy"><a>プライバシーポリシー</a></Link>に<br/>
+            同意してからログインしてね！
+    </Typography>
           <Button 
             variant="contained"
             sx={{ 
-              mt: 10, 
+   
               mb: 2, 
-              width: '100%', 
               backgroundColor: '#FF6699',
               '&:hover': {
                 backgroundColor: '#E60073',
@@ -104,14 +108,13 @@ export default function LoginModal({ open, onClose }) {
               color: '#white',
               fontWeight: 'bold',
               fontSize: '1.2em',
-              padding: '15px 30px' 
+              padding: '2px 10px' 
             }}
             onClick={handleGitHubLogin}
           > 
             <FaGithub style={{ marginRight: '8px' }} /> 
             GitHubログイン
           </Button>
-        </Box>
       </CenteredBox>
     </>
     }
