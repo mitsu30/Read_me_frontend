@@ -15,15 +15,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Link from '@mui/material/Link'; 
-import PersonIcon from '@mui/icons-material/Person';
-import SchoolIcon from '@mui/icons-material/School';
+import { Link as MuiLink } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
-import InfoIcon from '@mui/icons-material/Info';
 import LoginIcon from '@mui/icons-material/Login';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import Link from 'next/link';
 
 const drawerWidth = 240;
 
@@ -107,14 +105,12 @@ export default function MiniDrawer() {
   };
 
   const menuItems = [
-    {text: 'ログイン', icon: <LoginIcon sx={{ color: '#f0c4ca' }}/>},
-    {text: 'スクールのなかま', icon: <Diversity3Icon sx={{ color: '#f0c4ca' }}/>},
-    {text: '利用規約', icon: <DescriptionIcon sx={{ color: '#f0c4ca' }}/>},
-    {text: 'プライバシーポリシー', icon: <PrivacyTipIcon sx={{ color: '#f0c4ca' }}/>},
-    {text: 'お問い合わせ', icon: <ContactMailIcon sx={{ color: '#f0c4ca' }}/>},
-    {text: '© 2023 りーどみー'},
+    {text: 'ログイン', icon: <LoginIcon sx={{ color: '#f0c4ca' }}/>, link: '/login'},
+    {text: 'スクールのなかま', icon: <Diversity3Icon sx={{ color: '#f0c4ca' }}/>, link: '/users'},
+    {text: '利用規約', icon: <DescriptionIcon sx={{ color: '#f0c4ca' }}/>, link: '/terms'},
+    {text: 'プライバシーポリシー', icon: <PrivacyTipIcon sx={{ color: '#f0c4ca' }}/>, link: '/privacy-policy'},
+    {text: 'お問い合わせ', icon: <ContactMailIcon sx={{ color: '#f0c4ca' }}/>, link: 'https://twitter.com/readmee_profile', external: true},
   ];
-
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -148,7 +144,7 @@ export default function MiniDrawer() {
           </Link>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -157,29 +153,64 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           {menuItems.map((item, index) => (
-            <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+            item.external ?
+              <ListItem disablePadding key={item.text}>
+                <ListItemButton
+                  component="a"
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            :
+              <Link href={item.link} passHref key={item.text}>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
           ))}
         </List>
         <Divider />
+        {open && (
+          <Box sx={{ p: 1, display: 'flex', justifyContent: 'center' }}>
+            <MuiLink component="button" underline="none" sx={{ cursor: 'default', color: '#000000' }}>
+              © 2023 りーどみー
+            </MuiLink>
+          </Box>
+        )}
       </Drawer>
     </Box>
   );
