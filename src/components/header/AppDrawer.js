@@ -24,6 +24,10 @@ import Diversity3Icon from '@mui/icons-material/Diversity3';
 import Link from 'next/link';
 import LoginModal from '../LoginModal';
 import { useState } from 'react';  
+import useFirebaseAuth from '../../hooks/useFirebaseAuth';
+import PersonIcon from '@mui/icons-material/Person';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 
 const drawerWidth = 240;
@@ -99,6 +103,7 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false); 
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const { currentUser, logout } = useFirebaseAuth();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -120,7 +125,19 @@ export default function MiniDrawer() {
     handleLoginModalOpen();
   };
 
-  const menuItems = [
+  const handleLogout = () => {
+    logout();
+  };
+
+  const menuItems = currentUser ? [
+    {text: 'マイページ', icon: <PersonIcon sx={{ color: '#f0c4ca' }}/>, link: '/mypage'},
+    {text: 'つくる', icon: <EditNoteIcon sx={{ color: '#f0c4ca' }}/>, link: '/profiles'},
+    {text: 'スクールのなかま', icon: <Diversity3Icon sx={{ color: '#f0c4ca' }}/>, link: '/users'},
+    {text: '利用規約', icon: <DescriptionIcon sx={{ color: '#f0c4ca' }}/>, link: '/terms'},
+    {text: 'プライバシーポリシー', icon: <PrivacyTipIcon sx={{ color: '#f0c4ca' }}/>, link: '/privacy-policy'},
+    {text: 'お問い合わせ', icon: <ContactMailIcon sx={{ color: '#f0c4ca' }}/>, link: 'https://twitter.com/readmee_profile', external: true},
+    {text: 'ログアウト', icon: <DirectionsRunIcon sx={{ color: '#f0c4ca' }}/>, onClick: handleLogout},
+  ] : [
     {text: 'ログイン', icon: <LoginIcon sx={{ color: '#f0c4ca' }}/>, onClick: handleLoginClick},
     {text: 'スクールのなかま', icon: <Diversity3Icon sx={{ color: '#f0c4ca' }}/>, link: '/users'},
     {text: '利用規約', icon: <DescriptionIcon sx={{ color: '#f0c4ca' }}/>, link: '/terms'},
