@@ -67,9 +67,12 @@ const PrivacyPolicy = () => (
       アクセス解析ツール
       </Typography>
       <Typography variant="body1" paragraph>
-      当社は、お客様のアクセス解析のために、「Googleアナリティクス」を利用しています。Googleアナリティクスは、トラフィックデータの収集のためにCookieを使用しています。トラフィックデータは匿名で収集されており、個人を特定するものではありません。Cookieを無効にすれば、これらの情報の収集を拒否することができます。詳しくはお使いのブラウザの設定をご確認ください。Googleアナリティクスについて、詳しくは以下からご確認ください。
-        https://marketingplatform.google.com/about/analytics/terms/jp/
-      </Typography>
+        当社は、お客様のアクセス解析のために、「Googleアナリティクス」を利用しています。「Googleアナリティクス」は、トラフィックデータの収集のためにCookieを使用しています。トラフィックデータは匿名で収集されており、個人を特定するものではありません。Cookieを無効にすれば、これらの情報の収集を拒否することができます。詳しくはお使いのブラウザの設定をご確認ください。Googleアナリティクスについて、詳しくは
+        <MuiLink href="https://marketingplatform.google.com/about/analytics/terms/jp/" target="_blank" rel="noopener noreferrer">
+          こちら
+        </MuiLink>
+          からご確認ください。
+        </Typography>
 
       <Typography variant="h5" gutterBottom>
       プライバシーポリシーの変更
