@@ -50,7 +50,6 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
     return { ...community, checked: isChecked }
   }));
 
-  // const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
   const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
@@ -164,29 +163,6 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
 
   return (
     <>
-    <NextSeo
-        twitter={{
-          cardType: "summary_large_image",
-          handle: "@readmee_profile", 
-          site: "@readmee_profile"
-        }}
-        title={siteTitle}
-        description={siteDescription}
-        openGraph={{
-          url: shareUrl,
-          title: siteTitle,
-          description: siteDescription,
-          images: [
-            {
-              url: profileImage.image_url, 
-              width: 800,
-              height: 600,
-              alt: 'Result Image',
-            }
-          ],
-          site_name: 'りーどみー',
-        }}
-    />
     <CardContent>
       <Grid item sx={{
                 my: 5,
