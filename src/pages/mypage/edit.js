@@ -12,27 +12,66 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import nookies from "nookies";
 
-export default function AdditionalInfoPage({ initialData }) {
+export default function AdditionalInfoPage() {
+  const [initialData, setInitialData] = useState(null); 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
-  const [username, setUsername] = useState(initialData.name);
+  const [username, setUsername] = useState(initialData?.name || '');
   const [avatar, setAvatar] = useState(null);
-  const [preview, setPreview] = useState(initialData.avatar_url || '');
-  
+  const [preview, setPreview] = useState(initialData?.avatar_url || '');
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState(initialData.groups ? initialData.groups.id : '');
+  const [selectedGroup, setSelectedGroup] = useState(initialData?.groups ? initialData.groups.id : '');
+  const [greeting, setGreeting] = useState(initialData?.greeting || '');
 
-  const [greeting, setGreeting] = useState(initialData.greeting || '');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cookies = nookies.get();
+        const config = {
+          headers: { authorization: `Bearer ${cookies.token}` },
+        };
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
+        setInitialData(response.data.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchGroups = async () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
       setGroups(response.data.groups);
-      // const data = response.data.groups
     };
     fetchGroups();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cookies = nookies.get();
+        const config = {
+          headers: { authorization: `Bearer ${cookies.token}` },
+        };
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
+        setInitialData(response.data.data);
+        
+        // Add these lines
+        setUsername(response.data.data.name);
+        setPreview(response.data.data.avatar_url);
+        setSelectedGroup(response.data.data.groups ? response.data.data.groups.id : '');
+        setGreeting(response.data.data.greeting);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (!initialData) {
+    return <div>Loading...</div>; // or return a skeleton component
+  }
 
   const handleUpdateProfile = async () => {
     
@@ -216,20 +255,3 @@ export default function AdditionalInfoPage({ initialData }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const cookies = nookies.get(context);
-  const config = {
-    headers: { authorization: `Bearer ${cookies.token}` },
-  };
-  
-  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
-  console.log(response.data.data);  
-  // console.log(response.data.data.groups.id);  
-  // console.log(data.data.groups[0].id);  
-
-  return {
-    props: {
-      initialData: response.data.data
-    },
-  };
-}
