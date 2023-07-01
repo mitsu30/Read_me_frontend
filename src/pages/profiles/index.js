@@ -7,19 +7,18 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  width: 300, // カードの幅を固定
-  margin: theme.spacing(6), // カードの周りの余白を設定
+  width: 280, // カードの幅を固定
+  margin: theme.spacing(1), // カードの周りの余白を設定
   padding: theme.spacing(1), // カードの内側の余白を設定
   display: 'flex', // カードの内容をフレックスボックスとして扱う
   flexDirection: 'column', // カードの方向をカラム（垂直）に設定
   alignItems: 'center', // カードの内容を中央に配置
 }));
 
-const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  height: 156, // 画像の高さを固定
-  width: '100%', // 画像の幅を100%に設定
-  objectFit: 'contain', // 画像を全体が見えるように配置
-}));
+  const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
+    width: 250, // 画像の幅を200pxに固定
+    objectFit: 'contain', // 画像を全体が見えるように配置
+  }));
 
 const DesignTemplates = ({ templates }) => {
   const [open, setOpen] = useState(false);
@@ -48,16 +47,17 @@ const DesignTemplates = ({ templates }) => {
       variant="h1" 
       fontWeight="bold" 
       style={{ 
-        fontSize: isSmallScreen ? '2.5rem' : '4.5rem',  // 画面幅に応じてフォントサイズを変更
+        fontSize: isSmallScreen ? '2.4rem' : '3.65rem',  // 画面幅に応じてフォントサイズを変更
       }}
     >
       デザインをえらぼう
     </Typography>
   </Box>
 
-    <Grid container spacing={2} justify="center"> 
-      {templates.map((template) => (
-        <Grid item key={template.id} onClick={() => handleClickOpen(template)}>
+    <Grid container  justify="center"> 
+    {templates.map((template) => (
+      <Grid item xs={12} sm={6} md={4} key={template.id} onClick={() => handleClickOpen(template)}>
+        <Box display="flex" justifyContent="center">
           <StyledCard>
             {template.name}
             <StyledCardMedia
@@ -65,9 +65,9 @@ const DesignTemplates = ({ templates }) => {
               image={template.image_path}
             />
           </StyledCard>
-        </Grid>
-      ))}
-  
+        </Box>
+      </Grid>
+    ))}
       <Dialog open={open} onClose={handleClose} maxWidth="md"> 
         <DialogContent>
           {currentTemplate && <img src={currentTemplate.image_path} alt="template" style={{objectFit: 'contain', maxHeight: isSmallScreen ? '15vh' : '35vh'}} />}  
