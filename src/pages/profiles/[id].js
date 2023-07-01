@@ -152,9 +152,9 @@ export async function getServerSideProps(context) {
 }
 
   const profileImage = await res.data;
-  // console.log(res.data);
-  // console.log(res.data.image_url);
-  // console.log(profileImage.image_url);
+  console.log(res.data);
+  console.log(res.data.image_url);
+  console.log(profileImage.image_url);
 
   return {
     props: {

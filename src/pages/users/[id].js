@@ -55,7 +55,7 @@ const UserPage = ({ user }) => {
   };
 
   const handleCardClick = (profile) => {
-    router.push(`/mypage/${profile.uuid}`);
+    router.push(`/users/profiles/${profile.uuid}`);
   };
   
   return (
