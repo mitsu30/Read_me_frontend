@@ -24,22 +24,6 @@ export default function AdditionalInfoPage() {
   const [greeting, setGreeting] = useState(initialData?.greeting || '');
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cookies = nookies.get();
-        const config = {
-          headers: { authorization: `Bearer ${cookies.token}` },
-        };
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
-        setInitialData(response.data.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     const fetchGroups = async () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
       setGroups(response.data.groups);
