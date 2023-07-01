@@ -105,7 +105,7 @@ export default function LoginModal({ open, onClose }) {
             },
             color: '#white',
             fontWeight: 'bold',
-            fontSize: '1.2em',
+            fontSize: '1.0em',
             padding: '2px 10px' 
           }}
           onClick={handleGitHubLogin}
