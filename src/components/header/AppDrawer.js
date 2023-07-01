@@ -189,7 +189,7 @@ export default function MiniDrawer() {
               src="/logo.png"
               alt="logo"
               style={{
-                width: '105px',
+                width: '120px',
                 height: 'auto',
                 transition: '0.3s'
               }}
