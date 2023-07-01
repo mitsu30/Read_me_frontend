@@ -131,9 +131,11 @@ export default function MiniDrawer() {
   };
 
   const handleLogout = () => {
-    logout();
+    if (window.confirm("ログアウトしますか？")) {
+      logout();
+    }
   };
-
+  
   const menuItems = currentUser ? [
     {text: 'マイページ', icon: <PersonIcon sx={{ color: '#f0c4ca' }}/>, link: '/mypage'},
     {text: 'つくる', icon: <EditNoteIcon sx={{ color: '#f0c4ca' }}/>, link: '/profiles'},
