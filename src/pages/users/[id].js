@@ -28,18 +28,24 @@ const TabPanel = (props) => {
 }
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  width: 300, // カードの幅を固定
-  margin: theme.spacing(6), // カードの周りの余白を設定
-  padding: theme.spacing(1), // カードの内側の余白を設定
-  display: 'flex', // カードの内容をフレックスボックスとして扱う
-  flexDirection: 'column', // カードの方向をカラム（垂直）に設定
-  alignItems: 'center', // カードの内容を中央に配置
+  width: 280, 
+  margin: theme.spacing(1), 
+  padding: theme.spacing(1), 
+  display: 'flex',
+  flexDirection: 'column', 
+  alignItems: 'center',
+  transition: 'transform 0.3s', 
+  boxShadow: '0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%)', 
+  backgroundColor: '#f9f9f9', 
+  border: '1px solid #ddd', 
+  '&:hover': {
+    transform: 'scale(1.05) rotate(3deg)', 
+  },
 }));
 
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  height: 156, // 画像の高さを固定
-  width: '100%', // 画像の幅を100%に設定
-  objectFit: 'contain', // 画像を全体が見えるように配置
+  width: 250, 
+  objectFit: 'contain', 
 }));
 
 const UserPage = ({ user }) => {
@@ -110,17 +116,19 @@ const UserPage = ({ user }) => {
 
     <TabPanel value={value} index={0}>
       <CardContent>
-        <Grid container spacing={2} justify="center"> 
-        {user.profiles.map((profile) => (
-          <Grid item key={profile.id} >
-            <StyledCard onClick={() => handleCardClick(profile)}>
-              <StyledCardMedia
-                component="img" 
-                image={profile.image_url}
-              />
-            </StyledCard>
-          </Grid>
-        ))}
+        <Grid container  justify="center"> 
+          {user.profiles.map((profile) => (
+            <Grid item xs={12} sm={6} md={4} key={profile.id}>
+              <Box display="flex" justifyContent="center">
+                <StyledCard onClick={() => handleCardClick(profile)}> 
+                  <StyledCardMedia
+                    component="img" 
+                    image={profile.image_url}
+                  />
+                </StyledCard>
+              </Box>
+            </Grid>
+          ))}
         </Grid>
       </CardContent>
     </TabPanel>
