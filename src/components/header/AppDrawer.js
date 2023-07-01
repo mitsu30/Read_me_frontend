@@ -23,14 +23,14 @@ import LoginIcon from '@mui/icons-material/Login';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import Link from 'next/link';
 import LoginModal from '../LoginModal';
-import { useState, useEffect } from 'react';  
+import { useState } from 'react';  
 import useFirebaseAuth from '../../hooks/useFirebaseAuth';
 import PersonIcon from '@mui/icons-material/Person';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import Avatar from '@mui/material/Avatar';
-import nookies from "nookies";
-import axios from "axios";
+
+import { useAuthContext } from '../../context/AuthContext';
 
 
 const drawerWidth = 240;
@@ -103,29 +103,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+  const { userAvatar } = useAuthContext(); 
   const theme = useTheme();
   const [open, setOpen] = useState(false); 
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const { currentUser, logout } = useFirebaseAuth();
-  const [userAvatar, setUserAvatar] = useState(null);
-
-  useEffect(() => {
-    const cookies = nookies.get(null);
-    const config = {
-      headers: { 
-        'Content-Type': 'multipart/form-data',
-        authorization: `Bearer ${cookies.token}` 
-      },
-    };
-
-    if (currentUser) {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/avatar`, config)
-      .then((data) => {
-        setUserAvatar(data.data.data);
-      });
-    }
-  }, [currentUser]);
-
 
   const handleDrawerOpen = () => {
     setOpen(true);

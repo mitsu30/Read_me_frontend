@@ -1,5 +1,8 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext,  useState, useEffect  } from "react";
 import useFirebaseAuth from "../hooks/useFirebaseAuth";
+import axios from "axios";
+import nookies from "nookies";
+
 
 export const AuthCtx = createContext();
 
@@ -9,6 +12,25 @@ export function AuthContextProvider({ children }) {
   // useFirebaseAuthフックからcurrentUser、loading、loginWithGoogle、logoutという4つの値/関数を取得する。
   // 上で取得した4つの値/関数をAuthContextというオブジェクトにまとめる。
   const { currentUser, loading, loginWithFirebase, logout } = useFirebaseAuth();
+  const [userAvatar, setUserAvatar] = useState(null);
+  
+  useEffect(() => {
+    const cookies = nookies.get(null);
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        authorization: `Bearer ${cookies.token}`,
+      },
+    };
+
+    if (currentUser) {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/avatar`, config)
+        .then((data) => {
+          setUserAvatar(data.data.data);
+        });
+    }
+  }, [currentUser]);
 
   const AuthContext = {
     currentUser: currentUser,
@@ -18,7 +40,7 @@ export function AuthContextProvider({ children }) {
   };
   
   return (
-    <AuthCtx.Provider value={AuthContext}>
+    <AuthCtx.Provider value={{ AuthContext, userAvatar }}>
       {children}
     </AuthCtx.Provider>
   )
