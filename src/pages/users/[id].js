@@ -1,7 +1,7 @@
-import { Card, CardMedia, CardContent, Typography, Avatar, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, Avatar, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Skeleton} from '@mui/material';
 import axios from 'axios';
 import nookies from "nookies";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -48,12 +48,38 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   objectFit: 'contain', 
 }));
 
-const UserPage = ({ user }) => {
+const UserPage = () => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { id } = useRouter().query;
   
+  useEffect(() => {
+    const fetchData = async () => {
+      const cookies = nookies.get();
+      let res;
+      if (cookies.token) {
+        // ログインユーザー
+        const config = {
+          headers: { authorization: `Bearer ${cookies.token}` },
+        };
+        res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, config);
+      } else {
+        // 非ログインユーザー
+        res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/show_public/${id}`);
+      }
+      setUser(res.data.data);
+      setIsLoading(false);
+    };
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
+
   //どのタブが現在アクティブであるかを管理している。
   //ユーザーが切り替えたタブを追跡し、表示するコンテンツを更新する
   const handleChange = (event, newValue) => {  
@@ -76,7 +102,7 @@ const UserPage = ({ user }) => {
           fontSize: isSmallScreen ? '3rem' : '5.5rem',  // 画面幅に応じてフォントサイズを変更
         }}
       >
-        {user.name}のページ
+        {isLoading ? 'Loading...' : `${user.name}のページ`}
       </Typography>
     </Box>
     
@@ -95,15 +121,31 @@ const UserPage = ({ user }) => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell >
+                  <Skeleton variant="circle" width={80} height={80} />
+                </TableCell>
+                <TableCell align="center">
+                  <Skeleton variant="text" />
+                </TableCell>
+                <TableCell align="center">
+                  <Skeleton variant="text" />
+                </TableCell>
+                <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>
+                  <Skeleton variant="text" />
+                </TableCell>
+              </TableRow>
+            ) : (
               <TableRow key={user.id}>
                 <TableCell >
                   <Avatar src={user.avatar_url} alt={user.name} sx={{ width: 80, height: 80 }}/> 
                 </TableCell>
                 <TableCell align="center">{user.name}</TableCell>
-                {/* <TableCell align="center">{user.communities.map(community => community.name).join(', ')}</TableCell> */}
                 <TableCell align="center">{user.groups.map(group => group.name).join(', ')}</TableCell>
                 <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>{user.greeting}</TableCell>
               </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -116,6 +158,9 @@ const UserPage = ({ user }) => {
 
     <TabPanel value={value} index={0}>
       <CardContent>
+      {isLoading ? (
+        <Skeleton variant="rectangular" width={280} height={180} />
+      ) : (
         <Grid container  justify="center"> 
           {user.profiles.map((profile) => (
             <Grid item xs={12} sm={6} md={4} key={profile.id}>
@@ -130,6 +175,7 @@ const UserPage = ({ user }) => {
             </Grid>
           ))}
         </Grid>
+       )}
       </CardContent>
     </TabPanel>
 
@@ -141,31 +187,6 @@ const UserPage = ({ user }) => {
     </>
   );
 };
-
-export async function getServerSideProps(context) {
-  const { id } = context.query;
-
-  const cookies = nookies.get(context);
-  
-  let res;
-  if (cookies.token) {
-    // ログインユーザー
-    const config = {
-      headers: { authorization: `Bearer ${cookies.token}` },
-    };
-    res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, config);
-  } else {
-    // 非ログインユーザー
-    res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/show_public/${id}`);
-  }
-  
-  console.log(res.data)
-  return {
-    props: {
-      user: res.data.data
-    },
-  };
-}
 
 export default UserPage;
 
