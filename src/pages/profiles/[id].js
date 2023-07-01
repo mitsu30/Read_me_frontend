@@ -137,15 +137,24 @@ export async function getServerSideProps(context) {
   }
 
   const cookies = nookies.get(context);
+
+  let res;
+  if (cookies.token) {
+  // ログインユーザー
   const config = {
   headers: { authorization: `Bearer ${cookies.token}` },
   };
 
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
+} else {
+  // Twitterロボ
+  res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/twitter_share/${id}`);
+}
+
   const profileImage = await res.data;
   // console.log(res.data);
   // console.log(res.data.image_url);
-
+  // console.log(profileImage.image_url);
 
   return {
     props: {
