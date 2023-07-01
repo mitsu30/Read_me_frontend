@@ -50,7 +50,7 @@ const Users = ({ initialUsers, initialGroups }) => {
           variant="h1" 
           fontWeight="bold" 
           style={{ 
-            fontSize: isSmallScreen ? '2.8rem' : '5.0rem',  
+            fontSize: isSmallScreen ? '2.2rem' : '4.25rem',  
           }}
         >
           スクールのなかま
