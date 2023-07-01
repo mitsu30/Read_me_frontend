@@ -29,6 +29,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
 
 import { useAuthContext } from '../../context/AuthContext';
 
@@ -197,55 +198,60 @@ export default function MiniDrawer() {
           {menuItems.map((item, index) => (
             item.external ?
               <ListItem disablePadding key={item.text}>
-                <ListItemButton
-                  component="a"
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title={item.text} placement="right">
+                  <ListItemButton
+                    component="a"
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
                     }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : 'auto',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {item.icon}
+                        </ListItemIcon>
+                      <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                  </Tooltip>
               </ListItem>
             :
               item.link ?
                 <Link href={item.link} passHref key={item.text}>
                   <ListItem disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton
-                      sx={{
-                        minHeight: 48,
-                        justifyContent: open ? 'initial' : 'center',
-                        px: 2.5,
-                      }}
-                    >
-                      <ListItemIcon
+                    <Tooltip title={item.text} placement="right">
+                      <ListItemButton
                         sx={{
-                          minWidth: 0,
-                          mr: open ? 3 : 'auto',
-                          justifyContent: 'center',
+                          minHeight: 48,
+                          justifyContent: open ? 'initial' : 'center',
+                          px: 2.5,
                         }}
                       >
-                        {item.icon}
-                      </ListItemIcon>
-                      <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
-                    </ListItemButton>
+                          <ListItemIcon
+                            sx={{
+                              minWidth: 0,
+                              mr: open ? 3 : 'auto',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            {item.icon}
+                          </ListItemIcon>
+                        <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+                      </ListItemButton>
+                    </Tooltip>
                   </ListItem>
                 </Link>
               :
-                <ListItem disablePadding key={item.text}>
+              <ListItem disablePadding key={item.text}>
+                <Tooltip title={item.text} placement="right">
                   <ListItemButton
                     onClick={item.onClick}
                     sx={{
@@ -254,17 +260,18 @@ export default function MiniDrawer() {
                       px: 2.5,
                     }}
                   >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                  <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </Tooltip>
             </ListItem>
           ))}
         </List>
