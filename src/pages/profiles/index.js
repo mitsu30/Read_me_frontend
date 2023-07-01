@@ -14,6 +14,9 @@ import { useTheme } from '@mui/material/styles';
     flexDirection: 'column', // カードの方向をカラム（垂直）に設定
     alignItems: 'center', // カードの内容を中央に配置
     transition: 'transform 0.3s', // transform プロパティの変化を0.3秒間で遷移させる
+    boxShadow: '0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%)', // カードに影をつける
+    backgroundColor: '#f9f9f9', // カードの背景色を設定
+    border: '1px solid #ddd', // カードの境界線を設定
     '&:hover': {
       transform: 'scale(1.05) rotate(3deg)', // マウスオーバー時にカードを1.05倍に拡大し、3度回転させる
     },
