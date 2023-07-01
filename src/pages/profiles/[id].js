@@ -18,7 +18,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
 export default function ResultPage({ profileImage }) {
   const router = useRouter();
   const { id, shared } = router.query; 
-  // const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
+  
   const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
