@@ -98,8 +98,7 @@ const UserPage = () => {
         variant="h1" 
         fontWeight="bold" 
         style={{ 
-          // transform: 'scaleX(1.3)',
-          fontSize: isSmallScreen ? '3rem' : '5.5rem',  // 画面幅に応じてフォントサイズを変更
+          fontSize: isSmallScreen ? '3rem' : '5.5rem', 
         }}
       >
         {isLoading ? 'Loading...' : `${user.name}のページ`}
@@ -175,7 +174,7 @@ const UserPage = () => {
             </Grid>
           ))}
         </Grid>
-       )}
+      )}
       </CardContent>
     </TabPanel>
 

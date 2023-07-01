@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardMedia, Dialog, DialogContent, DialogActions, Button, Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { Skeleton } from '@mui/material';
 
   const StyledCard = styled(Card)(({ theme }) => ({
     width: 280, 
@@ -32,6 +33,23 @@ const DesignTemplates = ({ templates }) => {
   const [currentTemplate, setCurrentTemplate] = useState(null);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const [localTemplates, setLocalTemplates] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const cookies = nookies.get();
+      const config = {
+        headers: { authorization: `Bearer ${cookies.token}` },
+      };
+
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/templates`, config);
+      setLocalTemplates(res.data);
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   const handleClickOpen = (template) => {
     setCurrentTemplate(template);
@@ -62,19 +80,23 @@ const DesignTemplates = ({ templates }) => {
   </Box>
 
     <Grid container  justify="center"> 
-    {templates.map((template) => (
-      <Grid item xs={12} sm={6} md={4} key={template.id} onClick={() => handleClickOpen(template)}>
-        <Box display="flex" justifyContent="center">
-          <StyledCard>
-            {template.name}
-            <StyledCardMedia
-              component="img" 
-              image={template.image_path}
-            />
-          </StyledCard>
-        </Box>
-      </Grid>
-    ))}
+    {isLoading ? (
+      <Skeleton variant="rectangular" width={280} height={280} />
+    ) : (
+      localTemplates.map((template) => (
+        <Grid item xs={12} sm={6} md={4} key={template.id} onClick={() => handleClickOpen(template)}>
+          <Box display="flex" justifyContent="center">
+            <StyledCard>
+              {template.name}
+              <StyledCardMedia
+                component="img" 
+                image={template.image_path}
+              />
+            </StyledCard>
+          </Box>
+        </Grid>
+      ))
+    )}
 
     <Dialog open={open} onClose={handleClose} maxWidth="md"> 
           <DialogContent>
@@ -89,16 +111,5 @@ const DesignTemplates = ({ templates }) => {
     </>
     );
   };  
-
-export async function getServerSideProps(context) {
-  const cookies = nookies.get(context);
-  const config = {
-  headers: { authorization: `Bearer ${cookies.token}` },
-  };
-
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/templates`, config);
-  // console.log(res.data)
-  return { props: { templates: res.data} };
-}
 
 export default DesignTemplates;
