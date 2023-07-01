@@ -16,12 +16,12 @@ export default function AdditionalInfoPage() {
   const [initialData, setInitialData] = useState(null); 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const [username, setUsername] = useState(initialData?.name || '');
+  const [username, setUsername] = useState('');
   const [avatar, setAvatar] = useState(null);
   const [preview, setPreview] = useState(initialData?.avatar_url || '');
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState(initialData?.groups ? initialData.groups.id : '');
-  const [greeting, setGreeting] = useState(initialData?.greeting || '');
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
     const fetchGroups = async () => {
