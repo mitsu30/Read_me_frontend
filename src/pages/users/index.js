@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton, Grid } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, IconButton, Grid, Skeleton } from '@mui/material';
 import { Avatar } from '@mui/material'; 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -10,14 +10,14 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
 
-const Users = ({ initialUsers, initialGroups }) => {
-  const [users, setUsers] = useState(initialUsers);
-  const [groups, setGroups] = useState(initialGroups); 
+const Users = () => {
+  const [users, setUsers] = useState([]);
+  const [groups, setGroups] = useState([]); 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('created_at_desc');
-  // const [order, setOrder] = useState('asc');
   const [group, setGroup] = useState('RUNTEQ');
   const [searchName, setSearchName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -26,9 +26,10 @@ const Users = ({ initialUsers, initialGroups }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&group_id=${group}&name=${searchName}`);
       setUsers(result.data);
-      // console.log(result.data)
+      setIsLoading(false);
     };
     fetchData();
   }, [page, sortBy, group, searchName]);
@@ -37,7 +38,6 @@ const Users = ({ initialUsers, initialGroups }) => {
     const fetchGroups = async () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
       setGroups(response.data.groups); 
-      // const data = response.data.groups
     };
     fetchGroups();
   }, []);
@@ -111,16 +111,27 @@ const Users = ({ initialUsers, initialGroups }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id} style={{ cursor: 'pointer' }} onClick={() => router.push(`/users/${user.id}`)}>
+            {isLoading ? (
+              <TableRow>
                 <TableCell>
-                  <Avatar src={user.avatar} alt={user.name} sx={{ width: 80, height: 80 }}/> 
+                  <Skeleton variant="circle" width={80} height={80} />
                 </TableCell>
-                <TableCell align="center">{user.name}</TableCell>
-                <TableCell align="center">{user.group}</TableCell>
-                <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>{user.greeting}</TableCell>
+                <TableCell><Skeleton variant="text" /></TableCell>
+                <TableCell><Skeleton variant="text" /></TableCell>
+                <TableCell><Skeleton variant="text" /></TableCell>
               </TableRow>
-              ))}
+            ) : (
+              users.map((user) => (
+                <TableRow key={user.id} style={{ cursor: 'pointer' }} onClick={() => router.push(`/users/${user.id}`)}>
+                  <TableCell>
+                    <Avatar src={user.avatar} alt={user.name} sx={{ width: 80, height: 80 }}/> 
+                  </TableCell>
+                  <TableCell align="center">{user.name}</TableCell>
+                  <TableCell align="center">{user.group}</TableCell>
+                  <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>{user.greeting}</TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -131,18 +142,5 @@ const Users = ({ initialUsers, initialGroups }) => {
     </div>
   );
 };
-
-export async function getServerSideProps() {
-  const initialUsersRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=1&sort_by=created_at_desc&group_id=RUNTEQ&name=`);
-  const initialGroupsRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
-  // console.log(initialUsersRes.data);
-  
-  return {
-    props: {
-      initialUsers: initialUsersRes.data,
-      initialGroups: initialGroupsRes.data.groups
-    }
-  }
-}
 
 export default Users;
