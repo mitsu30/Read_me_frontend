@@ -4,13 +4,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import nookies from "nookies";
+import { useAuthContext } from '../../context/AuthContext';
 
 export default function AdditionalInfoPage() {
   const [initialData, setInitialData] = useState(null); 
@@ -22,14 +23,18 @@ export default function AdditionalInfoPage() {
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState('');
   const [greeting, setGreeting] = useState('');
+  const { AuthContext } = useAuthContext(); 
+  const { isStudent } = AuthContext;
 
   useEffect(() => {
-    const fetchGroups = async () => {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
-      setGroups(response.data.groups);
-    };
-    fetchGroups();
-  }, []);
+    if (isStudent) {
+      const fetchGroups = async () => {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
+        setGroups(response.data.groups);
+      };
+      fetchGroups();
+    }
+  }, [isStudent]); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,6 +121,7 @@ export default function AdditionalInfoPage() {
   }
   
   return (
+    <>
     <Grid container component="main" justifyContent="center">
       <Grid item xs={10} md={8}>
         <Box
@@ -136,11 +142,13 @@ export default function AdditionalInfoPage() {
             なまえをおしえてね
             </Typography>
           </Box>
+          {isStudent && (
           <Box>
             <Typography component="h1" variant="h5">
             (スクールで使っているなまえ)
             </Typography>
           </Box>
+          )}
           <Box component="form">
             <TextField
               color="secondary"
@@ -154,6 +162,8 @@ export default function AdditionalInfoPage() {
               onChange={(e) => setUsername(e.target.value)}
             />
           </Box>
+          {isStudent && (
+          <>
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
             何期かおしえてね
@@ -170,6 +180,8 @@ export default function AdditionalInfoPage() {
               ))}
             </Select>
           </Box>
+          </>
+          )}
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
             みんなにひとこと！
@@ -236,6 +248,7 @@ export default function AdditionalInfoPage() {
         </Box> 
       </Grid>
     </Grid>
+    </>
   );
 }
 
