@@ -6,14 +6,18 @@ import axios from 'axios';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
-const StyledCard = styled(Card)(({ theme }) => ({
-  width: 280, // カードの幅を固定
-  margin: theme.spacing(1), // カードの周りの余白を設定
-  padding: theme.spacing(1), // カードの内側の余白を設定
-  display: 'flex', // カードの内容をフレックスボックスとして扱う
-  flexDirection: 'column', // カードの方向をカラム（垂直）に設定
-  alignItems: 'center', // カードの内容を中央に配置
-}));
+  const StyledCard = styled(Card)(({ theme }) => ({
+    width: 280, // カードの幅を固定
+    margin: theme.spacing(1), // カードの周りの余白を設定
+    padding: theme.spacing(1), // カードの内側の余白を設定
+    display: 'flex', // カードの内容をフレックスボックスとして扱う
+    flexDirection: 'column', // カードの方向をカラム（垂直）に設定
+    alignItems: 'center', // カードの内容を中央に配置
+    transition: 'transform 0.3s', // transform プロパティの変化を0.3秒間で遷移させる
+    '&:hover': {
+      transform: 'scale(1.05) rotate(3deg)', // マウスオーバー時にカードを1.05倍に拡大し、3度回転させる
+    },
+  }));
 
   const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
     width: 250, // 画像の幅を200pxに固定
