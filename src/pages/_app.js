@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
               <CustomSnackbarProvider
                 maxSnack={3}
                 anchorOrigin={{
-                  vertical: 'top',
+                  vertical: 'bottom',
                   horizontal: 'center',
                 }}
               > 
