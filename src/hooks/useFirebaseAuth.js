@@ -68,8 +68,8 @@ export default function useFirebaseAuth() {
     if (result) {
       const user = result.user;
       const details = getAdditionalUserInfo(result);
-      console.log(result);
-      console.log(details);
+      // console.log(result);
+      // console.log(details);
 
       return { user, details };
     }

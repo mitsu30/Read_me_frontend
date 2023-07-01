@@ -104,11 +104,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
-  const { userAvatar } = useAuthContext(); 
   const theme = useTheme();
   const [open, setOpen] = useState(false); 
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const { currentUser, logout } = useFirebaseAuth();
+  const { AuthContext, userAvatar } = useAuthContext(); 
+  const { currentUser, logout,  isStudent } = AuthContext;
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -183,9 +184,11 @@ export default function MiniDrawer() {
             />
           </Link>
           <Box sx={{ marginLeft: 'auto' }}> 
-            {currentUser ? (
+          {currentUser ? (
+            <Tooltip title={isStudent ? "スクール生" : "一般ユーザー"}>
               <Avatar src={userAvatar} />
-            ) : null}
+            </Tooltip>
+          ) : null}
           </Box> 
         </Toolbar>
       </AppBar>

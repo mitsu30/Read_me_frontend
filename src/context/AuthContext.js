@@ -13,6 +13,7 @@ export function AuthContextProvider({ children }) {
   // 上で取得した4つの値/関数をAuthContextというオブジェクトにまとめる。
   const { currentUser, loading, loginWithFirebase, logout } = useFirebaseAuth();
   const [userAvatar, setUserAvatar] = useState(null);
+  const [isStudent, setIsStudent] = useState(false);
   
   useEffect(() => {
     const cookies = nookies.get(null);
@@ -27,7 +28,8 @@ export function AuthContextProvider({ children }) {
       axios
         .get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/avatar`, config)
         .then((data) => {
-          setUserAvatar(data.data.data);
+          setUserAvatar(data.data.data.avatar_url);
+          setIsStudent(data.data.data.is_student); 
         });
     }
   }, [currentUser]);
@@ -37,6 +39,7 @@ export function AuthContextProvider({ children }) {
     loading: loading,
     loginWithFirebase: loginWithFirebase,
     logout: logout,
+    isStudent: isStudent, 
   };
   
   return (
