@@ -145,7 +145,7 @@ export async function getServerSideProps(context) {
   headers: { authorization: `Bearer ${cookies.token}` },
   };
 
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
+  res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
 } else {
   // Twitterロボ
   res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/twitter_share/${id}`);
