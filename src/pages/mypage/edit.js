@@ -62,6 +62,11 @@ export default function AdditionalInfoPage() {
 
   const handleUpdateProfile = async () => {
     
+    if (username === '' || username.length > 10) {
+      enqueueSnackbar('なまえを10文字以内で入力してね！', { variant: 'error' });
+      return;
+    }
+
     if (greeting === '' || greeting.length > 50) {
       enqueueSnackbar('ひとことを50文字以内で入力してね！', { variant: 'error' });
       return;
