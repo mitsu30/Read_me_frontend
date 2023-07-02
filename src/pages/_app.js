@@ -11,26 +11,26 @@ import Layout from '../components/Layoyt'
 function MyApp({ Component, pageProps }) {
   return (
     <StyledAppWrapper>
-      <AuthContextProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-            <NextSeo
-              title="りーどみー" 
-            />
-              <CustomSnackbarProvider
-                maxSnack={3}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-              > 
+      <CustomSnackbarProvider
+        maxSnack={3}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      > 
+        <AuthContextProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+              <NextSeo
+                title="りーどみー" 
+              />
                 <Header />
                   <Layout>
                     <Component {...pageProps} />
                   </Layout>
-            </CustomSnackbarProvider>
-        </ThemeProvider>
-      </AuthContextProvider>
+          </ThemeProvider>
+        </AuthContextProvider>
+      </CustomSnackbarProvider>
     </StyledAppWrapper>
   );
 }
