@@ -23,16 +23,28 @@ export function AuthContextProvider({ children }) {
         authorization: `Bearer ${cookies.token}`,
       },
     };
-
+  
+    let timeoutId = null;
+  
     if (currentUser) {
-      axios
-        .get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/avatar`, config)
-        .then((data) => {
-          setUserAvatar(data.data.data.avatar_url);
-          setIsStudent(data.data.data.is_student); 
-        });
+      timeoutId = setTimeout(() => {
+        axios
+          .get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/avatar`, config)
+          .then((data) => {
+            setUserAvatar(data.data.data.avatar_url);
+            setIsStudent(data.data.data.is_student); 
+          });
+      }, 1000);
     }
+  
+    // cleanup function
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [currentUser]);
+  
 
   const AuthContext = {
     currentUser: currentUser,
@@ -40,7 +52,9 @@ export function AuthContextProvider({ children }) {
     loginWithFirebase: loginWithFirebase,
     logout: logout,
     isStudent: isStudent, 
-  };
+    setIsStudent: setIsStudent,
+    setUserAvatar: setUserAvatar
+    };
   
   return (
     <AuthCtx.Provider value={{ AuthContext, userAvatar }}>
