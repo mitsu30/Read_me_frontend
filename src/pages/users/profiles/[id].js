@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Box, CardMedia, CardContent, Grid, Card, IconButton, Skeleton } from '@mui/material';
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
@@ -28,9 +29,31 @@ const IconCard = styled(Card)(({ theme }) => ({
   alignItems: 'flex',  
 }));
 
-export default function ProfilePage({ profileImage }) {
+export default function ProfilePage() {
   const router = useRouter();
-  const { id, shared } = router.query; 
+  const { id } = router.query; 
+
+  const [loading, setLoading] = useState(true);
+  const [profileImage, setProfileImage] = useState('');
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const cookies = nookies.get(null);
+      let config = null;
+      if (cookies.token) {
+        config = { headers: { authorization: `Bearer ${cookies.token}` } };
+      }
+
+      const res = cookies.token 
+        ? await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config) 
+        : await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_public/${id}`);
+
+      setProfileImage(res.data);
+      setLoading(false);
+    }
+
+    fetchData();
+  }, [id]);
 
   return (
     <>
@@ -38,12 +61,16 @@ export default function ProfilePage({ profileImage }) {
       <Grid item sx={{
                 my: 5,
               }}>
-        <StyledCard sx={{ my: 2}}>
-          <StyledCardMedia
-            component="img" 
-            image={profileImage.image_url}
-            />
-        </StyledCard>
+        <StyledCard sx={{ my: 2 }}>
+              {loading ? (
+                <Skeleton variant="rectangular" width="100%" height="auto" />
+              ) : (
+                <StyledCardMedia
+                  component="img" 
+                  image={profileImage.image_url}
+                />
+              )}
+          </StyledCard>
         <Box sx={{ display: 'flex', justifyContent: 'center'}}>
           <IconCard>    
             <IconButton><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
@@ -57,29 +84,3 @@ export default function ProfilePage({ profileImage }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { id } = context.query;
-  
-  const cookies = nookies.get(context);
-  
-  let res;
-  if (cookies.token) {
-    // ログインユーザー
-  const config = {
-    headers: { authorization: `Bearer ${cookies.token}` },
-  };
-  
-  res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
-  const profileImage = await res.data;
-  // console.log(profileImage)
-} else {
-  // 非ログインユーザー
-  res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_public/${id}`);
-}
-
-  return { 
-    props: { 
-      profileImage: res.data
-    } 
-  };
-}
