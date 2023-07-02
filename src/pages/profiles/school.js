@@ -107,13 +107,14 @@ export default function App () {
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);
       }
-      console.log(response);
+      // console.log(response);
   
       const img = new Image();
   
       img.onload = () => {
         setImageUrl(response.data.url);
         setIsNavigating(true);
+        enqueueSnackbar('プロフィール帳を保存したよ！', { variant: 'success' });
         router.push({
           pathname: '/profiles/[id]', 
           query: { id: response.data.uuid }, 

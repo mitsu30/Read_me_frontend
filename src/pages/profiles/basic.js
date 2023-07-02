@@ -121,6 +121,7 @@ export default function App () {
       img.onload = () => {
         setImageUrl(response.data.url);
         setIsNavigating(true);
+        enqueueSnackbar('プロフィール帳を保存したよ！', { variant: 'success' });
         router.push({
           pathname: '/profiles/[id]', 
           query: { id: response.data.uuid }, 
