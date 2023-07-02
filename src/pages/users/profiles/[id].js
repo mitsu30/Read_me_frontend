@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Box, CardMedia, CardContent, Grid, Card, IconButton, Skeleton } from '@mui/material';
+import { Box, CardMedia, CardContent, Grid, Card, IconButton, Skeleton, Modal, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
@@ -35,6 +35,11 @@ export default function ProfilePage() {
 
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState('');
+
+  const [openModalHeart, setOpenModalHeart] = useState(false);
+  const [openModalStar, setOpenModalStar] = useState(false);
+  const [openModalChat, setOpenModalChat] = useState(false);
+
   
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +60,30 @@ export default function ProfilePage() {
     fetchData();
   }, [id]);
 
+  const handleOpenModalHeart = () => {
+    setOpenModalHeart(true);
+  };
+  
+  const handleCloseModalHeart = () => {
+    setOpenModalHeart(false);
+  };
+  
+  const handleOpenModalStar = () => {
+    setOpenModalStar(true);
+  };
+  
+  const handleCloseModalStar = () => {
+    setOpenModalStar(false);
+  };
+  
+  const handleOpenModalChat = () => {
+    setOpenModalChat(true);
+  };
+  
+  const handleCloseModalChat = () => {
+    setOpenModalChat(false);
+  };
+  
   return (
     <>
     <CardContent>
@@ -73,13 +102,66 @@ export default function ProfilePage() {
           </StyledCard>
         <Box sx={{ display: 'flex', justifyContent: 'center'}}>
           <IconCard>    
-            <IconButton><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
-            <IconButton><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
-            <IconButton><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
+            <IconButton onClick={handleOpenModalHeart}><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
+            <IconButton onClick={handleOpenModalStar}><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
+            <IconButton onClick={handleOpenModalChat}><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
           </IconCard>
         </Box>
       </Grid>
     </CardContent>  
+    <Modal
+      open={openModalHeart}
+      onClose={handleCloseModalHeart}
+    >
+    <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80vw',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+        }}>
+      準備中です！
+    </Box>
+  </Modal>
+
+  <Modal
+    open={openModalStar}
+    onClose={handleCloseModalStar}
+  >
+    <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80vw',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+        }}>
+      準備中です！
+    </Box>
+  </Modal>
+
+    <Modal
+      open={openModalChat}
+      onClose={handleCloseModalChat}
+    >
+    <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80vw',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+      }}>
+         準備中です！
+     </Box>
+    </Modal>
     </>
   );
 }
