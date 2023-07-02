@@ -6,6 +6,7 @@ import axios from 'axios';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { Skeleton } from '@mui/material';
+import { useRouter } from 'next/router';
 
   const StyledCard = styled(Card)(({ theme }) => ({
     width: 280, 
@@ -35,6 +36,7 @@ const DesignTemplates = ({ templates }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [localTemplates, setLocalTemplates] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +63,7 @@ const DesignTemplates = ({ templates }) => {
   };
 
   const handleButtonClick = () => {
-    window.location.href = currentTemplate.next_path;
+    router.push(currentTemplate.next_path);
   };
 
   return (
