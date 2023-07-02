@@ -52,6 +52,11 @@ export default function ResultPage({ profileImage }) {
     }, 700); 
   };
 
+  const handleMypage = () => {
+    router.push('/mypage'); 
+  };
+
+
   return (
     <>
       <NextSeo
@@ -131,6 +136,27 @@ export default function ResultPage({ profileImage }) {
           onClick={handleOpen}
         >
             Twitterでシェア
+        </Button>
+        <Button 
+          type="submit"
+          variant="contained"
+          sx={{ 
+            mt: 3, 
+            mb: 2, 
+            position: 'static', 
+            marginTop: '20px', 
+            fontSize: '1.0em',
+            padding: '8px 8px', 
+            backgroundColor: '#FF6699',
+            '&:hover': {
+              backgroundColor: '#E60073',
+            },
+            color: '#white',
+            fontWeight: 'bold'  
+          }}
+          onClick={handleMypage}
+        >
+          マイページへ
         </Button>
       </Container>
       )}

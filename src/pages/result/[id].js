@@ -124,9 +124,9 @@ export default function ResultPage({ imageText }) {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center', // 内容を中央に持っていきます
-                alignItems: 'center', // 内容を中央に持っていきます
-                height: '100vh', // 画面全体の高さを使用します
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '100vh',
                 width: '80%',
                 padding: 2,
               }}
