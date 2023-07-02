@@ -19,22 +19,22 @@ export default function AdditionalInfoPage() {
   const { enqueueSnackbar } = useSnackbar();
   const [username, setUsername] = useState('');
   const [avatar, setAvatar] = useState(null);
-  const [preview, setPreview] = useState(initialData?.avatar_url || '');
+  const [preview, setPreview] = useState('');
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState('');
   const [greeting, setGreeting] = useState('');
-  const { AuthContext } = useAuthContext(); 
-  const { isStudent } = AuthContext;
+  const { AuthContext} = useAuthContext(); 
+  const { isStudent, setUserAvatar } = AuthContext;
 
   useEffect(() => {
-    if (isStudent) {
-      const fetchGroups = async () => {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
-        setGroups(response.data.groups);
-      };
-      fetchGroups();
-    }
-  }, [isStudent]); 
+  if (isStudent) {
+    const fetchGroups = async () => {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
+      setGroups(response.data.groups);
+    };
+    fetchGroups();
+  }
+}, [isStudent]); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,12 +45,10 @@ export default function AdditionalInfoPage() {
         };
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
         setInitialData(response.data.data);
-        
-        // Add these lines
-        setUsername(response.data.data.name);
+        setUsername(response.data.data.name || '');
         setPreview(response.data.data.avatar_url);
         setSelectedGroup(response.data.data.groups ? response.data.data.groups.id : '');
-        setGreeting(response.data.data.greeting);
+        setGreeting(response.data.data.greeting || '');
       } catch (err) {
         console.error(err);
       }
@@ -64,11 +62,6 @@ export default function AdditionalInfoPage() {
 
   const handleUpdateProfile = async () => {
     
-    if (selectedGroup === '') {
-      enqueueSnackbar('グループをえらんでね！', { variant: 'error' });
-      return;
-    }
-
     if (greeting === '' || greeting.length > 50) {
       enqueueSnackbar('ひとことを50文字以内で入力してね！', { variant: 'error' });
       return;
@@ -79,15 +72,24 @@ export default function AdditionalInfoPage() {
       return;
     }
 
+    
+    if (isStudent) { // isStudentの場合のみ以下を実行
+      if (selectedGroup === '') {
+        enqueueSnackbar('グループをえらんでね！', { variant: 'error' });
+        return;
+      }
+    }
 
     try {
       const formData = new FormData();
       formData.append('user[name]', username); 
       formData.append('user[greeting]', greeting); 
-      if (avatar) { 
-        formData.append('user[avatar]', avatar);
+      if (avatar) {
+      formData.append('user[avatar]', avatar);
+      };
+      if (isStudent) { 
+        formData.append('group_id', selectedGroup);
       }
-      formData.append('group_id', selectedGroup);
   
       const cookies = nookies.get(null);
       const config = {
@@ -100,6 +102,7 @@ export default function AdditionalInfoPage() {
       const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, formData, config);
   
       if (response.status === 200) {
+        setUserAvatar(response.data.data)
         enqueueSnackbar('プロフィールを更新しました', { variant: 'success' });
         router.push("/users");
       } else {
