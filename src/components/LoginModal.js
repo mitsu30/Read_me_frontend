@@ -11,12 +11,15 @@ import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography'
 import Link from 'next/link';
+import { useAuthContext } from '../context/AuthContext'
 
 export default function LoginModal({ open, onClose }) {
   const { loginWithFirebase } = useFirebaseAuth();
   const { enqueueSnackbar } = useSnackbar(); 
   const [authenticating, setAuthenticating] = useState(false);
   const [navigating, setNavigating] = useState(false);
+  const { AuthContext } = useAuthContext();
+  const { setIsStudent } = AuthContext;
   const router = useRouter();
   
   const handleGitHubLogin = () => {
@@ -36,15 +39,17 @@ export default function LoginModal({ open, onClose }) {
 
       try {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth`, userDetails, config);
+        console.log(response.data)
 
         if (response.data.status === "success") {
+          setIsStudent(response.data.is_student);
           enqueueSnackbar('ログインしたよ！', { variant: 'success' });
           setAuthenticating(false); 
           setNavigating(true);
           onClose();
           try {
             if (response.data.isNewUser) {
-              await router.push(response.data.is_student ? `/mypage/edit` : `/mypage/edit`);
+              await router.push(`/mypage/edit`);
             } else {
               await router.push('/users');
               setNavigating(false);
