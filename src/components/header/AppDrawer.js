@@ -167,7 +167,7 @@ export default function MiniDrawer() {
               ...(open && { display: 'none' }),
             }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: '#696969' }} />
           </IconButton>
           <Link href="/">
             <img
