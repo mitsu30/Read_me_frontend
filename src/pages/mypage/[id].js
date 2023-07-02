@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typography } from '@mui/material';
+import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typography, Skeleton } from '@mui/material';
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
@@ -16,7 +16,6 @@ import { useSnackbar } from 'notistack';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { NextSeo } from 'next-seo';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -38,27 +37,61 @@ const IconCard = styled(Card)(({ theme }) => ({
   alignItems: 'flex',  
 }));
 
-export default function ProfilePage({ profileImage, userCommunities, openRanges  }) {
+export default function ProfilePage() {
   const router = useRouter();
-  const { id, shared } = router.query; 
+  const { id } = router.query; 
   const { enqueueSnackbar } = useSnackbar();
   const [openModal, setOpenModal] = useState(false);
   const [openModalForOpenRange, setOpenModalForOpenRange] = useState(false);
-  const [openRange, setOpenRange] = useState(profileImage.privacy);  
-  const [communities, setCommunities] = useState(userCommunities.map(community => {
-    const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
-    return { ...community, checked: isChecked }
-  }));
+  const [openRange, setOpenRange] = useState([]);
+  const [communities, setCommunities] = useState([]);
+  const [profileImage, setProfileImage] = useState(null);
+  const [userCommunities, setUserCommunities] = useState([]);
+  const [openRanges, setOpenRanges] = useState([]);
 
   const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
-  const siteTitle = "りーどみー";
-  const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
   useEffect(() => {
-    if (shared === 'true') {
-      router.push('/');
+    const fetchData = async () => {
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { authorization: `Bearer ${cookies.token}` },
+      };
+
+      const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
+      const profileImageData = await profileRes.data;
+      setProfileImage(profileImageData);
+      
+      const communitiesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/communities/${id}`, config);
+      const userCommunitiesData = await communitiesRes.data.user_communities;
+      setUserCommunities(userCommunitiesData);
+
+      const openRangesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges/${id}`, config);
+      const openRangesData = await openRangesRes.data.open_ranges;
+      setOpenRanges(openRangesData);
+
+      setOpenRange(profileImageData.privacy);
+    };
+
+    if (id) {
+      fetchData();
     }
-  }, [shared, router]);
+  }, [id]);
+
+  useEffect(() => {
+    setCommunities(userCommunities.map(community => {
+      const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
+      return { ...community, checked: isChecked };
+    }));
+  }, [userCommunities]);
+
+  useEffect(() => {
+    setCommunities(userCommunities.map(community => {
+      const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
+      return { ...community, checked: isChecked };
+    }));
+  }, [openRanges]);
+
 
   const handleTwitterShare = () => {
     setTimeout(() => {
@@ -168,10 +201,14 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
                 my: 5,
               }}>
         <StyledCard sx={{ my: 2}}>
+        {profileImage ? (
           <StyledCardMedia
             component="img" 
             image={profileImage.image_url}
             />
+            ) : (
+              <Skeleton variant="rectangular" width="100%" height={118} />
+            )}
         </StyledCard>
         <Box sx={{ display: 'flex', justifyContent: 'center'}}>
           <IconCard>    
@@ -253,58 +290,4 @@ export default function ProfilePage({ profileImage, userCommunities, openRanges 
   );
 }
 
-export async function getServerSideProps(context) {
-  const { id, shared  } = context.query;
-  const userAgent = context.req.headers['user-agent'];
-  if (shared === 'true' && !userAgent.includes('Twitterbot')) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
 
-  const cookies = nookies.get(context);
-  const config = {
-    headers: { authorization: `Bearer ${cookies.token}` },
-  };
-  
-  const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
-  const profileImage = await profileRes.data;
-  // console.log(profileImage)
-
-  const communitiesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/communities/${id}`, config);
-  const userCommunities = await communitiesRes.data.user_communities;
-  // console.log(userCommunities)
-  
-  const openRangesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges/${id}`, config);
-  const openRanges = await openRangesRes.data.open_ranges;
-  // console.log(openRanges)
-
-  return { 
-    props: { 
-      profileImage,
-      userCommunities,
-      openRanges,
-    } 
-  };
-// } catch (error) {
-//   // If the API returned a response, it will be available at error.response
-//   if (error.response) {
-//     if (error.response.status === 400 && error.response.data.message === "Firebase ID token has expired. Get a fresh token from your app and try again.") {
-//       return { 
-//         redirect: {
-//           destination: '/login', // Redirect to login page
-//           permanent: false,
-//         },
-//         props: {} 
-//       }
-//     }
-//   }
-//   // Otherwise, the request failed before it could get a response
-//   else {
-//     throw error;
-//   }
-
-}
