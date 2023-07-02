@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import axios from "axios";
 import Box from '@mui/material/Box';
@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography'
 import { Loading } from '../../components/Loading';
 import nookies from "nookies";
 import { useSnackbar } from 'notistack';
+import { useAuthContext } from '../../context/AuthContext';
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 6;
 const MAX_LINE_LENGTH_OF_ANSWER2 = 12;
@@ -40,7 +41,17 @@ export default function App () {
   const [isLoading, setIsLoading] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
+  const { AuthContext} = useAuthContext(); 
+  const { isStudent } = AuthContext;
+
   const router = useRouter();
+
+  useEffect(() => {
+    if (!isStudent) {
+      enqueueSnackbar("許可されていないアクセスです", { variant: 'error' })
+      router.push('/profiles');
+    }
+  }, [isStudent, router]);
 
   const validateForm = () => {
     let isValid = true;
