@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/system';
 import CenteredBox from '../../components/CenteredBox';
+import { useAuthContext } from '../../context/AuthContext';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -55,6 +56,8 @@ const MyPage = () => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const { AuthContext} = useAuthContext(); 
+  const { isStudent } = AuthContext;
   const router = useRouter();
   
   useEffect(() => {
@@ -143,7 +146,9 @@ const MyPage = () => {
                 なまえ
               </TableCell>
               {/* <TableCell align="center" style={{ width: '20%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell> */}
+              {isStudent &&(
               <TableCell align="center" style={{ width: '25%', height: '10px', borderBottom: '1px solid #808080' }}>所属</TableCell>
+              )}
               <TableCell align="center" style={{ width: isSmallScreen ? '30%' : '40%', height: '10px', display: isSmallScreen ? 'none' : 'table-cell', borderBottom: '1px solid #808080' }}>みんなにひとこと！</TableCell>
             </TableRow>
           </TableHead>
@@ -167,7 +172,9 @@ const MyPage = () => {
                   </TableCell>
                   <TableCell align="center">{user.name}</TableCell>
                   {/* <TableCell align="center">{user.communities.map(community => community.name).join(', ')}</TableCell> */}
+                  {isStudent &&(
                   <TableCell align="center">{user.groups.map(group => group.name).join(', ')}</TableCell>
+                  )}
                   <TableCell align="center" style={{ display: isSmallScreen ? 'none' : 'table-cell' }}>{user.greeting}</TableCell>
                 </TableRow>
               )}
