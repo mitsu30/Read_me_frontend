@@ -14,13 +14,12 @@ const templateStyle = { maxHeight: '60%',  maxWidth: '60%', objectFit: 'contain'
 export default function HomePage() {
   const router = useRouter();
 
-  // コンポーネントがマウントされた時にクエリパラメータの'unauthorized'をチェックする
-  // useEffect(() => {
-  //   if (router.query.unauthorized) {
-  //     enqueueSnackbar('許可されていないアクセスです', { variant: 'error' });
-  //   }
-  // }, [router.query]);
-
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/wakeup`)
+    .then(data => {
+      console.log("Server wakeup response: ", data);
+    })
+  }, []);
 
   const handleClick = () => {
     router.push('/create'); 
