@@ -331,54 +331,51 @@ const handleCloseModalChat = () => {
       </Box>
     </Modal>
     <Modal
-  open={openModalHeart}
-  onClose={handleCloseModalHeart}
->
-<Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}>準備中です！</Box>
-</Modal>
-
-<Modal
-  open={openModalStar}
-  onClose={handleCloseModalStar}
->
-<Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}>準備中です！
-        </Box>
-      </Modal>
-
-      <Modal
-        open={openModalChat}
-        onClose={handleCloseModalChat}
+      open={openModalHeart}
+      onClose={handleCloseModalHeart}
       >
-        <Box sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: '80vw',
-                  bgcolor: 'background.paper',
-                  boxShadow: 24,
-                  p: 4,
-                }}>準備中です！
-       </Box>
-      </Modal>
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80vw',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+      }}>準備中です！</Box>
+    </Modal>
+
+    <Modal
+      open={openModalStar}
+      onClose={handleCloseModalStar}
+    >
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80vw',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+      }}>準備中です！ </Box>
+    </Modal>
+    <Modal
+      open={openModalChat}
+      onClose={handleCloseModalChat}
+      >
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80vw',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+      }}>準備中です！</Box>
+    </Modal>
     </>
   );
 }
