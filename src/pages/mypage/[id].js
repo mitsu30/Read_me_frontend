@@ -54,7 +54,7 @@ export default function ProfilePage() {
   const [openModalChat, setOpenModalChat] = useState(false);
 
 
-  const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
+  const shareUrl = `https://read-me-frontend-git-20redeploy-mitsu30.vercel.app/profiles/${id}?shared=true`;
 
   useEffect(() => {
     const fetchData = async () => {
