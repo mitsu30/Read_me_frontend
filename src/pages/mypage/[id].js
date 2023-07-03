@@ -17,7 +17,8 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Tooltip from '@mui/material/Tooltip';
-
+import Container from '@mui/material/Container';
+import CenteredBox from '../../components/CenteredBox';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -153,6 +154,10 @@ export default function ProfilePage() {
     }
   };
 
+  const handleMypage = () => {
+    router.push('/mypage'); 
+  };
+
   const handleOpenModalForOpenRange = () => {
     setOpenModalForOpenRange(true);
   };
@@ -242,33 +247,7 @@ const handleCloseModalChat = () => {
 
   return (
     <>
-    {/* <CardContent>
-      <Grid item sx={{
-                my: 5,
-              }}>
-        <StyledCard sx={{ my: 2}}>
-        {profileImage ? (
-          <StyledCardMedia
-            component="img" 
-            image={profileImage.image_url}
-            />
-            ) : (
-              <Skeleton variant="rectangular" width="100%" height={118} />
-            )}
-        </StyledCard>
-        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
-          <IconCard>    
-            <IconButton onClick={handleOpenModalHeart}><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
-            <IconButton onClick={handleOpenModalStar}><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
-            <IconButton onClick={handleOpenModalChat}><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
-            <IconButton onClick={handleOpenModalForOpenRange}><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
-            <IconButton onClick={handleOpenModal}><DeleteIcon /></IconButton>
-            <IconButton onClick={handleTwitterShare}><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
-          </IconCard>
-        </Box>
-      </Grid>
-    </CardContent> */}
-     <CardContent>
+    <CardContent>
       <Grid item sx={{ my: 5 }}>
         <StyledCard sx={{ my: 2 }}>
           {profileImage ? (
@@ -311,6 +290,29 @@ const handleCloseModalChat = () => {
             </Tooltip>
           </IconCard>
         </Box>
+        <CenteredBox>
+          <Button 
+            type="submit"
+            variant="contained"
+            sx={{ 
+              mt: 3, 
+              mb: 2, 
+              position: 'static', 
+              marginTop: '20px', 
+              fontSize: '1.0em',
+              padding: '8px 8px', 
+              backgroundColor: '#FF6699',
+              '&:hover': {
+                backgroundColor: '#E60073',
+              },
+              color: '#white',
+              fontWeight: 'bold'  
+            }}
+            onClick={handleMypage}
+          >
+            マイページへ
+          </Button>
+        </CenteredBox>
       </Grid>
     </CardContent>
     <Modal
