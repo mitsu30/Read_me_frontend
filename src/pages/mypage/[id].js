@@ -345,7 +345,6 @@ const handleCloseModalChat = () => {
         p: 4,
       }}>準備中です！</Box>
     </Modal>
-
     <Modal
       open={openModalStar}
       onClose={handleCloseModalStar}
