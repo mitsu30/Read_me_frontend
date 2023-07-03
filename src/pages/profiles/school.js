@@ -46,6 +46,20 @@ export default function App () {
 
   const router = useRouter();
 
+  const countStringLength = (str) => {
+    let length = 0;
+    for (let i = 0; i < str.length; i++) {
+      const c = str.charCodeAt(i);
+      if ((c >= 0x0 && c < 0x81) || (c === 0xf8f0) || (c >= 0xff61 && c < 0xffa0) || (c >= 0xf8f1 && c < 0xf8f4)) {
+        length += 0.5;
+      } else {
+        length += 1;
+      }
+    }
+    return length;
+  }
+  
+
   useEffect(() => {
     if (!isStudent) {
       enqueueSnackbar("許可されていないアクセスです", { variant: 'error' })
@@ -164,7 +178,7 @@ export default function App () {
                 入力してね♪
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
-                <TextField
+              <TextField
                   color="secondary"
                   margin="normal"
                   fullWidth
@@ -176,7 +190,7 @@ export default function App () {
                   error={body1Error !== ''}
                   helperText={body1Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
+                    if (countStringLength(e.target.value) > MAX_LINE_LENGTH_OF_ANSWER1) {
                       setBody1Error('6文字以内で入力してください。');
                     } else {
                       setBody1Error('');
@@ -195,7 +209,7 @@ export default function App () {
                   error={body2Error !== ''}
                   helperText={body2Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER2) {
+                    if (countStringLength(e.target.value) > MAX_LINE_LENGTH_OF_ANSWER2) {
                       setBody2Error('12文字以内で入力してください。');
                     } else {
                       setBody2Error('');
@@ -232,7 +246,7 @@ export default function App () {
                   error={body4Error !== ''}
                   helperText={body4Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER4) {
+                    if (countStringLength(e.target.value) > MAX_LINE_LENGTH_OF_ANSWER4) {
                       setBody4Error('23文字以内で入力してください。');
                     } else {
                       setBody4Error('');
@@ -251,7 +265,7 @@ export default function App () {
                   error={body5Error !== ''}
                   helperText={body5Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER5) {
+                    if (countStringLength(e.target.value) > MAX_LINE_LENGTH_OF_ANSWER5) {
                       setBody5Error('15文字以内で入力してください。');
                     } else {
                       setBody5Error('');
