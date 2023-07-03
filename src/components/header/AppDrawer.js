@@ -23,7 +23,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import Link from 'next/link';
 import LoginModal from '../LoginModal';
-import { useState } from 'react';  
+import { useState, useEffect, useRef  } from 'react';  
 import useFirebaseAuth from '../../hooks/useFirebaseAuth';
 import PersonIcon from '@mui/icons-material/Person';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -109,6 +109,20 @@ export default function MiniDrawer() {
   const { AuthContext, userAvatar } = useAuthContext(); 
   const { currentUser, logout,  isStudent } = AuthContext;
 
+  const drawerRef = useRef();
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
+        handleDrawerClose();
+      }
+    }
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [drawerRef]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -204,7 +218,7 @@ export default function MiniDrawer() {
           </Box> 
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open} >
+      <Drawer variant="permanent" open={open} ref={drawerRef}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
