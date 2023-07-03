@@ -16,6 +16,8 @@ import { useSnackbar } from 'notistack';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import Tooltip from '@mui/material/Tooltip';
+
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -212,7 +214,7 @@ export default function ProfilePage() {
         }
       };
 
-      // 各モーダルの開閉を制御する関数を追加
+  
 const handleOpenModalHeart = () => {
   setOpenModalHeart(true);
 };
@@ -240,7 +242,7 @@ const handleCloseModalChat = () => {
 
   return (
     <>
-    <CardContent>
+    {/* <CardContent>
       <Grid item sx={{
                 my: 5,
               }}>
@@ -265,8 +267,52 @@ const handleCloseModalChat = () => {
           </IconCard>
         </Box>
       </Grid>
+    </CardContent> */}
+     <CardContent>
+      <Grid item sx={{ my: 5 }}>
+        <StyledCard sx={{ my: 2 }}>
+          {profileImage ? (
+            <StyledCardMedia component="img" image={profileImage.image_url} />
+          ) : (
+            <Skeleton variant="rectangular" width="100%" height={118} />
+          )}
+        </StyledCard>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <IconCard>
+            <Tooltip title="いいね">
+              <IconButton onClick={handleOpenModalHeart}>
+                <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="お気に入り">
+              <IconButton onClick={handleOpenModalStar}>
+                <StarBorderOutlinedIcon sx={{ color: 'orange' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="コメント">
+              <IconButton onClick={handleOpenModalChat}>
+                <ChatBubbleOutlineOutlinedIcon sx={{ color: 'gray' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="公開範囲の設定">
+              <IconButton onClick={handleOpenModalForOpenRange}>
+                <LockIcon sx={{ color: '#ffd700' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="プロフィール帳の削除">
+              <IconButton onClick={handleOpenModal}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Twitterシェア">
+              <IconButton onClick={handleTwitterShare}>
+                <TwitterIcon sx={{ color: '#55acee' }} />
+            </IconButton>
+            </Tooltip>
+          </IconCard>
+        </Box>
+      </Grid>
     </CardContent>
-    
     <Modal
       open={openModal}
       onClose={handleCloseModal}
