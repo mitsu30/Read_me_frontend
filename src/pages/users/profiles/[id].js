@@ -139,7 +139,7 @@ export default function ProfilePage() {
             }}
             onClick={handleMypage}
           >
-            {profileImage.username}のページへ
+            {profileImage.username}さんのページへ
           </Button>
         </CenteredBox>
       </Grid>

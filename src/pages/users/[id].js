@@ -101,7 +101,7 @@ const UserPage = () => {
           fontSize: isSmallScreen ? '3rem' : '5.5rem', 
         }}
       >
-        {isLoading ? 'Loading...' : `${user.name}のページ`}
+        {isLoading ? 'Loading...' : `${user.name}さんのページ`}
       </Typography>
     </Box>
     
