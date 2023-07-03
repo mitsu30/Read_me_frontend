@@ -184,9 +184,22 @@ export default function MiniDrawer() {
           </Link>
           <Box sx={{ marginLeft: 'auto' }}> 
           {currentUser ? (
-            <Tooltip title={isStudent ? "スクール生" : "一般ユーザー"}>
-              <Avatar src={userAvatar} />
-            </Tooltip>
+            <Link href="/mypage">
+            <a>
+              <Tooltip title={isStudent ? "スクール生" : "一般ユーザー"}>
+                <IconButton 
+                  sx={{ 
+                    transition: '0.3s',
+                    '&:hover': {
+                      transform: 'scale(1.25)'
+                    }
+                  }}
+                >
+                  <Avatar src={userAvatar} />
+                </IconButton>
+              </Tooltip>
+            </a>
+          </Link>
           ) : null}
           </Box> 
         </Toolbar>
