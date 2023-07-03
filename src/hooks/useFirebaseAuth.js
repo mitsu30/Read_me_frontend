@@ -21,33 +21,24 @@ export default function useFirebaseAuth() {
   const { enqueueSnackbar } = useSnackbar(); 
   const router = useRouter();
 
-  const AUTO_LOGOUT_TIME = 15 * 60 * 1000;
-  let autoLogoutTimer;
-
-  useEffect(() => {
-    const resetTimer = () => {
-      clearTimeout(autoLogoutTimer);
-      autoLogoutTimer = setTimeout(logout, AUTO_LOGOUT_TIME);
-    };
-
-    window.addEventListener('click', resetTimer);
-    window.addEventListener('keypress', resetTimer);
-
-    return () => {
-      window.removeEventListener('click', resetTimer);
-      window.removeEventListener('keypress', resetTimer);
-    };
-  }, []);
+  // const AUTO_LOGOUT_TIME = 15 * 60 * 1000;
+  // let autoLogoutTimer;
 
   // useEffect(() => {
-  //   const handleBeforeunload = () => logout();
+  //   const resetTimer = () => {
+  //     clearTimeout(autoLogoutTimer);
+  //     autoLogoutTimer = setTimeout(logout, AUTO_LOGOUT_TIME);
+  //   };
 
-  //   window.addEventListener('beforeunload', handleBeforeunload);
+  //   window.addEventListener('click', resetTimer);
+  //   window.addEventListener('keypress', resetTimer);
 
   //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeunload);
+  //     window.removeEventListener('click', resetTimer);
+  //     window.removeEventListener('keypress', resetTimer);
   //   };
   // }, []);
+
   
   const getProvider = (method) => {
     switch (method) {
