@@ -7,6 +7,7 @@ import axios from 'axios';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
@@ -87,28 +88,35 @@ export default function ProfilePage() {
   return (
     <>
     <CardContent>
-      <Grid item sx={{
-                my: 5,
-              }}>
+      <Grid item sx={{ my: 5 }}>
         <StyledCard sx={{ my: 2 }}>
-              {loading ? (
-                <Skeleton variant="rectangular" width="100%" height="auto" />
-              ) : (
-                <StyledCardMedia
-                  component="img" 
-                  image={profileImage.image_url}
-                />
-              )}
-          </StyledCard>
-        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
-          <IconCard>    
-            <IconButton onClick={handleOpenModalHeart}><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
-            <IconButton onClick={handleOpenModalStar}><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
-            <IconButton onClick={handleOpenModalChat}><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
+          {loading ? (
+            <Skeleton variant="rectangular" width="100%" height="auto" />
+          ) : (
+            <StyledCardMedia component="img" image={profileImage.image_url} />
+          )}
+        </StyledCard>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <IconCard>
+            <Tooltip title="いいね">
+              <IconButton onClick={handleOpenModalHeart}>
+                <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="お気に入り">
+              <IconButton onClick={handleOpenModalStar}>
+                <StarBorderOutlinedIcon sx={{ color: 'orange' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="チャット">
+              <IconButton onClick={handleOpenModalChat}>
+                <ChatBubbleOutlineOutlinedIcon sx={{ color: 'gray' }} />
+              </IconButton>
+            </Tooltip>
           </IconCard>
         </Box>
       </Grid>
-    </CardContent>  
+    </CardContent>   
     <Modal
       open={openModalHeart}
       onClose={handleCloseModalHeart}

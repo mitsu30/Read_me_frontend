@@ -289,7 +289,7 @@ const handleCloseModalChat = () => {
                 <StarBorderOutlinedIcon sx={{ color: 'orange' }} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="コメント">
+            <Tooltip title="チャット">
               <IconButton onClick={handleOpenModalChat}>
                 <ChatBubbleOutlineOutlinedIcon sx={{ color: 'gray' }} />
               </IconButton>
