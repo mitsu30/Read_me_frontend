@@ -124,9 +124,22 @@ export default function AdditionalInfoPage() {
   };
 
   const handleAvatarChange = (e) => {
-    setAvatar(e.target.files[0]);
-    setPreview(URL.createObjectURL(e.target.files[0]));
-  }
+    const file = e.target.files[0];
+    const fileType = file.type;
+    const allowedTypes = ['image/jpeg', 'image/png'];
+  
+    if (file.size > 1000000) { // 1MB = 1000000B
+      enqueueSnackbar('ファイルのサイズは1MB以下にしてください', { variant: 'error' });
+      return;
+    }
+    if (!allowedTypes.includes(fileType)) {
+      enqueueSnackbar('選択できるファイル形式は.jpegまたは.pngです', { variant: 'error' });
+      return;
+    }
+  
+    setAvatar(file);
+    setPreview(URL.createObjectURL(file));
+  };
   
   return (
     <>
