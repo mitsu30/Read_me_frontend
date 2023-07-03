@@ -17,7 +17,6 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Tooltip from '@mui/material/Tooltip';
-import Container from '@mui/material/Container';
 import CenteredBox from '../../components/CenteredBox';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 

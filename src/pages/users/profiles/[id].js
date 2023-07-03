@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Box, CardMedia, CardContent, Grid, Card, IconButton, Skeleton, Modal, Typography } from '@mui/material';
+import { Button, Box, CardMedia, CardContent, Grid, Card, IconButton, Skeleton, Modal, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
@@ -8,7 +8,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import Tooltip from '@mui/material/Tooltip';
-
+import CenteredBox from '../../../components/CenteredBox'
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '65%', 
@@ -60,6 +60,10 @@ export default function ProfilePage() {
 
     fetchData();
   }, [id]);
+
+  const handleMypage = () => {
+    router.push(`/users/${profileImage.user_id}`); 
+  };
 
   const handleOpenModalHeart = () => {
     setOpenModalHeart(true);
@@ -115,6 +119,29 @@ export default function ProfilePage() {
             </Tooltip>
           </IconCard>
         </Box>
+        <CenteredBox>
+          <Button 
+            type="submit"
+            variant="contained"
+            sx={{ 
+              mt: 3, 
+              mb: 2, 
+              position: 'static', 
+              marginTop: '20px', 
+              fontSize: '1.0em',
+              padding: '8px 8px', 
+              backgroundColor: '#FF6699',
+              '&:hover': {
+                backgroundColor: '#E60073',
+              },
+              color: '#white',
+              fontWeight: 'bold'  
+            }}
+            onClick={handleMypage}
+          >
+            {profileImage.username}のページへ
+          </Button>
+        </CenteredBox>
       </Grid>
     </CardContent>   
     <Modal
