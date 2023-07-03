@@ -25,7 +25,7 @@ export default function App () {
   const [body1, setBody1] = useState("");
   const [body2, setBody2] = useState("");
   const [body3, setBody3] = useState("");
-  const [body4, setBody4] = useState("");
+  // const [body4, setBody4] = useState("");
   const [body5, setBody5] = useState("");
   const [body6, setBody6] = useState("");
   const [body7, setBody7] = useState("");
@@ -55,6 +55,21 @@ export default function App () {
     return length;
   }
   
+  const getZodiacSign = (month, day) => {
+    if((month == 1 && day <= 20) || (month == 12 && day >=22)) { return "やぎ"; }
+    else if ((month == 1 && day >= 21) || (month == 2 && day <= 18)) { return "みずがめ"; }
+    else if((month == 2 && day >= 19) || (month == 3 && day <= 20)) { return "うお"; }
+    else if((month == 3 && day >= 21) || (month == 4 && day <= 20)) { return "おひつじ"; }
+    else if((month == 4 && day >= 21) || (month == 5 && day <= 20)) { return "おうし"; }
+    else if((month == 5 && day >= 21) || (month == 6 && day <= 20)) { return "ふたご"; }
+    else if((month == 6 && day >= 22) || (month == 7 && day <= 22)) { return "かに"; }
+    else if((month == 7 && day >= 23) || (month == 8 && day <= 22)) { return "しし"; }
+    else if((month == 8 && day >= 23) || (month == 9 && day <= 23)) { return "おとめ"; }
+    else if((month == 9 && day >= 24) || (month == 10 && day <= 23)) { return "てんびん"; }
+    else if((month == 10 && day >= 24) || (month == 11 && day <= 22)) { return "さそり"; }
+    else if((month == 11 && day >= 23) || (month == 12 && day <= 21)) { return "いて"; }
+  };
+
   const validateForm = () => {
     let isValid = true;
     if (!body1) {
@@ -69,10 +84,10 @@ export default function App () {
       enqueueSnackbar("たんじょうびを選択してね", { variant: 'error' });
       isValid = false;
     }
-    if (!body4) {
-      enqueueSnackbar("せいざを選択してね", { variant: 'error' });
-      isValid = false;
-    }
+    // if (!body4) {
+    //   enqueueSnackbar("せいざを選択してね", { variant: 'error' });
+    //   isValid = false;
+    // }
     if (!body5) {
       enqueueSnackbar("けつえきがたを選択してね", { variant: 'error' });
       isValid = false;
@@ -99,6 +114,7 @@ export default function App () {
         authorization: `Bearer ${cookies.token}` 
       },
     };
+    const body4 = getZodiacSign(body2, body3);
 
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/basic/preview`, { answers: { body1, body2, body3, body4, body5, body6, body7 } }, config);
     setImageUrl(response.data.url);
@@ -113,6 +129,8 @@ export default function App () {
       return;
     }
     setIsLoading(true);
+
+    const body4 = getZodiacSign(body2, body3);
   
     try {
       const cookies = nookies.get(null);
@@ -155,7 +173,7 @@ export default function App () {
     }
   };
 
-  const ZodiacSigns = ['おひつじ', 'おうし', 'ふたご', 'かに', 'しし', 'おとめ', 'てんびん', 'さそり', 'いて', 'やぎ', 'みずがめ', 'うお'];
+  // const ZodiacSigns = ['おひつじ', 'おうし', 'ふたご', 'かに', 'しし', 'おとめ', 'てんびん', 'さそり', 'いて', 'やぎ', 'みずがめ', 'うお'];
 
   return (
     <>
@@ -231,7 +249,7 @@ export default function App () {
                 </Grid>
 
                 <Grid container spacing={2}>
-                  <Grid item xs={6}>
+                  {/* <Grid item xs={6}>
                     <FormControl fullWidth variant="outlined" margin="normal">
                       <InputLabel htmlFor="zodiac-sign-select">せいざ</InputLabel>
                       <Select
@@ -246,8 +264,8 @@ export default function App () {
                         ))}
                       </Select>
                     </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
+                  </Grid> */}
+                  <Grid item xs={12}>
                     <FormControl fullWidth variant="outlined" margin="normal">
                       <InputLabel htmlFor="blood-type-select">けつえきがた</InputLabel>
                       <Select
