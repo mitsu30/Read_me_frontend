@@ -42,6 +42,19 @@ export default function App () {
 
   const router = useRouter();
 
+  const countStringLength = (str) => {
+    let length = 0;
+    for (let i = 0; i < str.length; i++) {
+      const c = str.charCodeAt(i);
+      if ((c >= 0x0 && c < 0x81) || (c === 0xf8f0) || (c >= 0xff61 && c < 0xffa0) || (c >= 0xf8f1 && c < 0xf8f4)) {
+        length += 0.5;
+      } else {
+        length += 1;
+      }
+    }
+    return length;
+  }
+  
   const validateForm = () => {
     let isValid = true;
     if (!body1) {
@@ -174,7 +187,7 @@ export default function App () {
                   error={body1Error !== ''}
                   helperText={body1Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
+                    if (countStringLength(e.target.value)  > MAX_LINE_LENGTH_OF_ANSWER1) {
                       setBody1Error('6文字以内で入力してください。');
                     } else {
                       setBody1Error('');
@@ -262,7 +275,7 @@ export default function App () {
                   error={body6Error !== ''}
                   helperText={body6Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER6) {
+                    if (countStringLength(e.target.value)  > MAX_LINE_LENGTH_OF_ANSWER6) {
                       setBody6Error('14文字以内で入力してください。');
                     } else {
                       setBody6Error('');
@@ -282,7 +295,7 @@ export default function App () {
                   error={body7Error !== ''}
                   helperText={body7Error}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER7) {
+                    if (countStringLength(e.target.value)  > MAX_LINE_LENGTH_OF_ANSWER7) {
                       setBody7Error('15文字以内で入力してください。');
                     } else {
                       setBody7Error('');
