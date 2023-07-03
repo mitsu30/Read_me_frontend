@@ -4,50 +4,97 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import nookies from "nookies";
+import { useAuthContext } from '../../context/AuthContext';
 
-export default function AdditionalInfoPage({ initialData }) {
+export default function AdditionalInfoPage() {
+  const [initialData, setInitialData] = useState(null); 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { id } = router.query;
-
-  const defaultAvatarUrl = '/default_avatar.png';
-  const [username, setUsername] = useState(initialData.name);
+  const [username, setUsername] = useState('');
   const [avatar, setAvatar] = useState(null);
-  const [preview, setPreview] = useState(defaultAvatarUrl);
-  
+  const [preview, setPreview] = useState('');
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState('');
-
   const [greeting, setGreeting] = useState('');
+  const { AuthContext} = useAuthContext(); 
+  const { isStudent, setUserAvatar } = AuthContext;
 
   useEffect(() => {
+  if (isStudent) {
     const fetchGroups = async () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
       setGroups(response.data.groups);
-      // const data = response.data.groups
     };
     fetchGroups();
+  }
+}, [isStudent]); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cookies = nookies.get();
+        const config = {
+          headers: { authorization: `Bearer ${cookies.token}` },
+        };
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages/edit`, config);
+        setInitialData(response.data.data);
+        setUsername(response.data.data.name || '');
+        setPreview(response.data.data.avatar_url);
+        setSelectedGroup(response.data.data.groups ? response.data.data.groups.id : '');
+        setGreeting(response.data.data.greeting || '');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchData();
   }, []);
 
+  if (!initialData) {
+    return <div>Loading...</div>; // or return a skeleton component
+  }
+
   const handleUpdateProfile = async () => {
+    
+    if (username === '' || username.length > 10) {
+      enqueueSnackbar('なまえを10文字以内で入力してね！', { variant: 'error' });
+      return;
+    }
+
+    if (greeting === '' || greeting.length > 50) {
+      enqueueSnackbar('ひとことを50文字以内で入力してね！', { variant: 'error' });
+      return;
+    }
+    
+    if (preview === '') {
+      enqueueSnackbar('アイコン用の画像をえらんでね！', { variant: 'error' });
+      return;
+    }
+
+    
+    if (isStudent) { // isStudentの場合のみ以下を実行
+      if (selectedGroup === '') {
+        enqueueSnackbar('グループをえらんでね！', { variant: 'error' });
+        return;
+      }
+    }
+
     try {
       const formData = new FormData();
       formData.append('user[name]', username); 
       formData.append('user[greeting]', greeting); 
-      if (avatar) { 
-        formData.append('avatar', avatar);
+      if (avatar) {
+      formData.append('user[avatar]', avatar);
+      };
+      if (isStudent) { 
+        formData.append('group_id', selectedGroup);
       }
-  
-      formData.append('group_id', selectedGroup);
   
       const cookies = nookies.get(null);
       const config = {
@@ -57,11 +104,12 @@ export default function AdditionalInfoPage({ initialData }) {
         },
       };
   
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/resister_new_RUNTEQ_student`, formData, config);
+      const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/mypages`, formData, config);
   
       if (response.status === 200) {
+        setUserAvatar(response.data.data)
         enqueueSnackbar('プロフィールを更新しました', { variant: 'success' });
-        router.push("/");
+        router.push("/users");
       } else {
         enqueueSnackbar('プロフィールの更新に失敗しました', { variant: 'error' });
       }
@@ -76,21 +124,25 @@ export default function AdditionalInfoPage({ initialData }) {
   };
 
   const handleAvatarChange = (e) => {
-    setAvatar(e.target.files[0]);
-    setPreview(URL.createObjectURL(e.target.files[0]));
-  }
+    const file = e.target.files[0];
+    const fileType = file.type;
+    const allowedTypes = ['image/jpeg', 'image/png'];
   
-  const formRef = useRef();
-
-  const handleAvatarCancel = () => {
-    setAvatar(null);
-    setPreview(defaultAvatarUrl);
-    if (formRef.current) {
-      formRef.current.reset();
+    if (file.size > 1000000) { // 1MB = 1000000B
+      enqueueSnackbar('ファイルのサイズは1MB以下にしてください', { variant: 'error' });
+      return;
     }
+    if (!allowedTypes.includes(fileType)) {
+      enqueueSnackbar('選択できるファイル形式は.jpegまたは.pngです', { variant: 'error' });
+      return;
+    }
+  
+    setAvatar(file);
+    setPreview(URL.createObjectURL(file));
   };
-
+  
   return (
+    <>
     <Grid container component="main" justifyContent="center">
       <Grid item xs={10} md={8}>
         <Box
@@ -103,32 +155,36 @@ export default function AdditionalInfoPage({ initialData }) {
         >
           <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
             <Typography component="h1" variant="h3">
-              ユーザー登録
+              プロフィール
             </Typography>
           </Box>
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
-            ニックネームをおしえてね
+            なまえをおしえてね
             </Typography>
           </Box>
+          {isStudent && (
           <Box>
             <Typography component="h1" variant="h5">
-            (RUNTEQで使っている名前)
+            (スクールで使っているなまえ)
             </Typography>
           </Box>
+          )}
           <Box component="form">
             <TextField
               color="secondary"
               margin="normal"
               fullWidth
               id="username"
-              label="ニックネーム"
+              label="なまえ"
               name="username"
               autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </Box>
+          {isStudent && (
+          <>
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
             何期かおしえてね
@@ -145,6 +201,8 @@ export default function AdditionalInfoPage({ initialData }) {
               ))}
             </Select>
           </Box>
+          </>
+          )}
           <Box sx={{mt: 2 }}>
             <Typography component="h1" variant="h5">
             みんなにひとこと！
@@ -169,23 +227,16 @@ export default function AdditionalInfoPage({ initialData }) {
             </Typography>
           </Box>
           <Box>
-            <form ref={formRef}>
-              <TextField
-                color="secondary"
-                margin="normal"
-                fullWidth
-                type="file"
-                id="avatar"
-                name="avatar"
-                accept="image/png, image/jpeg"
-                onChange={handleAvatarChange}
-                />
-            </form>
-            {preview && preview !== defaultAvatarUrl && (
-              <IconButton onClick={handleAvatarCancel}>
-                <CloseIcon />
-              </IconButton>
-            )}
+            <TextField
+              color="secondary"
+              margin="normal"
+              fullWidth
+              type="file"
+              id="avatar"
+              name="avatar"
+              accept="image/png, image/jpeg"
+              onChange={handleAvatarChange}
+              />
           </Box>
           {preview && (
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
@@ -218,22 +269,7 @@ export default function AdditionalInfoPage({ initialData }) {
         </Box> 
       </Grid>
     </Grid>
+    </>
   );
 }
 
-export async function getServerSideProps(context) {
-  const { id } = context.query;
-  const cookies = nookies.get(context);
-  const config = {
-    headers: { authorization: `Bearer ${cookies.token}` },
-  };
-
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`);
-  const data = await response.json();
-
-  return {
-    props: {
-      initialData: data.data
-    },
-  };
-}

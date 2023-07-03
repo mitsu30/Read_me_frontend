@@ -5,32 +5,37 @@ export default createTheme({
     fontFamily: ["Yomogi"].join(","),
     fontWeightBold: 700,
     h1: {
-      color: '#FF773E',
+      color: '#ffb896',
       fontWeight: 'bold',
     },
     h2: {
-      color: '#FF773E',
+      color: '#ffb896',
       fontWeight: 'bold',
     },
     h3: {
-      color: '#FF773E',
+      color: '#ffb896',
       fontWeight: 'bold',
     },
     h4: {
-      color: '#111111',
+      color: '#ffb896',
       fontWeight: 'bold',
     },
     h5: {
-      color: '#FF773E',
+      color: '#ffb896',
       fontWeight: 'bold',
     },
     h6: {
-      color: '#FF773E',
+      color: '#ffb896',
       fontWeight: 'bold',
     },
     body2: {
-      color: '#FF773E',
+      color: '#ffb896',
       fontWeight: 'bold',
     },
+  },
+  palette: {
+    text: {
+      primary: '#696969', // 全体のデフォルトのテキスト色を設定
+    }, 
   },
 });

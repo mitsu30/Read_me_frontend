@@ -1,0 +1,386 @@
+import { useRouter } from 'next/router';
+import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typography, Skeleton } from '@mui/material';
+import { styled } from '@mui/system';
+import nookies from "nookies";
+import axios from 'axios';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import LockIcon from '@mui/icons-material/Lock';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import { useState, useEffect} from 'react';
+import { useSnackbar } from 'notistack';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+
+const StyledCard = styled(Card)(({ theme }) => ({ 
+  width: '65%', 
+  margin: 'auto', 
+  padding: theme.spacing(1), 
+  display: 'flex', 
+  flexDirection: 'column', 
+  alignItems: 'flex', 
+}));
+
+const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
+  height: 'auto',
+  width: '100%',
+  objectFit: 'contain',
+}));
+
+const IconCard = styled(Card)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'flex',  
+}));
+
+export default function ProfilePage() {
+  const router = useRouter();
+  const { id } = router.query; 
+  const { enqueueSnackbar } = useSnackbar();
+  const [openModal, setOpenModal] = useState(false);
+  const [openModalForOpenRange, setOpenModalForOpenRange] = useState(false);
+  const [openRange, setOpenRange] = useState([]);
+  const [communities, setCommunities] = useState([]);
+  const [profileImage, setProfileImage] = useState(null);
+  const [userCommunities, setUserCommunities] = useState([]);
+  const [openRanges, setOpenRanges] = useState([]);
+
+  const [openModalHeart, setOpenModalHeart] = useState(false);
+  const [openModalStar, setOpenModalStar] = useState(false);
+  const [openModalChat, setOpenModalChat] = useState(false);
+
+
+  const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { authorization: `Bearer ${cookies.token}` },
+      };
+
+      const profileRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
+      const profileImageData = await profileRes.data;
+      setProfileImage(profileImageData);
+      
+      const communitiesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/communities/${id}`, config);
+      const userCommunitiesData = await communitiesRes.data.user_communities;
+      setUserCommunities(userCommunitiesData);
+
+      const openRangesRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges/${id}`, config);
+      const openRangesData = await openRangesRes.data.open_ranges;
+      setOpenRanges(openRangesData);
+
+      setOpenRange(profileImageData.privacy);
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    setCommunities(userCommunities.map(community => {
+      const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
+      return { ...community, checked: isChecked };
+    }));
+  }, [userCommunities]);
+
+  useEffect(() => {
+    setCommunities(userCommunities.map(community => {
+      const isChecked = openRanges.some(openRange => openRange.community_id === community.id);
+      return { ...community, checked: isChecked };
+    }));
+  }, [openRanges]);
+
+
+  const handleTwitterShare = () => {
+    let tweetText;
+    switch(profileImage.template_id) {
+      case 1:
+        tweetText = 'みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        break;
+      case 2:
+        tweetText = 'わたしのプロフィール帳みんなみてね♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        break;
+      case 3:
+        tweetText = 'ひよっこエンジニアなかま募集中♪ #駆け出しエンジニアと繋がりたい #りーどみー #RUNTEQ';
+        break;
+      default:
+        tweetText = 'わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        break;
+    }
+    setTimeout(() => {
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(tweetText)}`, '_blank');
+    }, 700); 
+  };
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  
+  const handleDeleteProfile = async () => {
+    const cookies = nookies.get(null);
+    const config = {
+      headers: { 
+        'Content-Type': 'multipart/form-data',
+        authorization: `Bearer ${cookies.token}` 
+      },
+    };
+    
+    try {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
+      if (response.status === 200) {
+        setTimeout(() => {
+          router.push('/mypage');  // or wherever you want to redirect after delete
+        }, 100);
+        enqueueSnackbar('プロフィール帳を削除したよ！', { variant: 'success' });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      handleCloseModal();
+    }
+  };
+
+  const handleOpenModalForOpenRange = () => {
+    setOpenModalForOpenRange(true);
+  };
+
+  const handleCloseModalForOpenRange = () => {
+    setOpenModalForOpenRange(false);
+  };
+  
+  const handleCheckboxChange = (index) => {
+    setCommunities(communities.map((community, i) => i === index ? { ...community, checked: !community.checked } : community));
+  };
+
+  const handleOpenRangeChange = (event) => {
+    setOpenRange(event.target.value);
+  };
+
+  const handleOpenRangeUpdate = async () => {
+    if (openRange === "membered_communities_only" && !communities.some(community => community.checked)) {
+      enqueueSnackbar('プロフィール帳を公開するコミュニティを選択してください', { variant: 'error' });
+      return;
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append('profile[privacy]', openRange); 
+        if (openRange === "membered_communities_only") { 
+          const checkedCommunities = communities.filter(community => community.checked).map(community => community.id);
+          for (let i = 0; i < checkedCommunities.length; i++) {
+            formData.append(`community_id`, checkedCommunities[i]);
+          }
+        }
+        console.log(...formData);
+    
+        const cookies = nookies.get(null);
+        const config = {
+          headers: { 
+            'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${cookies.token}` 
+          },
+        };
+
+        const response = await axios.patch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/open_ranges/${id}`,
+          formData,
+          config
+        );
+
+        handleCloseModalForOpenRange();
+
+        if (response.status === 200) {
+            enqueueSnackbar('プロフィール帳を更新しました', { variant: 'success' });
+            router.push("/mypage");
+          } else {
+            enqueueSnackbar('プロフィール帳の更新に失敗しました', { variant: 'error' });
+          }
+        } catch (error) {
+          enqueueSnackbar('エラーが発生しました', { variant: 'error' });
+          console.error(error);
+        }
+      };
+
+      // 各モーダルの開閉を制御する関数を追加
+const handleOpenModalHeart = () => {
+  setOpenModalHeart(true);
+};
+
+const handleCloseModalHeart = () => {
+  setOpenModalHeart(false);
+};
+
+const handleOpenModalStar = () => {
+  setOpenModalStar(true);
+};
+
+const handleCloseModalStar = () => {
+  setOpenModalStar(false);
+};
+
+const handleOpenModalChat = () => {
+  setOpenModalChat(true);
+};
+
+const handleCloseModalChat = () => {
+  setOpenModalChat(false);
+};
+
+
+  return (
+    <>
+    <CardContent>
+      <Grid item sx={{
+                my: 5,
+              }}>
+        <StyledCard sx={{ my: 2}}>
+        {profileImage ? (
+          <StyledCardMedia
+            component="img" 
+            image={profileImage.image_url}
+            />
+            ) : (
+              <Skeleton variant="rectangular" width="100%" height={118} />
+            )}
+        </StyledCard>
+        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+          <IconCard>    
+            <IconButton onClick={handleOpenModalHeart}><FavoriteBorderOutlinedIcon sx={{ color: 'Red' }}/></IconButton>
+            <IconButton onClick={handleOpenModalStar}><StarBorderOutlinedIcon  sx={{ color: 'orange' }} /></IconButton>
+            <IconButton onClick={handleOpenModalChat}><ChatBubbleOutlineOutlinedIcon sx={ { color: 'gray'}}/></IconButton>
+            <IconButton onClick={handleOpenModalForOpenRange}><LockIcon sx={{ color: '#ffd700' }}/></IconButton>
+            <IconButton onClick={handleOpenModal}><DeleteIcon /></IconButton>
+            <IconButton onClick={handleTwitterShare}><TwitterIcon sx={{ color: '#55acee' }}/></IconButton>
+          </IconCard>
+        </Box>
+      </Grid>
+    </CardContent>
+    
+    <Modal
+      open={openModal}
+      onClose={handleCloseModal}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh'}}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: 'black', padding: '1rem' }}>
+          <Typography variant="h6" component="h2">
+            このプロフィール帳を削除しますか？
+          </Typography>
+          <Box sx={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <Button variant="outlined" color="primary" onClick={handleDeleteProfile}>はい</Button>
+            <Button variant="outlined" color="secondary" onClick={handleCloseModal}>いいえ</Button>
+          </Box>
+        </Box>
+      </Box>
+    </Modal>
+
+    <Modal
+      open={openModalForOpenRange}
+      onClose={handleCloseModalForOpenRange}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh'}}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: 'black', padding: '1rem' }}>
+          <Typography variant="h6" component="h2">
+            プロフィール帳の公開範囲
+          </Typography>
+          <FormControl sx={{minWidth: 120 }} size="small">
+            <Select
+              value={openRange}
+              onChange={handleOpenRangeChange}
+              sx={{ marginTop: '1rem' }}
+            >
+              <MenuItem value="opened">全体に公開</MenuItem>
+              <MenuItem value="closed">自分のみ</MenuItem>
+              <MenuItem value="membered_communities_only">コミュニティのなかま</MenuItem>
+            </Select>
+          </FormControl>
+
+          {openRange === 'membered_communities_only' && communities.map((community, index) => (
+            <FormControlLabel
+              key={index}
+              control={
+                <Checkbox
+                  checked={community.checked}
+                  onChange={() => handleCheckboxChange(index)}
+                  color="primary"
+                />
+              }
+              label={community.name}
+            />
+          ))}
+
+          <Box sx={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <Button variant="outlined" color="primary" onClick={handleOpenRangeUpdate}>更新する</Button>
+            <Button variant="outlined" color="secondary" onClick={handleCloseModalForOpenRange}>もどる</Button>
+          </Box>
+        </Box>
+      </Box>
+    </Modal>
+    <Modal
+  open={openModalHeart}
+  onClose={handleCloseModalHeart}
+>
+<Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80vw',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+        }}>準備中です！</Box>
+</Modal>
+
+<Modal
+  open={openModalStar}
+  onClose={handleCloseModalStar}
+>
+<Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80vw',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+        }}>準備中です！
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openModalChat}
+        onClose={handleCloseModalChat}
+      >
+        <Box sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '80vw',
+                  bgcolor: 'background.paper',
+                  boxShadow: 24,
+                  p: 4,
+                }}>準備中です！
+       </Box>
+      </Modal>
+    </>
+  );
+}
+
+

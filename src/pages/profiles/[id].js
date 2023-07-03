@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
@@ -8,20 +7,21 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/system';
-import LoginModal from '../../components/LoginModal';
+import nookies from "nookies";
+import axios from "axios";
 
 const StyledLink = styled(Link)(({ theme }) => ({
   fontSize: '2em', 
   textAlign: 'center', 
 }));
 
-export default function ResultPage({ imageText }) {
+export default function ResultPage({ profileImage }) {
   const router = useRouter();
   const { id, shared } = router.query; 
-  const shareUrl = `https://readmeee.vercel.app/result/${id}?shared=true`;
+  
+  const shareUrl = `https://read-me-frontend-git-19crud-mitsu30.vercel.app/profiles/${id}?shared=true`;
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
-  const templateStyle = { maxHeight: '60%',  maxWidth: '60%', objectFit: 'contain' };
 
   useEffect(() => {
     if (shared === 'true') {
@@ -29,25 +29,33 @@ export default function ResultPage({ imageText }) {
     }
   }, [shared, router]);
 
-  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
 
   const handleOpen = () => {
+    let tweetText;
+    switch(profileImage.template_id) {
+      case 1:
+        tweetText = 'みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        break;
+      case 2:
+        tweetText = 'わたしのプロフィール帳みんなみてね♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        break;
+      case 3:
+        tweetText = 'ひよっこエンジニアなかま募集中♪ #駆け出しエンジニアと繋がりたい #りーどみー #RUNTEQ';
+        break;
+      default:
+        tweetText = 'わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        break;
+    }
     setTimeout(() => {
-      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳')}`, '_blank');
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(tweetText)}`, '_blank');
+      setOpen(true);
     }, 700); 
   };
 
-  const handleLoginModalOpen = () => {
-    setLoginModalOpen(true);
+  const handleMypage = () => {
+    router.push('/mypage'); 
   };
 
-  const handleLoginModalClose = () => {
-    setLoginModalOpen(false);
-  };
-
-  const handleLoginClick = () => {
-    handleLoginModalOpen();
-  };
 
   return (
     <>
@@ -65,7 +73,7 @@ export default function ResultPage({ imageText }) {
           description: siteDescription,
           images: [
             {
-              url: imageText.image_url, 
+              url: profileImage.image_url, 
               width: 800,
               height: 600,
               alt: 'Result Image',
@@ -76,7 +84,6 @@ export default function ResultPage({ imageText }) {
         />
       
       {shared !== 'true' && (
-      <>
       <Container
         sx={{
           my: 8,
@@ -113,7 +120,7 @@ export default function ResultPage({ imageText }) {
         </Box>
 
         <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img src={imageText.image_url} alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
+          <img src={profileImage.image_url} alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
         </Box>
         <Button 
           variant="contained" 
@@ -131,31 +138,27 @@ export default function ResultPage({ imageText }) {
             Twitterでシェア
         </Button>
         <Button 
+          type="submit"
           variant="contained"
           sx={{ 
+            mt: 3, 
+            mb: 2, 
+            position: 'static', 
+            marginTop: '20px', 
+            fontSize: '1.0em',
+            padding: '8px 8px', 
             backgroundColor: '#FF6699',
             '&:hover': {
               backgroundColor: '#E60073',
             },
             color: '#white',
-            fontWeight: 'bold',
-            position: 'static', 
-            marginTop: '20px', 
-            fontSize: '1.0em', 
-            padding: '8px 8px', 
-            fontWeight: 'bold',
+            fontWeight: 'bold'  
           }}
-          onClick={handleLoginClick}
+          onClick={handleMypage}
         >
-          ログイン
+          マイページへ
         </Button>
-        <Typography component="h1" variant="h5" align="center">
-          ログインするともっとかわいいプロフィール帳がつくれるよ♪
-        </Typography>
-        <img src="/templates/basic.png" alt="basic" style={templateStyle}/>
       </Container>
-      <LoginModal open={isLoginModalOpen} onClose={handleLoginModalClose} />
-      </>
       )}
     </>
   );
@@ -174,13 +177,31 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const cookies = nookies.get(context);
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/${id}`);
-  const imageText = await response.json();
+  let res;
+  if (cookies.token) {
+  // ログインユーザー
+  const config = {
+  headers: { authorization: `Bearer ${cookies.token}` },
+  };
+
+  res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
+} else {
+  // Twitterロボ
+  res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/twitter_share/${id}`);
+}
+
+  const profileImage = await res.data;
+  // console.log(res.data);
+  // console.log(res.data.image_url);
+  // console.log(profileImage.image_url);
 
   return {
     props: {
-      imageText,
+      profileImage,
     },
   }
 }
+
+

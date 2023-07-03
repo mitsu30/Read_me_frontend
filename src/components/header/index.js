@@ -51,27 +51,6 @@ export default function Header() {
 
   return (
     <>
-      <AppBar position="static" style={{backgroundColor: '#FFEEFF', color: '#000000', zIndex: 2}}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
-          <Link href="/" >
-              <img 
-                src="/logo.png" 
-                alt="ロゴ" 
-                style={{ 
-                  width: '150px', 
-                  height: 'auto', 
-                  transition: '0.3s'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                  />
-          </Link>
-        </Toolbar>
-      </AppBar>
       <AppDrawer 
         drawerOpen={drawerOpen} 
         handleDrawerClose={handleDrawerClose} 
