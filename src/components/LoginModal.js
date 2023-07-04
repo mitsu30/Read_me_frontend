@@ -51,7 +51,11 @@ export default function LoginModal({ open, onClose }) {
             if (response.data.isNewUser) {
               await router.push(`/mypage/edit`);
             } else {
-              await router.push('/users');
+              if (response.data.is_student) {
+                await router.push('/users');
+              } else {
+                await router.push('/mypage');
+              }
               setNavigating(false);
             }
           } catch (err) {
