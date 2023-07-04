@@ -208,7 +208,7 @@ export default function ProfilePage() {
 
         if (response.status === 200) {
             enqueueSnackbar('プロフィール帳を更新しました', { variant: 'success' });
-            router.push("/mypage");
+            router.push(`/mypage/${id}`);
           } else {
             enqueueSnackbar('プロフィール帳の更新に失敗しました', { variant: 'error' });
           }
