@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CenteredBox from '../../../components/CenteredBox'
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
-  width: '65%', 
+  width: '90%', 
   margin: 'auto', 
   padding: theme.spacing(1), 
   display: 'flex', 

@@ -20,7 +20,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CenteredBox from '../../components/CenteredBox';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
-  width: '65%', 
+  width: '90%', 
   margin: 'auto', 
   padding: theme.spacing(1), 
   display: 'flex', 
@@ -247,7 +247,7 @@ const handleCloseModalChat = () => {
   return (
     <>
     <CardContent>
-      <Grid item sx={{ my: 5 }}>
+      <Grid item sx={{ my: 1 }}>
         <StyledCard sx={{ my: 2 }}>
           {profileImage ? (
             <StyledCardMedia component="img" image={profileImage.image_url} />
