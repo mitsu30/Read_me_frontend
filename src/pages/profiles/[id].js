@@ -23,7 +23,7 @@ export default function ResultPage({ profileImage }) {
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
-  const alternativeImageUrl = "https://readmeee.vercel.app/top_ogp.png"; 
+  const alternativeImageUrl = "https://read-me-frontend-git-20redeploy-mitsu30.vercel.app/top_ogp.png"; 
 
   let imageUrl;
   if (profileImage.privacy === 'closed' || profileImage.privacy === 'membered_communities_only') {
