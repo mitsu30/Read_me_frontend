@@ -192,7 +192,7 @@ export default function ResultPage({ profileImage }) {
             <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <img src='/sample1.png' alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
             </Box>
-            マイページのプロフィール帳の詳細ページで公開範囲を「自分のみ」か「コミュニティのなかま」に設定すると、ツイートに以下の画像が設定されるよ。最初にTwitterシェアボタンを押した時の設定がツイートに反映されちゃうので注意してね！
+            マイページのプロフィール帳の詳細ページで公開範囲を<strong>「自分のみ」か「コミュニティのなかま」に設定してから</strong>、Twitterシェアボタンを押すとツイートに以下の画像が設定されるよ。最初にTwitterシェアボタンを押した時の設定がツイートに反映されちゃうので注意してね！
             <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <img src='/sample2.png' alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
             </Box>
