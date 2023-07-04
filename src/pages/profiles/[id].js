@@ -23,6 +23,15 @@ export default function ResultPage({ profileImage }) {
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
+  const alternativeImageUrl = "https://readmeee.vercel.app/top_ogp.png"; 
+
+  let imageUrl;
+  if (profileImage.privacy === 'closed' || profileImage.privacy === 'membered_communities_only') {
+    imageUrl = alternativeImageUrl;
+  } else {
+    imageUrl = profileImage.image_url;
+  }
+
   useEffect(() => {
     if (shared === 'true') {
       router.push('/');
@@ -73,7 +82,7 @@ export default function ResultPage({ profileImage }) {
           description: siteDescription,
           images: [
             {
-              url: profileImage.image_url, 
+              url: imageUrl,
               width: 800,
               height: 600,
               alt: 'Result Image',
