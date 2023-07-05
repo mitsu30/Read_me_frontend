@@ -25,11 +25,11 @@ export default function ResultPage({ profileImage }) {
   const { id, shared } = router.query; 
   const [modalOpen, setModalOpen] = useState(false);
   
-  const shareUrl = `https://read-me-frontend-git-20redeploy-mitsu30.vercel.app/profiles/${id}?shared=true`;
+  const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
 
-  const alternativeImageUrl = "https://read-me-frontend-git-20redeploy-mitsu30.vercel.app/top_ogp.png"; 
+  const alternativeImageUrl = "https://readmeee.vercel.app/top_ogp.png"; 
 
   let imageUrl;
   if (profileImage.privacy === 'closed' || profileImage.privacy === 'membered_communities_only') {
