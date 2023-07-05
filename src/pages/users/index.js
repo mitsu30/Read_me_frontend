@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
+import nookies from "nookies";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -27,7 +28,14 @@ const Users = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&group_id=${group}&name=${searchName}`);
+
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { authorization: `Bearer ${cookies.token}` },
+      };
+
+      const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&group_id=${group}&name=${searchName}`, config);
+      
       setUsers(result.data);
       setIsLoading(false);
     };
