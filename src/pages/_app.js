@@ -6,28 +6,31 @@ import { AuthContextProvider } from "../context/AuthContext";
 import theme from '../utils/theme';
 import StyledAppWrapper from '../../styles/StyledAppWrapper';
 import CustomSnackbarProvider from '../../styles/CustomSnackbarProvider';
+import Layout from '../components/Layoyt'
 
 function MyApp({ Component, pageProps }) {
   return (
     <StyledAppWrapper>
-      <AuthContextProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-            <NextSeo
-              title="りーどみー" // 全てのページのデフォルトタイトルを設定します。
-            />
-              <CustomSnackbarProvider
-                maxSnack={3}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              > 
+      <CustomSnackbarProvider
+        maxSnack={3}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      > 
+        <AuthContextProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+              <NextSeo
+                title="りーどみー" 
+              />
                 <Header />
-                  <Component {...pageProps} />
-            </CustomSnackbarProvider>
-        </ThemeProvider>
-      </AuthContextProvider>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+          </ThemeProvider>
+        </AuthContextProvider>
+      </CustomSnackbarProvider>
     </StyledAppWrapper>
   );
 }

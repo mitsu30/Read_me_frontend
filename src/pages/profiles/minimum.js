@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { useState } from "react";
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import axios from "axios";
-import { styled } from '@mui/system';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
@@ -12,6 +10,8 @@ import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
 import { Loading } from '../../components/Loading';
+import nookies from "nookies";
+import { useSnackbar } from 'notistack';
 
 
 const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
@@ -21,32 +21,53 @@ const MAX_LINE_COUNT = 3;
 
 
 export default function App () {
-  const [answer1, setAnswer1] = useState("");
-  const [answer2, setAnswer2] = useState("");
-  const [answer3, setAnswer3] = useState("");
-  const [imageUrl, setImageUrl] = useState("/template1.png");
+  const [body1, setBody1] = useState("");
+  const [body2, setBody2] = useState("");
+  const [body3, setBody3] = useState("");
+  const [imageUrl, setImageUrl] = useState("/templates/minimum.png");
 
-  const [answer1Error, setAnswer1Error] = useState("");
-  const [answer2Error, setAnswer2Error] = useState("");
-  const [answer3Error, setAnswer3Error] = useState("");
+  const [body1Error, setBody1Error] = useState("");
+  const [body2Error, setBody2Error] = useState("");
+  const [body3Error, setBody3Error] = useState("");
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
   const router = useRouter();
 
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/wakeup`)
-    .then(data => {
-      console.log("Server wakeup response: ", data);
-    })
-  }, []);
+  const validateForm = () => {
+    let isValid = true;
+    if (!body1) {
+      enqueueSnackbar("ニックネームを入力してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body2) {
+      enqueueSnackbar("しゅみを入力してね", { variant: 'error' });
+      isValid = false;
+    }
+    if (!body3) {
+      enqueueSnackbar("みんなにひとこと！を入力してね", { variant: 'error' });
+      isValid = false;
+    }
+    return isValid;
+  };
+
 
   const handlePreview = async (e) => {
     e.preventDefault();
-
+    
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/preview`, { image_text: { answer1, answer2, answer3 } });
+    const cookies = nookies.get(null);
+    const config = {
+      headers: { 
+        'Content-Type': 'multipart/form-data',
+        authorization: `Bearer ${cookies.token}` 
+      },
+    };
+
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/minimum/preview`, { answers: { body1, body2, body3 } }, config);
     setImageUrl(response.data.url);
     } catch (error) {
     console.error(error);
@@ -55,23 +76,36 @@ export default function App () {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     setIsLoading(true);
   
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${cookies.token}` 
+        },
+      };
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/minimum`, { answers: { body1, body2, body3 } }, config);
       
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);
       }
+      // console.log(response);
   
       const img = new Image();
   
       img.onload = () => {
         setImageUrl(response.data.url);
         setIsNavigating(true);
+        enqueueSnackbar('プロフィール帳を保存したよ！', { variant: 'success' });
         router.push({
-          pathname: '/result/[id]', 
-          query: { id: response.data.id }, 
+          pathname: '/profiles/[id]', 
+          query: { id: response.data.uuid }, 
         });
   
         setIsLoading(false);
@@ -115,15 +149,15 @@ export default function App () {
                   label="ニックネームは？"
                   name="answer1"
                   autoFocus
-                  value={answer1}
-                  error={answer1Error !== ''}
-                  helperText={answer1Error}
+                  value={body1}
+                  error={body1Error !== ''}
+                  helperText={body1Error}
                   onChange={(e) => {
                     if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
-                      setAnswer1Error('13文字以内で入力してください。');
+                      setBody1Error('13文字以内で入力してください。');
                     } else {
-                      setAnswer1Error('');
-                      setAnswer1(e.target.value);
+                      setBody1Error('');
+                      setBody1(e.target.value);
                     }
                   }}
                 />
@@ -134,15 +168,15 @@ export default function App () {
                   name="answer2"
                   label="しゅみは？"
                   id="answer2"
-                  value={answer2}
-                  error={answer2Error !== ''}
-                  helperText={answer2Error}
+                  value={body2}
+                  error={body2Error !== ''}
+                  helperText={body2Error}
                   onChange={(e) => {
                     if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER2) {
-                      setAnswer2Error('13文字以内で入力してください。');
+                      setBody2Error('13文字以内で入力してください。');
                     } else {
-                      setAnswer2Error('');
-                      setAnswer2(e.target.value);
+                      setBody2Error('');
+                      setBody2(e.target.value);
                     }
                   }}
                 />
@@ -153,18 +187,18 @@ export default function App () {
                   name="answer3"
                   label="みんなにひとこと！"
                   id="answer3"
-                  value={answer3}
+                  value={body3}
                   multiline
                   rows={MAX_LINE_COUNT}
-                  error={answer3Error !== ''}
-                  helperText={answer3Error}
+                  error={body3Error !== ''}
+                  helperText={body3Error}
                   onChange={(e) => {
                     const lines = e.target.value.split('\n');
                     if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_ANSWER3)) {
-                      setAnswer3Error('1行は26文字以内、改行は2回までとしてください。');
+                      setBody3Error('1行は26文字以内、改行は2回までとしてください。');
                     } else {
-                      setAnswer3Error('');
-                      setAnswer3(e.target.value);
+                      setBody3Error('');
+                      setBody3(e.target.value);
                     }
                   }}
                 />

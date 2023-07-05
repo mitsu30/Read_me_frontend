@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/system';
+import LoginModal from '../../components/LoginModal';
 
 const StyledLink = styled(Link)(({ theme }) => ({
   fontSize: '2em', 
@@ -21,6 +21,7 @@ export default function ResultPage({ imageText }) {
   const shareUrl = `https://readmeee.vercel.app/result/${id}?shared=true`;
   const siteTitle = "りーどみー";
   const siteDescription = "あなたのプロフィール帳シェアしませんか";
+  const templateStyle = { maxHeight: '60%',  maxWidth: '60%', objectFit: 'contain' };
 
   useEffect(() => {
     if (shared === 'true') {
@@ -28,16 +29,25 @@ export default function ResultPage({ imageText }) {
     }
   }, [shared, router]);
 
-  const [open, setOpen] = useState(false);
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
 
   const handleOpen = () => {
     setTimeout(() => {
       window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳')}`, '_blank');
-      setOpen(true);
     }, 700); 
   };
 
-  const handleClose = () => setOpen(false);
+  const handleLoginModalOpen = () => {
+    setLoginModalOpen(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setLoginModalOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    handleLoginModalOpen();
+  };
 
   return (
     <>
@@ -66,6 +76,7 @@ export default function ResultPage({ imageText }) {
         />
       
       {shared !== 'true' && (
+      <>
       <Container
         sx={{
           my: 8,
@@ -104,79 +115,47 @@ export default function ResultPage({ imageText }) {
         <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img src={imageText.image_url} alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
         </Box>
-
-            <Button 
-              variant="contained" 
-              style={{ 
-                backgroundColor: '#00acee',
-                color: 'white', 
-                position: 'static', 
-                marginTop: '20px', 
-                fontSize: '1.0em', 
-                padding: '8px 8px', 
-                fontWeight: 'bold',
-              }}
-              onClick={handleOpen}
-            >
-                Twitterでシェア
-            </Button>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center', // 内容を中央に持っていきます
-                alignItems: 'center', // 内容を中央に持っていきます
-                height: '100vh', // 画面全体の高さを使用します
-                width: '80%',
-                padding: 2,
-              }}
-                >
-              <Typography id="modal-modal-title" variant="h5" component="h2">
-                りーどみー(ベータ版)をご利用いただきありがとうございました！
-              </Typography>
-              <StyledLink
-                href="https://forms.gle/UoeMHNFurtZiUAhs5"
-                target="_blank"
-                rel="noopener noreferrer"
-                underline="none"
-                sx={{ mt: 2 }}
-              >
-                アンケート
-              </StyledLink>
-              <Typography id="modal-modal-description" variant="h5" sx={{ mt: 2 }}>
-                アンケートにご協力いただけると幸いです！
-              </Typography>
-            </Box>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Box sx={{ width: 400, padding: 2, bgcolor: 'background.paper' }}>
-                <Typography id="modal-modal-title" variant="h5" component="h2">
-                  りーどみー(ベータ版)をご利用いただきありがとうございました！
-                </Typography>
-                <Typography id="modal-modal-description" variant="body1" sx={{ mt: 2 }}>
-                  アンケートにご協力いただけると幸いです！
-                </Typography>
-                <StyledLink
-                href="https://forms.gle/UoeMHNFurtZiUAhs5"
-                target="_blank"
-                rel="noopener noreferrer"
-                underline="none"
-                sx={{ mt: 2 }}
-              >
-                   アンケート
-              </StyledLink>
-              </Box>
-            </Modal>
+        <Button 
+          variant="contained" 
+          style={{ 
+            backgroundColor: '#00acee',
+            color: 'white', 
+            position: 'static', 
+            marginTop: '20px', 
+            fontSize: '1.0em', 
+            padding: '8px 8px', 
+            fontWeight: 'bold',
+          }}
+          onClick={handleOpen}
+        >
+            Twitterでシェア
+        </Button>
+        <Button 
+          variant="contained"
+          sx={{ 
+            backgroundColor: '#FF6699',
+            '&:hover': {
+              backgroundColor: '#E60073',
+            },
+            color: '#white',
+            fontWeight: 'bold',
+            position: 'static', 
+            marginTop: '20px', 
+            fontSize: '1.0em', 
+            padding: '8px 8px', 
+            fontWeight: 'bold',
+          }}
+          onClick={handleLoginClick}
+        >
+          ログイン
+        </Button>
+        <Typography component="h1" variant="h5" align="center">
+          ログインするともっとかわいいプロフィール帳がつくれるよ♪
+        </Typography>
+        <img src="/templates/basic.png" alt="basic" style={templateStyle}/>
       </Container>
+      <LoginModal open={isLoginModalOpen} onClose={handleLoginModalClose} />
+      </>
       )}
     </>
   );
