@@ -160,7 +160,6 @@ export default function MiniDrawer() {
     {text: 'ログアウト', icon: <DirectionsRunIcon sx={{ color: '#f0c4ca' }}/>, onClick: handleLogout},
   ] : [
     {text: 'ログイン', icon: <LoginIcon sx={{ color: '#f0c4ca' }}/>, onClick: handleLoginClick},
-    {text: 'スクールのなかま', icon: <Diversity3Icon sx={{ color: '#f0c4ca' }}/>, link: '/users'},
     {text: '利用規約', icon: <DescriptionIcon sx={{ color: '#f0c4ca' }}/>, link: '/terms'},
     {text: 'プライバシーポリシー', icon: <PrivacyTipIcon sx={{ color: '#f0c4ca' }}/>, link: '/privacy-policy'},
     {text: 'お問い合わせ', icon: <ContactMailIcon sx={{ color: '#f0c4ca' }}/>, link: 'https://twitter.com/readmee_profile', external: true},
