@@ -275,7 +275,7 @@ export default function App () {
                         onChange={(e) => setBody5(e.target.value)}
                         label="けつえきがた"
                       >
-                        {['A', 'B', 'O', 'AB'].map((type) => (
+                        {['A', 'B', 'O', 'AB', '??'].map((type) => (
                           <MenuItem key={type} value={type}>{type}</MenuItem>
                         ))}
                       </Select>
