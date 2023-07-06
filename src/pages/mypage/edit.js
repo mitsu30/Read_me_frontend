@@ -128,8 +128,8 @@ export default function AdditionalInfoPage() {
     const fileType = file.type;
     const allowedTypes = ['image/jpeg', 'image/png'];
   
-    if (file.size > 1000000) { // 1MB = 1000000B
-      enqueueSnackbar('ファイルのサイズは1MB以下にしてください', { variant: 'error' });
+    if (file.size > 2000000) { // 1MB = 1000000B
+      enqueueSnackbar('ファイルのサイズは2MB以下にしてください', { variant: 'error' });
       return;
     }
     if (!allowedTypes.includes(fileType)) {
