@@ -35,7 +35,7 @@ const Users = () => {
       };
 
       const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&group_id=${group}&name=${searchName}`, config);
-      // console.log(result.data)
+      console.log(result.data)
       setUsers(result.data);
       setIsLoading(false);
     };
