@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useState } from "react";
 import axios from "axios";
 
-export const usePreviewAndSubmit = (answer1, answer2, answer3) => {
+export const usePreviewAndSubmit = (nickname, hobby, message) => {
   const [imageUrl, setImageUrl] = useState("/template1.png");
   const [isLoading, setIsLoading] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -13,7 +13,7 @@ export const usePreviewAndSubmit = (answer1, answer2, answer3) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/preview`, { image_text: { answer1, answer2, answer3 } });
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts/preview`, { image_text: { nickname, hobby, message } });
       setImageUrl(response.data.url);
     } catch (error) {
       console.error(error);
@@ -25,7 +25,7 @@ export const usePreviewAndSubmit = (answer1, answer2, answer3) => {
     setIsLoading(true);
   
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { answer1, answer2, answer3 } });
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/image_texts`, { image_text: { nickname, hobby, message } });
       
       if (response.status !== 200) {
         throw new Error('Request failed with status: ' + response.status);

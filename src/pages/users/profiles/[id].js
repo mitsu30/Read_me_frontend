@@ -64,14 +64,6 @@ export default function ProfilePage() {
   const handleMypage = () => {
     router.push(`/users/${profileImage.user_id}`); 
   };
-
-  const handleOpenModalHeart = () => {
-    setOpenModalHeart(true);
-  };
-  
-  const handleCloseModalHeart = () => {
-    setOpenModalHeart(false);
-  };
   
   const handleOpenModalStar = () => {
     setOpenModalStar(true);
@@ -103,7 +95,7 @@ export default function ProfilePage() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <IconCard>
             <Tooltip title="いいね">
-              <IconButton onClick={handleOpenModalHeart}>
+              <IconButton>
                 <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} />
               </IconButton>
             </Tooltip>
@@ -144,23 +136,6 @@ export default function ProfilePage() {
         </CenteredBox>
       </Grid>
     </CardContent>   
-    <Modal
-      open={openModalHeart}
-      onClose={handleCloseModalHeart}
-    >
-    <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}>
-      準備中です！
-    </Box>
-  </Modal>
 
   <Modal
     open={openModalStar}

@@ -12,18 +12,18 @@ import { Loading } from '../../components/Loading'
 import { usePreviewAndSubmit } from '../../hooks/usePreviewAndSubmit';
 
 
-const MAX_LINE_LENGTH_OF_ANSWER1 = 13;
-const MAX_LINE_LENGTH_OF_ANSWER2 = 13;
-const MAX_LINE_LENGTH_OF_ANSWER3 = 26;
+const MAX_LINE_LENGTH_OF_NICKNAME = 13;
+const MAX_LINE_LENGTH_OF_HOBBY = 13;
+const MAX_LINE_LENGTH_OF_MESSAGE = 26;
 const MAX_LINE_COUNT = 3;
 
 export default function App () {
-  const [answer1, setAnswer1] = useState("");
-  const [answer2, setAnswer2] = useState("");
-  const [answer3, setAnswer3] = useState("");
-  const [answer1Error, setAnswer1Error] = useState("");
-  const [answer2Error, setAnswer2Error] = useState("");
-  const [answer3Error, setAnswer3Error] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [hobby, setHobby] = useState("");
+  const [message, setMessage] = useState("");
+  const [nicknameError, setNicknameError] = useState("");
+  const [hobbyError, setHobbyError] = useState("");
+  const [messageError, setMessageError] = useState("");
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/wakeup`)
@@ -33,7 +33,7 @@ export default function App () {
   }, []);
 
   
-  const { imageUrl, isLoading, isNavigating, handlePreview, handleSubmit } = usePreviewAndSubmit(answer1, answer2, answer3);
+  const { imageUrl, isLoading, isNavigating, handlePreview, handleSubmit } = usePreviewAndSubmit(nickname, hobby, message);
 
   return (
     <>
@@ -57,19 +57,19 @@ export default function App () {
                   color="secondary"
                   margin="normal"
                   fullWidth
-                  id="answer1"
+                  id="nickname"
                   label="ニックネームは？"
-                  name="answer1"
+                  name="nickname"
                   autoFocus
-                  value={answer1}
-                  error={answer1Error !== ''}
-                  helperText={answer1Error}
+                  value={nickname}
+                  error={nicknameError !== ''}
+                  helperText={nicknameError}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER1) {
-                      setAnswer1Error('13文字以内で入力してください。');
+                    if (e.target.value.length > MAX_LINE_LENGTH_OF_NICKNAME) {
+                      setNicknameError('13文字以内で入力してください。');
                     } else {
-                      setAnswer1Error('');
-                      setAnswer1(e.target.value);
+                      setNicknameError('');
+                      setNickname(e.target.value);
                     }
                   }}
                 />
@@ -77,18 +77,18 @@ export default function App () {
                   color="secondary"
                   margin="normal"
                   fullWidth
-                  name="answer2"
+                  name="hobby"
                   label="しゅみは？"
-                  id="answer2"
-                  value={answer2}
-                  error={answer2Error !== ''}
-                  helperText={answer2Error}
+                  id="hobby"
+                  value={hobby}
+                  error={hobbyError !== ''}
+                  helperText={hobbyError}
                   onChange={(e) => {
-                    if (e.target.value.length > MAX_LINE_LENGTH_OF_ANSWER2) {
-                      setAnswer2Error('13文字以内で入力してください。');
+                    if (e.target.value.length > MAX_LINE_LENGTH_OF_HOBBY) {
+                      setHobbyError('13文字以内で入力してください。');
                     } else {
-                      setAnswer2Error('');
-                      setAnswer2(e.target.value);
+                      setHobbyError('');
+                      setHobby(e.target.value);
                     }
                   }}
                 />
@@ -96,21 +96,21 @@ export default function App () {
                   color="secondary"
                   margin="normal"
                   fullWidth
-                  name="answer3"
+                  name="message"
                   label="みんなにひとこと！"
-                  id="answer3"
-                  value={answer3}
+                  id="message"
+                  value={message}
                   multiline
                   rows={MAX_LINE_COUNT}
-                  error={answer3Error !== ''}
-                  helperText={answer3Error}
+                  error={messageError !== ''}
+                  helperText={messageError}
                   onChange={(e) => {
                     const lines = e.target.value.split('\n');
-                    if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_ANSWER3)) {
-                      setAnswer3Error('1行は26文字以内、改行は2回までとしてください。');
+                    if (lines.length > MAX_LINE_COUNT || lines.some(line => line.length > MAX_LINE_LENGTH_OF_MESSAGE)) {
+                      setMessageError('1行は26文字以内、改行は2回までとしてください。');
                     } else {
-                      setAnswer3Error('');
-                      setAnswer3(e.target.value);
+                      setMessageError('');
+                      setMessage(e.target.value);
                     }
                   }}
                 />
