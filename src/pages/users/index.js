@@ -110,17 +110,21 @@ const Users = () => {
       </Grid>
 
       <div>
-        <Button disabled={page === 1} onClick={() => setPage(1)}>{1}</Button>
-        {/* <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button> */}
-        {Array.from({length: 2*NUM_surroundingPages + 1}, (_, i) => page + i - NUM_surroundingPages)
-          .filter(p => p >= 1 && p <= pagination.total_pages)
-          .map(p => (
-            <Button key={p} onClick={() => setPage(p)}>
-              {p}
-            </Button>
-        ))}
-        {/* <Button disabled={page === pagination.total_pages} onClick={() => setPage(page + 1)}>つぎ</Button>  */}
-        <Button disabled={page === pagination.total_pages} onClick={() => setPage(pagination.total_pages)}>{pagination.total_pages}</Button>
+        <Button disabled={page === 1} onClick={() => setPage(1)}>さいしょ</Button>
+        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button>
+        {[...Array(pagination.total_pages).keys()].map((_, i) => {
+          const pageNumber = i + 1;
+          if (pageNumber === 1 || pageNumber === pagination.total_pages || (pageNumber >= page - NUM_surroundingPages && pageNumber <= page + NUM_surroundingPages)) {
+            return (
+              <Button key={pageNumber} onClick={() => setPage(pageNumber)}>
+                {pageNumber}
+              </Button>
+            );
+          }
+          return null;
+        })}
+        <Button disabled={page === pagination.total_pages} onClick={() => setPage(page + 1)}>つぎ</Button>
+        <Button disabled={page === pagination.total_pages} onClick={() => setPage(pagination.total_pages)}>さいご</Button>
       </div>
       <TableContainer component={Paper}>
         <Table>
