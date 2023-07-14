@@ -13,12 +13,15 @@ import nookies from "nookies";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [pagination, setPagination] = useState({ current_page: 1, total_pages: 1, per_page: 10 });
   const [groups, setGroups] = useState([]); 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('created_at_desc');
   const [group, setGroup] = useState('RUNTEQ');
   const [searchName, setSearchName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const NUM_surroundingPages = 1; 
+  
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -35,8 +38,10 @@ const Users = () => {
       };
 
       const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${page}&sort_by=${sortBy}&group_id=${group}&name=${searchName}`, config);
-      console.log(result.data)
-      setUsers(result.data);
+      // console.log(result.data)
+      setUsers(result.data.users);
+      setPagination(result.data.pagination); 
+
       setIsLoading(false);
     };
     fetchData();
@@ -49,6 +54,8 @@ const Users = () => {
     };
     fetchGroups();
   }, []);
+
+  
     
   return (
     <div>
@@ -103,8 +110,17 @@ const Users = () => {
       </Grid>
 
       <div>
-        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button>
-        <Button onClick={() => setPage(page + 1)}>つぎ</Button>
+        <Button disabled={page === 1} onClick={() => setPage(1)}>{1}</Button>
+        {/* <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button> */}
+        {Array.from({length: 2*NUM_surroundingPages + 1}, (_, i) => page + i - NUM_surroundingPages)
+          .filter(p => p >= 1 && p <= pagination.total_pages)
+          .map(p => (
+            <Button key={p} onClick={() => setPage(p)}>
+              {p}
+            </Button>
+        ))}
+        {/* <Button disabled={page === pagination.total_pages} onClick={() => setPage(page + 1)}>つぎ</Button>  */}
+        <Button disabled={page === pagination.total_pages} onClick={() => setPage(pagination.total_pages)}>{pagination.total_pages}</Button>
       </div>
       <TableContainer component={Paper}>
         <Table>
@@ -143,10 +159,6 @@ const Users = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <div>
-        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button>
-        <Button onClick={() => setPage(page + 1)}>つぎ</Button>
-      </div>
     </div>
   );
 };
