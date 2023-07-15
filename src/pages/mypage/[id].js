@@ -142,7 +142,7 @@ export default function ProfilePage() {
       const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/${id}`, config);
       if (response.status === 200) {
         setTimeout(() => {
-          router.push('/mypage');  // or wherever you want to redirect after delete
+          router.push('/mypage');  
         }, 100);
         enqueueSnackbar('プロフィール帳を削除したよ！', { variant: 'success' });
       }
@@ -188,7 +188,7 @@ export default function ProfilePage() {
             formData.append(`community_id`, checkedCommunities[i]);
           }
         }
-        console.log(...formData);
+        // console.log(...formData);
     
         const cookies = nookies.get(null);
         const config = {

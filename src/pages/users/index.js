@@ -9,7 +9,9 @@ import FormControl from '@mui/material/FormControl';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
-import nookies from "nookies";
+import nookies from "nookies"
+import ReactPaginate from 'react-paginate';
+
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -20,7 +22,7 @@ const Users = () => {
   const [group, setGroup] = useState('RUNTEQ');
   const [searchName, setSearchName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const NUM_surroundingPages = 1; 
+  // const NUM_surroundingPages = 1; 
   
 
   const theme = useTheme();
@@ -54,6 +56,8 @@ const Users = () => {
     };
     fetchGroups();
   }, []);
+
+  
 
   
     
@@ -109,23 +113,6 @@ const Users = () => {
         </Grid>
       </Grid>
 
-      <div>
-        <Button disabled={page === 1} onClick={() => setPage(1)}>さいしょ</Button>
-        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>まえ</Button>
-        {[...Array(pagination.total_pages).keys()].map((_, i) => {
-          const pageNumber = i + 1;
-          if (pageNumber === 1 || pageNumber === pagination.total_pages || (pageNumber >= page - NUM_surroundingPages && pageNumber <= page + NUM_surroundingPages)) {
-            return (
-              <Button key={pageNumber} onClick={() => setPage(pageNumber)}>
-                {pageNumber}
-              </Button>
-            );
-          }
-          return null;
-        })}
-        <Button disabled={page === pagination.total_pages} onClick={() => setPage(page + 1)}>つぎ</Button>
-        <Button disabled={page === pagination.total_pages} onClick={() => setPage(pagination.total_pages)}>さいご</Button>
-      </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -163,6 +150,42 @@ const Users = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'wrap', 
+          '& .pagination': { 
+            display: 'flex',
+            justifyContent: 'space-around',
+            listStyle: 'none',
+            padding: 2,
+            '& li': {
+              margin: 1,
+              padding: 1,
+              borderRadius: 1,
+              cursor: 'pointer',
+              '&.active': {
+                backgroundColor: '#ffaf95',
+              },
+            },
+          },
+        }}
+      >
+        <ReactPaginate
+          previousLabel={'まえ'}
+          nextLabel={'つぎ'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={pagination.total_pages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={2}
+          onPageChange={(data) => setPage(data.selected + 1)} 
+          containerClassName={'pagination'}
+          activeClassName={'active'}
+        />
+      </Box>
     </div>
   );
 };
