@@ -55,8 +55,8 @@ export default function ProfilePage() {
       }
 
       const res = cookies.token 
-        ? await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_for_community/${id}`, config) 
-        : await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_public/${id}`);
+        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_for_community/${id}`, config) 
+        // : await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_public/${id}`);
 
       setProfileImage(res.data);
       setLoading(false);
