@@ -64,6 +64,22 @@ export default function ProfilePage() {
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    const checkLikedStatus = async () => {
+      const cookies = nookies.get(null);
+      let config = null;
+      if (cookies.token) {
+        config = { headers: { authorization: `Bearer ${cookies.token}` } };
+      }
+  
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes/check?profile_id=${id}`, config)
+      console.log(res.data)
+      setIsLiked(res.data.isLiked);
+    }
+  
+    checkLikedStatus();
+  }, [id]);
+
   const handleMypage = () => {
     router.push(`/users/${profileImage.user_id}`); 
   };
