@@ -18,6 +18,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Tooltip from '@mui/material/Tooltip';
 import CenteredBox from '../../components/CenteredBox';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'; 
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '90%', 
@@ -50,6 +51,7 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState(null);
   const [userCommunities, setUserCommunities] = useState([]);
   const [openRanges, setOpenRanges] = useState([]);
+  const [isLiked, setIsLiked] = useState(false); 
 
   const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
 
@@ -73,6 +75,9 @@ export default function ProfilePage() {
       setOpenRanges(openRangesData);
 
       setOpenRange(profileImageData.privacy);
+
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes/check?profile_id=${id}`, config)
+      setIsLiked(res.data.isLiked);
     };
 
     if (id) {
@@ -212,6 +217,60 @@ export default function ProfilePage() {
           console.error(error);
         }
       };
+  
+  const handleLike = async () => {
+
+    try {
+      const formData = new FormData();
+      formData.append('profile_id', id);
+
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${cookies.token}` 
+        },
+      };
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes`, formData, config)
+        if (response.status === 200) {
+          setIsLiked(true);
+          enqueueSnackbar('お気に入りに登録したよ！', { variant: 'success' });
+        } else {
+          enqueueSnackbar('お気に入りの登録に失敗しました', { variant: 'error' });
+        }
+      } catch (error) {
+        enqueueSnackbar('エラーが発生しました', { variant: 'error' });
+        console.error(error);
+    };
+  }
+  
+  const handleUnlike = async () => {
+    
+    try {
+      const formData = new FormData();
+      formData.append('profile_id', id);
+
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${cookies.token}` 
+        },
+      };
+
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes/${id}`, config)
+        if (response.status === 200) {
+          setIsLiked(false);
+          enqueueSnackbar('お気に入りを解除したよ！', { variant: 'success' });
+        } else {
+          enqueueSnackbar('お気に入りの解除に失敗しました', { variant: 'error' });
+        }
+      } catch (error) {
+        enqueueSnackbar('エラーが発生しました', { variant: 'error' });
+        console.error(error);
+    };
+  };
 
   return (
     <>
@@ -227,8 +286,12 @@ export default function ProfilePage() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <IconCard>
             <Tooltip title="いいね">
-              <IconButton >
-                <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} />
+              <IconButton onClick={isLiked ? handleUnlike : handleLike}>
+                {isLiked ? (
+                  <FavoriteOutlinedIcon sx={{ color: 'Red' }} />
+                ) : (
+                  <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} /> 
+                )}
               </IconButton>
             </Tooltip>
             {/* <Tooltip title="お気に入り">
