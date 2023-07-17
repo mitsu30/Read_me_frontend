@@ -54,8 +54,7 @@ export default function ProfilePage() {
         config = { headers: { authorization: `Bearer ${cookies.token}` } };
       }
 
-      const res = cookies.token 
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_for_community/${id}`, config) 
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_for_community/${id}`, config) 
         // : await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/base/show_public/${id}`);
 
       setProfileImage(res.data);
