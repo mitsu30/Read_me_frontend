@@ -73,7 +73,6 @@ export default function ProfilePage() {
       }
   
       const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes/check?profile_id=${id}`, config)
-      console.log(res.data)
       setIsLiked(res.data.isLiked);
     }
   
@@ -128,7 +127,30 @@ export default function ProfilePage() {
   }
   
   const handleUnlike = async () => {
-    setIsLiked(false); // ユーザーが「いいね」を取り消すと、isLikedをfalseに設定します。
+    
+    try {
+      const formData = new FormData();
+      formData.append('profile_id', id);
+
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${cookies.token}` 
+        },
+      };
+
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes/${id}`, config)
+        if (response.status === 200) {
+          setIsLiked(false);
+          enqueueSnackbar('お気に入りを解除したよ！', { variant: 'success' });
+        } else {
+          enqueueSnackbar('お気に入りの解除に失敗しました', { variant: 'error' });
+        }
+      } catch (error) {
+        enqueueSnackbar('エラーが発生しました', { variant: 'error' });
+        console.error(error);
+    };
   };
   
   return (
