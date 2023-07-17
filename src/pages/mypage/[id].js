@@ -51,11 +51,6 @@ export default function ProfilePage() {
   const [userCommunities, setUserCommunities] = useState([]);
   const [openRanges, setOpenRanges] = useState([]);
 
-  const [openModalHeart, setOpenModalHeart] = useState(false);
-  const [openModalStar, setOpenModalStar] = useState(false);
-  const [openModalChat, setOpenModalChat] = useState(false);
-
-
   const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
 
   useEffect(() => {
@@ -218,32 +213,6 @@ export default function ProfilePage() {
         }
       };
 
-  
-const handleOpenModalHeart = () => {
-  setOpenModalHeart(true);
-};
-
-const handleCloseModalHeart = () => {
-  setOpenModalHeart(false);
-};
-
-const handleOpenModalStar = () => {
-  setOpenModalStar(true);
-};
-
-const handleCloseModalStar = () => {
-  setOpenModalStar(false);
-};
-
-const handleOpenModalChat = () => {
-  setOpenModalChat(true);
-};
-
-const handleCloseModalChat = () => {
-  setOpenModalChat(false);
-};
-
-
   return (
     <>
     <CardContent>
@@ -258,11 +227,11 @@ const handleCloseModalChat = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <IconCard>
             <Tooltip title="いいね">
-              <IconButton onClick={handleOpenModalHeart}>
+              <IconButton >
                 <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="お気に入り">
+            {/* <Tooltip title="お気に入り">
               <IconButton onClick={handleOpenModalStar}>
                 <StarBorderOutlinedIcon sx={{ color: 'orange' }} />
               </IconButton>
@@ -271,7 +240,7 @@ const handleCloseModalChat = () => {
               <IconButton onClick={handleOpenModalChat}>
                 <ChatBubbleOutlineOutlinedIcon sx={{ color: 'gray' }} />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="公開範囲の設定">
               <IconButton onClick={handleOpenModalForOpenRange}>
                 <LockIcon sx={{ color: '#ffd700' }} />
@@ -377,55 +346,6 @@ const handleCloseModalChat = () => {
         </Box>
       </Box>
     </Modal>
-    <Modal
-  open={openModalHeart}
-  onClose={handleCloseModalHeart}
->
-<Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}>準備中です！</Box>
-</Modal>
-
-<Modal
-  open={openModalStar}
-  onClose={handleCloseModalStar}
->
-<Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}>準備中です！
-        </Box>
-      </Modal>
-
-      <Modal
-        open={openModalChat}
-        onClose={handleCloseModalChat}
-      >
-        <Box sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: '80vw',
-                  bgcolor: 'background.paper',
-                  boxShadow: 24,
-                  p: 4,
-                }}>準備中です！
-       </Box>
-      </Modal>
     </>
   );
 }
