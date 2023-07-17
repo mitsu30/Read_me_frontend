@@ -5,10 +5,12 @@ import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'; 
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import Tooltip from '@mui/material/Tooltip';
 import CenteredBox from '../../../components/CenteredBox'
+import { useSnackbar } from 'notistack';
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
   width: '90%', 
@@ -33,13 +35,15 @@ const IconCard = styled(Card)(({ theme }) => ({
 export default function ProfilePage() {
   const router = useRouter();
   const { id } = router.query; 
+  const { enqueueSnackbar } = useSnackbar();
 
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState('');
 
-  const [openModalHeart, setOpenModalHeart] = useState(false);
-  const [openModalStar, setOpenModalStar] = useState(false);
-  const [openModalChat, setOpenModalChat] = useState(false);
+  // const [openModalHeart, setOpenModalHeart] = useState(false);
+  // const [openModalStar, setOpenModalStar] = useState(false);
+  // const [openModalChat, setOpenModalChat] = useState(false);
+  const [isLiked, setIsLiked] = useState(false); 
 
   
   useEffect(() => {
@@ -80,6 +84,37 @@ export default function ProfilePage() {
   const handleCloseModalChat = () => {
     setOpenModalChat(false);
   };
+
+  const handleLike = async () => {
+    
+    try {
+      const formData = new FormData();
+      formData.append('profile_id', id);
+
+      const cookies = nookies.get(null);
+      const config = {
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${cookies.token}` 
+        },
+      };
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes`, formData, config)
+        if (response.status === 200) {
+          setIsLiked(true);
+          enqueueSnackbar('お気に入りに登録したよ！', { variant: 'success' });
+        } else {
+          enqueueSnackbar('お気に入りの登録に失敗しました', { variant: 'error' });
+        }
+      } catch (error) {
+        enqueueSnackbar('エラーが発生しました', { variant: 'error' });
+        console.error(error);
+    };
+  }
+  
+  const handleUnlike = async () => {
+    setIsLiked(false); // ユーザーが「いいね」を取り消すと、isLikedをfalseに設定します。
+  };
   
   return (
     <>
@@ -95,18 +130,12 @@ export default function ProfilePage() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <IconCard>
             <Tooltip title="いいね">
-              <IconButton>
-                <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="お気に入り">
-              <IconButton onClick={handleOpenModalStar}>
-                <StarBorderOutlinedIcon sx={{ color: 'orange' }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="チャット">
-              <IconButton onClick={handleOpenModalChat}>
-                <ChatBubbleOutlineOutlinedIcon sx={{ color: 'gray' }} />
+              <IconButton onClick={isLiked ? handleUnlike : handleLike}>
+                {isLiked ? (
+                  <FavoriteOutlinedIcon sx={{ color: 'Red' }} />
+                ) : (
+                  <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} /> 
+                )}
               </IconButton>
             </Tooltip>
           </IconCard>
@@ -136,43 +165,6 @@ export default function ProfilePage() {
         </CenteredBox>
       </Grid>
     </CardContent>   
-
-  <Modal
-    open={openModalStar}
-    onClose={handleCloseModalStar}
-  >
-    <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}>
-      準備中です！
-    </Box>
-  </Modal>
-
-    <Modal
-      open={openModalChat}
-      onClose={handleCloseModalChat}
-    >
-    <Box sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80vw',
-        bgcolor: 'background.paper',
-        boxShadow: 24,
-        p: 4,
-      }}>
-         準備中です！
-     </Box>
-    </Modal>
     </>
   );
 }
-
