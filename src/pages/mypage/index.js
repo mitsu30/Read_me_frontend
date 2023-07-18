@@ -9,25 +9,25 @@ import { styled } from '@mui/system';
 import CenteredBox from '../../components/CenteredBox';
 import { useAuthContext } from '../../context/AuthContext';
 
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
+// const TabPanel = (props) => {
+//   const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`simple-tabpanel-${index}`}
+//       aria-labelledby={`simple-tab-${index}`}
+//       {...other}
+//     >
+//       {value === index && (
+//         <Box sx={{ p: 3 }}>
+//           {children}
+//         </Box>
+//       )}
+//     </div>
+//   );
+// }
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: 280, 
@@ -76,9 +76,9 @@ const MyPage = () => {
 
   //どのタブが現在アクティブであるかを管理している。
   //ユーザーが切り替えたタブを追跡し、表示するコンテンツを更新する
-  const handleChange = (event, newValue) => {  
-    setValue(newValue); 
-  };
+  // const handleChange = (event, newValue) => {  
+  //   setValue(newValue); 
+  // };
 
   const handleCardClick = (profile) => {
     router.push(`/mypage/${profile.uuid}`);
@@ -183,12 +183,12 @@ const MyPage = () => {
       </TableContainer>
     </Box>
 
-    <Tabs value={value} onChange={handleChange} centered>
+    {/* <Tabs value={value} onChange={handleChange} centered>
       <Tab  label="プロフィール帳" />
       <Tab label="お気に入り" />
-    </Tabs>
+    </Tabs> */}
 
-    <TabPanel value={value} index={0}>
+    {/* <TabPanel value={value} index={0}> */}
       <CardContent>
       {isLoading ? (
         <Skeleton variant="rectangular" width={280} height={180} />
@@ -215,13 +215,13 @@ const MyPage = () => {
         </Grid>
       )}
       </CardContent>
-    </TabPanel>
+    {/* </TabPanel> */}
 
-    <TabPanel value={value} index={1}>
+    {/* <TabPanel value={value} index={1}>
       <CardContent>
         準備中です！
       </CardContent>
-    </TabPanel>
+    </TabPanel> */}
     </>
   );
 };
