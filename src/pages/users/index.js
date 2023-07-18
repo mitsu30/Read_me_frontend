@@ -11,6 +11,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
 import nookies from "nookies"
 import ReactPaginate from 'react-paginate';
+import { Autocomplete } from '@mui/material';
 
 
 const Users = () => {
@@ -52,15 +53,13 @@ const Users = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/groups/for_community/1`);
-      setGroups(response.data.groups); 
+      const groupsData = response.data.groups;
+      groupsData.unshift({ id: 'RUNTEQ', name: 'みんな' }); // 「みんな」選択肢を追加
+      setGroups(groupsData); 
     };
     fetchGroups();
   }, []);
 
-  
-
-  
-    
   return (
     <div>
       <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
@@ -85,34 +84,40 @@ const Users = () => {
             style={{ backgroundColor: '#f0f0f0' }}
           />
         </Grid>
-      <Grid item xs={12} sm={"auto"}>
-        <FormControl sx={{ minWidth: 120 }} size="small">
-          <Select 
-            value={sortBy} 
-            onChange={(e) => setSortBy(e.target.value)}
-            style={{backgroundColor: '#f0f0f0' }}
-          >
-            <MenuItem value="created_at_desc">新着順</MenuItem>
-            <MenuItem value="name_asc">名前順</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={"auto"}>
-        <FormControl sx={{minWidth: 120 }} size="small">
-          <Select 
-            value={group} 
-            onChange={(e) => setGroup(e.target.value)}
-            style={{backgroundColor: '#f0f0f0' }}
-          >
-            <MenuItem value='RUNTEQ'>みんな</MenuItem>  
-            {groups.map((group) => ( // 取得したグループデータをもとに選択肢を動的に生成
-              <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Grid item xs={12} sm={"auto"}>
+          <FormControl sx={{ minWidth: 120 }} size="small">
+            <Select 
+              value={sortBy} 
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{backgroundColor: '#f0f0f0' }}
+            >
+              <MenuItem value="created_at_desc">新着順</MenuItem>
+              <MenuItem value="name_asc">名前順</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={"auto"}>
+          <FormControl sx={{ minWidth: 180 }} size="small">
+            <Autocomplete
+              id="group-select"
+              value={groups.find((group) => group.id === group)}
+              options={groups}
+              getOptionLabel={(option) => option.name}
+              onChange={(event, newValue) => {
+                setGroup(newValue ? newValue.id : 'RUNTEQ');
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size="small"
+                  label="グループ"
+                  style={{ backgroundColor: '#f0f0f0' }}
+                />
+              )}
+            />
+          </FormControl>
         </Grid>
       </Grid>
-
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -166,6 +171,7 @@ const Users = () => {
               padding: 1,
               borderRadius: 1,
               cursor: 'pointer',
+              fontWeight: 'bold', 
               '&.active': {
                 backgroundColor: '#ffaf95',
               },
