@@ -100,9 +100,9 @@ const Users = () => {
           <FormControl sx={{ minWidth: 180 }} size="small">
             <Autocomplete
               id="group-select"
-              value={groups.find((group) => group.id === group)}
+              value={groups.find((g) => g.id === group) || null}
               options={groups}
-              getOptionLabel={(option) => option.name}
+              getOptionLabel={(option) => option ? option.name : ""}
               onChange={(event, newValue) => {
                 setGroup(newValue ? newValue.id : 'RUNTEQ');
               }}

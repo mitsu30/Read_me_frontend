@@ -195,6 +195,13 @@ export default function AdditionalInfoPage() {
               value={selectedGroup}
               onChange={handleGroupChange}
               fullWidth
+              MenuProps={{ 
+                PaperProps: {
+                  style: {
+                    maxHeight: '200px', 
+                  },
+                },
+              }}
             >
               {groups.map((group) => (
                 <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
