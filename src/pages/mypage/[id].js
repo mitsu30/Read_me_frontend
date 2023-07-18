@@ -3,9 +3,9 @@ import { Box, CardMedia, CardContent, Grid, Card, IconButton, Modal, Button, Typ
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+// import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+// import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
+// import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import LockIcon from '@mui/icons-material/Lock';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Select from '@mui/material/Select';
@@ -51,9 +51,9 @@ export default function ProfilePage() {
   const [userCommunities, setUserCommunities] = useState([]);
   const [openRanges, setOpenRanges] = useState([]);
 
-  const [openModalHeart, setOpenModalHeart] = useState(false);
-  const [openModalStar, setOpenModalStar] = useState(false);
-  const [openModalChat, setOpenModalChat] = useState(false);
+  // const [openModalHeart, setOpenModalHeart] = useState(false);
+  // const [openModalStar, setOpenModalStar] = useState(false);
+  // const [openModalChat, setOpenModalChat] = useState(false);
 
 
   const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
@@ -219,29 +219,29 @@ export default function ProfilePage() {
       };
 
   
-const handleOpenModalHeart = () => {
-  setOpenModalHeart(true);
-};
+// const handleOpenModalHeart = () => {
+//   setOpenModalHeart(true);
+// };
 
-const handleCloseModalHeart = () => {
-  setOpenModalHeart(false);
-};
+// const handleCloseModalHeart = () => {
+//   setOpenModalHeart(false);
+// };
 
-const handleOpenModalStar = () => {
-  setOpenModalStar(true);
-};
+// const handleOpenModalStar = () => {
+//   setOpenModalStar(true);
+// };
 
-const handleCloseModalStar = () => {
-  setOpenModalStar(false);
-};
+// const handleCloseModalStar = () => {
+//   setOpenModalStar(false);
+// };
 
-const handleOpenModalChat = () => {
-  setOpenModalChat(true);
-};
+// const handleOpenModalChat = () => {
+//   setOpenModalChat(true);
+// };
 
-const handleCloseModalChat = () => {
-  setOpenModalChat(false);
-};
+// const handleCloseModalChat = () => {
+//   setOpenModalChat(false);
+// };
 
 
   return (
@@ -257,7 +257,7 @@ const handleCloseModalChat = () => {
         </StyledCard>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <IconCard>
-            <Tooltip title="いいね">
+            {/* <Tooltip title="いいね">
               <IconButton onClick={handleOpenModalHeart}>
                 <FavoriteBorderOutlinedIcon sx={{ color: 'Red' }} />
               </IconButton>
@@ -271,7 +271,7 @@ const handleCloseModalChat = () => {
               <IconButton onClick={handleOpenModalChat}>
                 <ChatBubbleOutlineOutlinedIcon sx={{ color: 'gray' }} />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="公開範囲の設定">
               <IconButton onClick={handleOpenModalForOpenRange}>
                 <LockIcon sx={{ color: '#ffd700' }} />
@@ -377,7 +377,7 @@ const handleCloseModalChat = () => {
         </Box>
       </Box>
     </Modal>
-    <Modal
+    {/* <Modal
   open={openModalHeart}
   onClose={handleCloseModalHeart}
 >
@@ -425,7 +425,7 @@ const handleCloseModalChat = () => {
                   p: 4,
                 }}>準備中です！
        </Box>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

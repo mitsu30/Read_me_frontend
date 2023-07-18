@@ -4,10 +4,10 @@ import { Button, Box, CardMedia, CardContent, Grid, Card, IconButton, Skeleton, 
 import { styled } from '@mui/system';
 import nookies from "nookies";
 import axios from 'axios';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import Tooltip from '@mui/material/Tooltip';
+// import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+// import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
+// import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+// import Tooltip from '@mui/material/Tooltip';
 import CenteredBox from '../../../components/CenteredBox'
 
 const StyledCard = styled(Card)(({ theme }) => ({ 
@@ -25,10 +25,10 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   objectFit: 'contain',
 }));
 
-const IconCard = styled(Card)(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'flex',  
-}));
+// const IconCard = styled(Card)(({ theme }) => ({
+//   display: 'inline-flex',
+//   alignItems: 'flex',  
+// }));
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -37,9 +37,9 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState('');
 
-  const [openModalHeart, setOpenModalHeart] = useState(false);
-  const [openModalStar, setOpenModalStar] = useState(false);
-  const [openModalChat, setOpenModalChat] = useState(false);
+  // const [openModalHeart, setOpenModalHeart] = useState(false);
+  // const [openModalStar, setOpenModalStar] = useState(false);
+  // const [openModalChat, setOpenModalChat] = useState(false);
 
   
   useEffect(() => {
@@ -65,21 +65,21 @@ export default function ProfilePage() {
     router.push(`/users/${profileImage.user_id}`); 
   };
   
-  const handleOpenModalStar = () => {
-    setOpenModalStar(true);
-  };
+  // const handleOpenModalStar = () => {
+  //   setOpenModalStar(true);
+  // };
   
-  const handleCloseModalStar = () => {
-    setOpenModalStar(false);
-  };
+  // const handleCloseModalStar = () => {
+  //   setOpenModalStar(false);
+  // };
   
-  const handleOpenModalChat = () => {
-    setOpenModalChat(true);
-  };
+  // const handleOpenModalChat = () => {
+  //   setOpenModalChat(true);
+  // };
   
-  const handleCloseModalChat = () => {
-    setOpenModalChat(false);
-  };
+  // const handleCloseModalChat = () => {
+  //   setOpenModalChat(false);
+  // };
   
   return (
     <>
@@ -92,7 +92,7 @@ export default function ProfilePage() {
             <StyledCardMedia component="img" image={profileImage.image_url} />
           )}
         </StyledCard>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <IconCard>
             <Tooltip title="いいね">
               <IconButton>
@@ -110,7 +110,7 @@ export default function ProfilePage() {
               </IconButton>
             </Tooltip>
           </IconCard>
-        </Box>
+        </Box> */}
         <CenteredBox>
           <Button 
             type="submit"
@@ -136,7 +136,7 @@ export default function ProfilePage() {
         </CenteredBox>
       </Grid>
     </CardContent>   
-
+{/* 
   <Modal
     open={openModalStar}
     onClose={handleCloseModalStar}
@@ -171,7 +171,7 @@ export default function ProfilePage() {
       }}>
          準備中です！
      </Box>
-    </Modal>
+    </Modal> */}
     </>
   );
 }
