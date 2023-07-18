@@ -110,7 +110,7 @@ const Users = () => {
                 <TextField
                   {...params}
                   size="small"
-                  label="グループ"
+                  // label="グループ"
                   style={{ backgroundColor: '#f0f0f0' }}
                 />
               )}
