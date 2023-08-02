@@ -161,7 +161,7 @@ export default function ResultPage({ profileImage }) {
           }}
           onClick={handleOpen}
         >
-            Twitterでシェア
+            \uD835\uDD4F(Twitter)でシェア
         </Button>
         <Button 
           type="submit"

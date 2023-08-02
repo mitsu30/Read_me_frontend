@@ -128,7 +128,7 @@ export default function ResultPage({ imageText }) {
           }}
           onClick={handleOpen}
         >
-            Twitterでシェア
+            \uD835\uDD4F(Twitter)でシェア
         </Button>
         <Button 
           variant="contained"
