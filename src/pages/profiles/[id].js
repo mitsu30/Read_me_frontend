@@ -64,6 +64,9 @@ export default function ResultPage({ profileImage }) {
       case 3:
         tweetText = 'ひよっこエンジニアなかま募集中♪ #駆け出しエンジニアと繋がりたい #りーどみー #RUNTEQ';
         break;
+      case 4:
+        tweetText = '4周年おめでとう!! #RUNTEQ #りーどみー';
+        break;
       default:
         tweetText = 'わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
         break;
