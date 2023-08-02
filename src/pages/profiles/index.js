@@ -81,7 +81,7 @@ const DesignTemplates = ({ templates }) => {
     </Typography>
   </Box>
 
-    <Grid container  justify="center"> 
+    <Grid container  justify="center" spacing={4}> 
     {isLoading ? (
       <Skeleton variant="rectangular" width={280} height={280} />
     ) : (
