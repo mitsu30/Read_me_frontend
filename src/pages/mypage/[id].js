@@ -282,7 +282,7 @@ export default function ProfilePage() {
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Twitterシェア">
+            <Tooltip title="\uD835\uDD4F(Twitter)シェア">
               <IconButton onClick={handleTwitterShare}>
                 <TwitterIcon sx={{ color: '#55acee' }} />
             </IconButton>
