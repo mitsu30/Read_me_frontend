@@ -191,7 +191,7 @@ export default function ResultPage({ profileImage }) {
         <DialogTitle>\uD835\uDD4F(Twitter)でシェア</DialogTitle>
         <DialogContent>
           <Typography>
-            このままTwitterシェアのボタンをおすと、作成したプロフィール帳がツイートにセットされるよ！
+            このまま\uD835\uDD4F(Twitter)ボタンをおすと、作成したプロフィール帳がツイートにセットされるよ！
             <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <img src='/sample1.png' alt="Generated Image" style={{ width: '80%', height: 'auto' }}/>
             </Box>
