@@ -56,10 +56,10 @@ export default function ResultPage({ profileImage }) {
     let tweetText;
     switch(profileImage.template_id) {
       case 1:
-        tweetText = 'みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        tweetText = 'みんなよろしく♪ #りーどみー #大人のプロフィール帳';
         break;
       case 2:
-        tweetText = 'わたしのプロフィール帳みんなみてね♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        tweetText = 'わたしのプロフィール帳みんなみてね♪ #りーどみー #大人のプロフィール帳';
         break;
       case 3:
         tweetText = 'ひよっこエンジニアなかま募集中♪ #駆け出しエンジニアと繋がりたい #りーどみー #RUNTEQ';
@@ -68,7 +68,7 @@ export default function ResultPage({ profileImage }) {
         tweetText = '4周年おめでとう!! #RUNTEQ #りーどみー';
         break;
       default:
-        tweetText = 'わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳';
+        tweetText = 'わたしのプロフィール！みんなよろしく♪ #りーどみー #大人のプロフィール帳';
         break;
     }
     setTimeout(() => {
