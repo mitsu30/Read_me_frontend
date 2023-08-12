@@ -33,7 +33,7 @@ export default function ResultPage({ imageText }) {
 
   const handleOpen = () => {
     setTimeout(() => {
-      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('わたしのプロフィール！みんなよろしく♪ #りーどみー #RUNTEQ #大人のプロフィール帳')}`, '_blank');
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('わたしのプロフィール！みんなよろしく♪ #りーどみー #大人のプロフィール帳')}`, '_blank');
     }, 700); 
   };
 
