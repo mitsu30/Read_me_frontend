@@ -62,7 +62,7 @@ export default function HomePage() {
             description: siteDescription,
             images: [
               {
-                url: 'https://readmeee.vercel.app/top_ogp.png',
+                url: 'https://readmeprofile.com/top_ogp.png',
                 width: 800,
                 height: 600,
                 alt: 'Top OGP Image',

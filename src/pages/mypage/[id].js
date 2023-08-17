@@ -56,7 +56,7 @@ export default function ProfilePage() {
   // const [openModalChat, setOpenModalChat] = useState(false);
 
 
-  const shareUrl = `https://readmeee.vercel.app/profiles/${id}?shared=true`;
+  const shareUrl = `https://readmeprofile.com/profiles/${id}?shared=true`;
 
   useEffect(() => {
     const fetchData = async () => {
